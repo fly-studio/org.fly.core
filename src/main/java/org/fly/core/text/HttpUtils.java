@@ -1,4 +1,4 @@
-package com.fly.core.text;
+package org.fly.core.text;
 
 import java.io.IOException;
 import java.io.InputStream;

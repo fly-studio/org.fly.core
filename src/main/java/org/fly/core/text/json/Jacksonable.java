@@ -1,11 +1,11 @@
-package com.fly.core.text.json;
+package org.fly.core.text.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fly.core.contract.AbstractJsonable;
+import org.fly.core.contract.AbstractJsonable;
 
 import java.io.File;
 import java.io.IOException;

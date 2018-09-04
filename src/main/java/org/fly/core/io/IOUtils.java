@@ -1,9 +1,9 @@
-package com.fly.core.io;
+package org.fly.core.io;
 
-import com.fly.core.text.json.StripJsonComment;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
+import org.fly.core.text.json.StripJsonComment;
 
 import java.io.Closeable;
 import java.io.File;
@@ -11,13 +11,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
-import java.nio.file.StandardOpenOption;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.util.logging.Level;
 
 public class IOUtils {
 
-    private final static Charset utf8 = Charset.forName("utf-8");
+    private final static Charset utf8 = StandardCharsets.UTF_8;
 
     public static String getFileSize(long size) {
         if (size <= 0)

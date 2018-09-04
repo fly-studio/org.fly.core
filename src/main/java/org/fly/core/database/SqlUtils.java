@@ -1,4 +1,4 @@
-package com.fly.core.database;
+package org.fly.core.database;
 
 public class SqlUtils {
 

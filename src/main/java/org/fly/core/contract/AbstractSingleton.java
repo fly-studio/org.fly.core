@@ -1,4 +1,4 @@
-package com.fly.core.contract;
+package org.fly.core.contract;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

@@ -1,4 +1,4 @@
-package com.fly.core.text.json;
+package org.fly.core.text.json;
 
 public class Jsonable extends Jacksonable {
 
