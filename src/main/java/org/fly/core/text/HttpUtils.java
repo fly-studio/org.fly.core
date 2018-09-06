@@ -5,13 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class HttpUtils {
     /**
@@ -45,7 +39,7 @@ public class HttpUtils {
                 int sep = e.indexOf('=');
                 String propertyName = sep >= 0 ? decodePercent(e.substring(0, sep)).trim() : decodePercent(e).trim();
                 if (!params.containsKey(propertyName)) {
-                    params.put(propertyName, new ArrayList<>());
+                    params.put(propertyName, new ArrayList<String>());
                 }
                 String propertyValue = sep >= 0 ? decodePercent(e.substring(sep + 1)) : null;
                 if (propertyValue != null) {

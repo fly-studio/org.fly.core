@@ -6,17 +6,19 @@ version = '1.0.0'
 
 description = "core"
 
-sourceCompatibility = 8
-targetCompatibility = 8
+sourceCompatibility = 7
+targetCompatibility = 7
 
 
 
 repositories {
-        
-     maven { url "http://repo.maven.apache.org/maven2" }
+    jcenter()
+    maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {
     compile group: 'com.sun.istack', name: 'istack-commons-runtime', version:'3.0.5'
     compile group: 'com.squareup.okio', name: 'okio', version:'1.15.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.9.6'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.11'
+
 }

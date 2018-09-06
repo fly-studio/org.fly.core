@@ -36,15 +36,13 @@ public class IOUtils {
         return str;
     }
 
-    public static StringBuffer readBytes(File file) throws IOException
+    public static byte[] readBytes(File file) throws IOException
     {
         BufferedSource source = Okio.buffer(Okio.source(file));
-        StringBuffer buffer = new StringBuffer();
         byte[] bytes =  source.readByteArray();
-        buffer.append(bytes);
         source.close();
 
-        return buffer;
+        return bytes;
     }
 
     public static String readJson(File file) throws IOException
