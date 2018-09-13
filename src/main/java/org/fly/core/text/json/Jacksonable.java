@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.apache.commons.codec.binary.StringUtils;
 import org.fly.core.contract.AbstractJsonable;
 
 import java.io.File;
@@ -29,6 +30,11 @@ public class Jacksonable implements AbstractJsonable {
     public static <T> T fromJson(final Class<T> clazz, String json) throws IOException
     {
         return Builder.makeAdapter().readValue(json, clazz);
+    }
+
+    public static <T> T fromJson(final Class<T> clazz, byte[] json) throws IOException
+    {
+        return fromJson(clazz, StringUtils.newStringUtf8(json));
     }
 
     public static <T> T fromJson(final Class<T> clazz, File file) throws IOException

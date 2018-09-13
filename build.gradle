@@ -9,8 +9,6 @@ description = "core"
 sourceCompatibility = 7
 targetCompatibility = 7
 
-
-
 repositories {
     jcenter()
     maven { url "http://repo.maven.apache.org/maven2" }
@@ -20,5 +18,9 @@ dependencies {
     compile group: 'com.squareup.okio', name: 'okio', version:'1.15.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.9.6'
     compile group: 'commons-codec', name: 'commons-codec', version: '1.11'
+    compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.6.1'
+}
 
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }

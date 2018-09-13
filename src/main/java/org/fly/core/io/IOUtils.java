@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 
-public class IOUtils {
+public class IoUtils {
 
     private final static Charset utf8 = StandardCharsets.UTF_8;
 

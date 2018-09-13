@@ -1,7 +1,8 @@
 package org.fly.core.text.encrytor;
 
 import com.sun.istack.Nullable;
-import org.fly.core.io.IOUtils;
+import org.apache.commons.codec.binary.StringUtils;
+import org.fly.core.io.IoUtils;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -17,42 +18,26 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 public class Encryption {
+    private static final org.fly.core.text.encrytor.Base64.Decoder base64Decoder = org.fly.core.text.encrytor.Base64.getDecoder();
+    private static final org.fly.core.text.encrytor.Base64.Encoder base64Encoder = org.fly.core.text.encrytor.Base64.getEncoder();
 
-    private static IBase64 base64 = new org.fly.core.text.encrytor.Base64();
+    public static class Base64 {
 
-    public static void setBase64(IBase64 base64)
-    {
-        Encryption.base64 = base64;
-    }
-
-    public static class Base64
-    {
-        public static String encode(String bytes)
-        {
-            return base64.encode(bytes);
+        public static String encode(String bytes) {
+            return encode(StringUtils.getBytesUsAscii(bytes));
         }
 
-        public static String encode(byte[] bytes)
-        {
-            return base64.encode(bytes);
+        public static String encode(byte[] bytes) {
+            return StringUtils.newStringUsAscii(base64Encoder.encode(bytes));
         }
 
-        public static byte[] decode(String base)
-        {
-            return base64.decode(base);
+        public static byte[] decode(String base) {
+            return base64Decoder.decode(base);
         }
 
-        public static byte[] decode(byte[] base)
-        {
-            return base64.decode(base);
+        public static byte[] decode(byte[] base) {
+            return base64Decoder.decode(base);
         }
-    }
-
-    public interface IBase64 {
-        String encode(String text);
-        String encode(byte[] bytes);
-        byte[] decode(String base);
-        byte[] decode(byte[] base);
     }
 
     public static class AES {
@@ -119,7 +104,7 @@ public class Encryption {
     public static class RSA {
         private static final String RSA  = "RSA";
         private static final String RSA_PUBLIC_BEGIN = "-----BEGIN PUBLIC KEY-----";
-        private static final String RSA_PUBLIC_END = "-----BEGIN PUBLIC KEY-----";
+        private static final String RSA_PUBLIC_END = "-----END PUBLIC KEY-----";
         private static final String RSA_PRIVATE_BEGIN = "-----BEGIN RSA PRIVATE KEY-----";
         private static final String RSA_PRIVATE_END = "-----END RSA PRIVATE KEY-----";
 
@@ -192,13 +177,13 @@ public class Encryption {
 
         public void loadPrivateFile(File file) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException
         {
-            byte[] bytes = IOUtils.readBytes(file);
+            byte[] bytes = IoUtils.readBytes(file);
             loadPrivateKey(bytes);
         }
 
         public void loadPublicFile(File file) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException
         {
-            byte[] bytes = IOUtils.readBytes(file);
+            byte[] bytes = IoUtils.readBytes(file);
             loadPublicKey(bytes);
         }
 
