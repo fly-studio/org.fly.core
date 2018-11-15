@@ -12,6 +12,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -57,41 +58,52 @@ public class Encryption {
         }
 
         public AES(String key, @Nullable String iv) {
-            this(key.getBytes(), iv == null ? null : iv.getBytes());
+            this(key.getBytes(), iv == null ? null : StringUtils.getBytesUsAscii(iv));
         }
 
         public AES(byte[] key, byte[] iv)
         {
             this.key = new SecretKeySpec(key, AES);
-            this.iv = iv == null ? null : new IvParameterSpec(iv);
+            this.iv = new IvParameterSpec(iv == null ? new byte[getBlockSize()] : iv); // fill 16 blank iv
         }
 
-        public byte[] encrypt(byte[] originalText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException
+        public static int getBlockSize()
         {
-            Cipher cipher = Cipher.getInstance(AES + "/CBC/PKCS5PADDING");
-            if (iv == null)
-                cipher.init(Cipher.ENCRYPT_MODE, key);
-            else
-                cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+            try {
+                return cipher().getBlockSize();
+            } catch (Exception e)
+            {
+                return 16;
+            }
+        }
 
-            return cipher.doFinal(originalText);
+        public static Cipher cipher() throws NoSuchAlgorithmException, NoSuchPaddingException
+        {
+            return Cipher.getInstance(AES + "/CBC/PKCS5Padding");
+        }
+
+        public byte[] encrypt(byte[] plaintext) throws NoSuchAlgorithmException, NoSuchPaddingException, BadPaddingException,  InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException
+        {
+            Cipher cipher = cipher();
+
+            cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+
+            return cipher.doFinal(plaintext);
         }
 
 
-        public byte[] decrypt(byte[] encryptedText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException
+        public byte[] decrypt(byte[] encryptedText) throws NoSuchAlgorithmException, NoSuchPaddingException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException
         {
-            Cipher cipher = Cipher.getInstance(AES + "/CBC/PKCS5PADDING");
-            if (iv == null)
-                cipher.init(Cipher.DECRYPT_MODE, key);
-            else
-                cipher.init(Cipher.DECRYPT_MODE, key, iv);
+            Cipher cipher = cipher();
+
+            cipher.init(Cipher.DECRYPT_MODE, key, iv);
 
             return cipher.doFinal(encryptedText);
         }
 
-        public String encryptToBase64(byte[] originalText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException
+        public String encryptToBase64(byte[] plaintext) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException
         {
-            return Base64.encode(encrypt(originalText));
+            return Base64.encode(encrypt(plaintext));
         }
 
         public byte[] decryptFromBase64(String encryptedText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException
@@ -139,7 +151,6 @@ public class Encryption {
 
         public void loadPrivateKey(String key) throws NoSuchAlgorithmException, InvalidKeySpecException
         {
-
             key = key.replace(RSA_PRIVATE_BEGIN, "")
                     .replace(RSA_PRIVATE_END, "")
                     .replace("\r", "")
@@ -232,25 +243,30 @@ public class Encryption {
             return buffer.toString();
         }
 
-        public static byte[] encrypt(byte[] originalText, Key key) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
+        public static Cipher cipher() throws NoSuchPaddingException, NoSuchAlgorithmException
         {
-            Cipher cipher = Cipher.getInstance(RSA + "/ECB/PKCS1Padding");
+            return Cipher.getInstance(RSA + "/ECB/PKCS1Padding");
+        }
+
+        public static byte[] encrypt(byte[] plaintext, Key key) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
+        {
+            Cipher cipher = cipher();
             cipher.init(Cipher.ENCRYPT_MODE, key);
 
-            return cipher.doFinal(originalText);
+            return cipher.doFinal(plaintext);
         }
 
         public static byte[] decrypt(byte[] encryptedText, Key key) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
         {
-            Cipher cipher = Cipher.getInstance(RSA + "/ECB/PKCS1Padding");
+            Cipher cipher = cipher();
             cipher.init(Cipher.DECRYPT_MODE, key);
 
             return cipher.doFinal(encryptedText);
         }
 
-        public byte[] publicEncrypt(byte[] originalText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
+        public byte[] publicEncrypt(byte[] plaintext) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
         {
-           return encrypt(originalText, publicKey);
+           return encrypt(plaintext, publicKey);
         }
 
         public byte[] publicDecrypt(byte[] encryptedText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
@@ -258,9 +274,9 @@ public class Encryption {
             return decrypt(encryptedText, publicKey);
         }
 
-        public byte[] privateEncrypt(byte[] originalText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
+        public byte[] privateEncrypt(byte[] plaintext) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
         {
-           return encrypt(originalText, privateKey);
+           return encrypt(plaintext, privateKey);
         }
 
         public byte[] privateDecrypt(byte[] encryptedText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
@@ -268,9 +284,9 @@ public class Encryption {
             return decrypt(encryptedText, privateKey);
         }
 
-        public String publicEncryptToBase64(byte[] originalText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
+        public String publicEncryptToBase64(byte[] plaintext) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
         {
-            return Base64.encode(publicEncrypt(originalText));
+            return Base64.encode(publicEncrypt(plaintext));
         }
 
         public byte[] publicDecryptFromBase64(String encryptedText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
@@ -278,9 +294,9 @@ public class Encryption {
             return publicDecrypt(Base64.decode(encryptedText));
         }
 
-        public String privateEncryptToBase64(byte[] originalText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
+        public String privateEncryptToBase64(byte[] plaintext) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
         {
-            return Base64.encode(privateEncrypt(originalText));
+            return Base64.encode(privateEncrypt(plaintext));
         }
 
         public byte[] privateDecryptFromBase64(String encryptedText) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException

@@ -29,6 +29,15 @@ public class Table {
     private static final String TAG = Table.class.getSimpleName();
     private static final URLCodec urlCodec =  new URLCodec("ASCII");
     private static final int PROTOCOL_ENCRYPT = 0xffff;
+    private static final Encryption.AES aes = new Encryption.AES(new byte[]{
+            0x6c, 0x6f, 0x63, 0x61,
+            0x6c, 0x76, 0x70, 0x6e,
+            0x6c, 0x6f, 0x63, 0x61,
+            0x6c, 0x76, 0x70, 0x6e,
+            0x6c, 0x6f, 0x63, 0x61,
+            0x6c, 0x76, 0x70, 0x6e,
+            0x6c, 0x6f, 0x63, 0x61,
+            0x6c, 0x76, 0x70, 0x6e});
 
     private ConcurrentLinkedQueue<Connection> connections = new ConcurrentLinkedQueue<>();
     private Selector selector;
@@ -49,11 +58,27 @@ public class Table {
 
     public static String decodeString(String encoded)
     {
+        return decodeString(Encryption.Base64.decode(encoded));
+    }
+
+    public static String decodeString(byte[] encoded)
+    {
         try {
-            Encryption.AES aes = new Encryption.AES(new byte[]{0x6c, 0x6f, 0x63, 0x61, 0x6c, 0x76, 0x70, 0x6e, 0x6c, 0x6f, 0x63, 0x61, 0x6c, 0x76, 0x70, 0x6e});
-            return StringUtils.newStringUsAscii(aes.decryptFromBase64(encoded));
+            return StringUtils.newStringUsAscii(aes.decrypt(encoded));
         } catch (Exception e)
         {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static byte[] encodeString(byte[] plaintext)
+    {
+        try {
+            return aes.encrypt(plaintext);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
             return null;
         }
     }
@@ -108,7 +133,7 @@ public class Table {
                     try {
 
                         while(!Thread.interrupted())
-                        {
+                        {   
                             connection = connections.poll();
                             if (connection != null)
                                 connection.connect();
@@ -279,7 +304,16 @@ public class Table {
         public void sendKey()
         {
             ResultProto.EncryptKey.Builder encryptBuilder = ResultProto.EncryptKey.newBuilder();
-            encryptBuilder.setKey(ByteString.copyFromUtf8(decryptor.getPublicKey()));
+
+            byte[] key = encodeString(
+                    StringUtils.getBytesUsAscii(
+                            decryptor.getPublicKey()
+                    )
+            );
+
+            encryptBuilder.setKey(
+                    ByteString.copyFrom(key)
+            );
 
             send(PROTOCOL_ENCRYPT, encryptBuilder.build());
         }
