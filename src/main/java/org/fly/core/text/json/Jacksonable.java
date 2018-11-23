@@ -27,9 +27,19 @@ public class Jacksonable implements AbstractJsonable {
         }
     }
 
+    public static <T> T fromJson(ObjectMapper objectMapper, final Class<T> clazz, String json) throws IOException
+    {
+        return objectMapper.readValue(json, clazz);
+    }
+
     public static <T> T fromJson(final Class<T> clazz, String json) throws IOException
     {
-        return Builder.makeAdapter().readValue(json, clazz);
+        return fromJson(Builder.makeAdapter(), clazz, json);
+    }
+
+    public static <T> T fromJson(ObjectMapper objectMapper, final Class<T> clazz, byte[] json) throws IOException
+    {
+        return fromJson(objectMapper, clazz, StringUtils.newStringUtf8(json));
     }
 
     public static <T> T fromJson(final Class<T> clazz, byte[] json) throws IOException
@@ -37,15 +47,20 @@ public class Jacksonable implements AbstractJsonable {
         return fromJson(clazz, StringUtils.newStringUtf8(json));
     }
 
-    public static <T> T fromJson(final Class<T> clazz, File file) throws IOException
+    public static <T> T fromJson(ObjectMapper objectMapper, final Class<T> clazz, File file) throws IOException
     {
-        return Builder.makeAdapter().readValue(file, clazz);
+        return objectMapper.readValue(file, clazz);
     }
 
-    public String toJson()
+    public static <T> T fromJson(final Class<T> clazz, File file) throws IOException
+    {
+        return fromJson(Builder.makeAdapter(), clazz, file);
+    }
+
+    public String toJson(ObjectMapper objectMapper)
     {
         try {
-            return Builder.makeAdapter().writeValueAsString(this);
+            return objectMapper.writeValueAsString(this);
         } catch (JsonProcessingException e)
         {
 
@@ -53,8 +68,18 @@ public class Jacksonable implements AbstractJsonable {
         return null;
     }
 
+    public String toJson()
+    {
+        return toJson(Builder.makeAdapter());
+    }
+
+    public void toJson(ObjectMapper objectMapper, File file) throws Exception
+    {
+        objectMapper.writeValue(file, this);
+    }
+
     public void toJson(File file) throws Exception
     {
-        Builder.makeAdapter().writeValue(file, this);
+        toJson(Builder.makeAdapter(), file);
     }
 }
