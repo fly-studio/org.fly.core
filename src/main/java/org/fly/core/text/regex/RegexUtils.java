@@ -1,4 +1,4 @@
-package org.fly.core.text;
+package org.fly.core.text.regex;
 
 public class RegexUtils {
     /**
