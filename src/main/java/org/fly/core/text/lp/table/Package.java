@@ -1,10 +1,12 @@
-package org.fly.core.text.lp;
+package org.fly.core.text.lp.table;
 
 import org.fly.core.io.buffer.BufferUtils;
 import org.fly.core.io.buffer.ByteBufferPool;
 import org.fly.core.io.buffer.IoBuffer;
 
 public class Package {
+    public int ack;
+    public int version;
     public int protocol;
     public int length;
     public IoBuffer buffer;
@@ -20,6 +22,8 @@ public class Package {
 
     public Package(IoBuffer byteBuffer)
     {
+        ack = BufferUtils.getUnsignedShort(byteBuffer);
+        version = BufferUtils.getUnsignedShort(byteBuffer);
         protocol = BufferUtils.getUnsignedShort(byteBuffer);
         length = byteBuffer.getInt();
 
@@ -35,6 +39,14 @@ public class Package {
 
     public int getProtocol() {
         return protocol;
+    }
+
+    public int getAck() {
+        return ack;
+    }
+
+    public int getVersion() {
+        return version;
     }
 
     public long getLength() {
