@@ -1,12 +1,10 @@
 package org.fly.core.text.lp.table;
 
-import com.google.protobuf.Message;
 import com.sun.istack.Nullable;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.codec.net.URLCodec;
 import org.fly.core.io.buffer.BufferUtils;
 import org.fly.core.io.buffer.ByteBufferPool;
-import org.fly.core.io.buffer.IoBuffer;
 import org.fly.core.text.encrytor.Encryption;
 
 import java.io.IOException;
@@ -24,14 +22,11 @@ public class Table {
     private static final URLCodec urlCodec =  new URLCodec("ASCII");
     public static final int PROTOCOL_ENCRYPT = 0xffff;
     private static final Encryption.AES aes = new Encryption.AES(new byte[]{
-            0x6c, 0x6f, 0x63, 0x61,
-            0x6c, 0x76, 0x70, 0x6e,
-            0x6c, 0x6f, 0x63, 0x61,
-            0x6c, 0x76, 0x70, 0x6e,
-            0x6c, 0x6f, 0x63, 0x61,
-            0x6c, 0x76, 0x70, 0x6e,
-            0x6c, 0x6f, 0x63, 0x61,
-            0x6c, 0x76, 0x70, 0x6e});
+            (byte) 0xc3, 0x20, (byte)0xaa, 0x3c, 0x2d, (byte)0x97, 0x14, (byte)0xa1,
+            0x18, (byte)0xf3, 0x23, (byte)0xb3, (byte)0xaf, (byte)0xba, (byte)0x91, 0x4f,
+            0x45, (byte)0xb1, 0x46, 0x30, (byte)0xbe, 0x56, 0x31, 0x66,
+            (byte)0xae, (byte)0x86, (byte)0xa8, (byte)0x9e, (byte)0xee, (byte)0xb4, (byte)0x9c, (byte)0x84
+    });
 
     private ConcurrentLinkedQueue<Connection> connections = new ConcurrentLinkedQueue<>();
     private Selector selector;
@@ -191,19 +186,27 @@ public class Table {
         });
     }
 
-    public static ByteBuffer buildData(int ack, int version, int protocol, @Nullable Message message)
+    /**
+     * Build a send TCP package
+     * @param ack
+     * @param version
+     * @param protocol
+     * @param raw
+     * @return
+     */
+    public static ByteBuffer buildData(int ack, int version, int protocol, @Nullable byte[] raw)
     {
 
-        int size = message == null ? 0 : message.getSerializedSize();
-        ByteBuffer buffer = ByteBuffer.allocate(size + (Short.SIZE + Integer.SIZE) / Byte.SIZE);
+        int size = raw == null ? 0 : raw.length;
+        ByteBuffer buffer = ByteBuffer.allocate(size + (Short.SIZE * 3 + Integer.SIZE) / Byte.SIZE);
 
         BufferUtils.putUnsignedShort(buffer, ack);
         BufferUtils.putUnsignedShort(buffer, version);
         BufferUtils.putUnsignedShort(buffer, protocol);
         BufferUtils.putUnsignedInt(buffer, size);
 
-        if (message != null)
-            buffer.put(message.toByteArray());
+        if (raw != null)
+            buffer.put(raw);
 
         return buffer;
     }

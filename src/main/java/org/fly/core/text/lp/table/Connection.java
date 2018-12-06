@@ -28,6 +28,7 @@ public class Connection {
     private int ACK = 0;
     private Package tcpPackage = null;
     private Decryptor decryptor = new Decryptor();
+    private Selector selector;
     private String host;
     private int port;
     private SocketChannel channel;
@@ -44,11 +45,10 @@ public class Connection {
     public Connection(Selector selector, String host, int port) throws IOException {
         this.host = host;
         this.port = port;
+        this.selector = selector;
 
         channel = SocketChannel.open();
         channel.configureBlocking(false);
-
-        channel.register(selector, SelectionKey.OP_CONNECT, this);
 
         sendEncryptedKey();
     }
@@ -56,7 +56,9 @@ public class Connection {
     public void connect() throws IOException
     {
         InetSocketAddress address = new InetSocketAddress(host, port);
+        channel.register(selector, SelectionKey.OP_CONNECT, this);
         channel.connect(address);
+
     }
 
     public boolean isConnected() {
@@ -84,9 +86,9 @@ public class Connection {
     public void close()
     {
         try {
-            channel.close();
-
             connected = false;
+
+            channel.close();
 
         } catch (IOException e)
         {
@@ -224,13 +226,13 @@ public class Connection {
         try {
             if (null != request)
             {
-                ByteBuffer buffer = Table.buildData(request.getAck(), request.getVersion(), request.getProtocol(), request.getMessage());
+                ByteBuffer buffer = Table.buildData(request.getAck(), request.getVersion(), request.getProtocol(), request.getRaw());
 
                 buffer.flip();
                 sendDataQueue.add(buffer);
             }
 
-            while(channel.isConnected())
+            while(isConnected())
             {
                 ByteBuffer buffer = sendDataQueue.poll();
                 if (buffer != null)
@@ -248,6 +250,8 @@ public class Connection {
     }
 
     public void onConnected() {
+        connected = true;
+
         if (null != connectionListener) {
             connectionListener.onConnected();
         }

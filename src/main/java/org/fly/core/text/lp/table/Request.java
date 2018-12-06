@@ -8,13 +8,14 @@ public class Request {
     private int ack = 0;
     private int version;
     private int protocol;
-    private Message message;
+    private byte[] raw;
     private long timeout;
 
-    public Request(int version, int protocol, Message message, long timeout) {
+    public Request(int version, int protocol, byte[] raw, long timeout)
+    {
         this.version = version;
         this.protocol = protocol;
-        this.message = message;
+        this.raw = raw;
         this.timeout = timeout;
     }
 
@@ -34,8 +35,8 @@ public class Request {
         return protocol;
     }
 
-    public Message getMessage() {
-        return message;
+    public byte[] getRaw() {
+        return raw;
     }
 
     public long getTimeout() {
@@ -46,6 +47,7 @@ public class Request {
         private int version = 0;
         private int protocol = 0;
         private Message message = null;
+        private byte[] raw = null;
         private long timeout = 20 * 1000L;
 
         public void setTimeout(long timeout) {
@@ -62,14 +64,19 @@ public class Request {
             return this;
         }
 
+        public Builder setRaw(byte[] raw) {
+            this.raw = raw;
+            return this;
+        }
+
         public Builder setMessage(Message message) {
-            this.message = message;
+            this.raw = message.toByteArray();
             return this;
         }
 
         public Request build()
         {
-            return new Request(version, protocol, message, timeout);
+            return new Request(version, protocol, raw, timeout);
         }
     }
 }
