@@ -2,14 +2,18 @@ package org.fly.core.text.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 import org.apache.commons.codec.binary.StringUtils;
 import org.fly.core.contract.AbstractJsonable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class Jacksonable implements AbstractJsonable {
 
@@ -25,6 +29,56 @@ public class Jacksonable implements AbstractJsonable {
             objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             return objectMapper;
         }
+
+        public static <T> Map<String, T> jsonToMap(String json)
+        {
+            if (json != null && !json.isEmpty()) {
+                ObjectMapper objectMapper = Jacksonable.Builder.makeAdapter();
+
+                try {
+                    return objectMapper.readValue(json, new TypeReference<Map<String, T>>(){});
+                } catch (IOException e)
+                {
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+        public static <T> List<Map<String, T>> jsonToRecords(String json)
+        {
+            if (json != null && !json.isEmpty()) {
+                ObjectMapper objectMapper = Jacksonable.Builder.makeAdapter();
+
+                try {
+                    return objectMapper.readValue(json, new TypeReference<List<Map<String, T>>>(){});
+                } catch (IOException e)
+                {
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+        public static <T> List<T> jsonToList(String json)
+        {
+            if (json != null && !json.isEmpty()) {
+                ObjectMapper objectMapper = Jacksonable.Builder.makeAdapter();
+
+                try {
+                    return objectMapper.readValue(json, new TypeReference<List<T>>(){});
+                } catch (IOException e)
+                {
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+
     }
 
     public static <T> T fromJson(ObjectMapper objectMapper, final Class<T> clazz, String json) throws IOException
