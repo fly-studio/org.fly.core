@@ -39,6 +39,7 @@ public class Connection {
     private Map<Integer, ProtocolParser> protocolParsers = new HashMap<>();
     private Map<Integer, RunningRequest> runningRequests = new HashMap<>();
     private Map<Integer, Table.IListener> globalListeners = new HashMap<>();
+    private CountDownLatch countDownLatch;
 
     private IoBuffer session = IoBuffer.allocateDirect(ByteBufferPool.BUFFER_SIZE);
 
@@ -58,7 +59,6 @@ public class Connection {
         InetSocketAddress address = new InetSocketAddress(host, port);
         channel.register(selector, SelectionKey.OP_CONNECT, this);
         channel.connect(address);
-
     }
 
     public boolean isConnected() {
@@ -87,6 +87,13 @@ public class Connection {
     {
         try {
             connected = false;
+            if (null != timer)
+                timer.cancel();
+            timer = null;
+
+            if (null != countDownLatch)
+                countDownLatch.countDown();
+            countDownLatch = null;
 
             channel.close();
 
@@ -163,7 +170,11 @@ public class Connection {
      */
     public Response sendSync(Request request) throws Throwable
     {
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
+        if (null != countDownLatch)
+            countDownLatch.countDown();
+
+        countDownLatch = new CountDownLatch(1);
+
         final List<Object> result = new ArrayList<>();
 
         send(request, new Table.IListener() {
@@ -178,7 +189,6 @@ public class Connection {
             public void onFail(Request request, Throwable e) {
                 countDownLatch.countDown();
 
-                //result.add(request);
                 result.add(e);
             }
         });
@@ -190,14 +200,16 @@ public class Connection {
             throw new TimeoutException(e.toString());
         }
 
+        countDownLatch = null;
+
         if (result.isEmpty())
-            throw new TimeoutException("Unknown error");
+            throw new IOException("Unknown error.");
 
         Object first = result.get(0);
         if (first instanceof Response)
             return (Response)first;
         else
-            throw (Throwable)result.get(1);
+            throw (Throwable)first;
     }
 
     public void sendEncryptedKey()
