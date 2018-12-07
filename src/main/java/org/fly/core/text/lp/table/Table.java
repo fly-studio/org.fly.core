@@ -8,13 +8,13 @@ import org.fly.core.io.buffer.ByteBufferPool;
 import org.fly.core.text.encrytor.Encryption;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ConnectionPendingException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Table {
@@ -29,8 +29,14 @@ public class Table {
     });
 
     private ConcurrentLinkedQueue<Connection> connections = new ConcurrentLinkedQueue<>();
+    private final LinkedList<Request> sendRequestQueue = new LinkedList<>();
+
     private Selector selector;
+    private Timer timer = new Timer();
     private Thread recvThread;
+    private Thread sendThread;
+    private long connectionTimeout = 5000;
+    private long reponseTimeout = 5000;
 
     public Table() {
         try {
@@ -39,10 +45,40 @@ public class Table {
             recvThread = readHandle();
             recvThread.start();
 
+            sendThread = writeHandle();
+            sendThread.start();
+
         } catch (IOException e)
         {
 
         }
+    }
+
+
+    public Selector getSelector() {
+        return selector;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public long getConnectionTimeout() {
+        return connectionTimeout;
+    }
+
+    public long getReponseTimeout() {
+        return reponseTimeout;
+    }
+
+    public Table setConnectionTimeout(long connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
+    public Table setReponseTimeout(long reponseTimeout) {
+        this.reponseTimeout = reponseTimeout;
+        return this;
     }
 
     public static String decodeString(String encoded)
@@ -74,9 +110,18 @@ public class Table {
 
     public Connection connect(String host, int port) throws IOException
     {
-        Connection connection = new Connection(selector, host, port);
+        final Connection connection = new Connection(this, host, port);
 
         connections.add(connection);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!connection.isConnected()){
+                    connection.onError(new SocketTimeoutException("Connect timeout."));
+                }
+            }
+        }, connectionTimeout);
 
         selector.wakeup();
 
@@ -91,6 +136,8 @@ public class Table {
     public void shutdown()
     {
         recvThread.interrupt();
+        sendThread.interrupt();
+        timer.cancel();
 
         for (SelectionKey key :selector.keys()
              ) {
@@ -110,6 +157,64 @@ public class Table {
 
     }
 
+    private Thread writeHandle() {
+        return new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!Thread.interrupted())
+                {
+                    try {
+                        Request request;
+                        synchronized (sendRequestQueue) {
+
+                            while (sendRequestQueue.isEmpty())
+                                sendRequestQueue.wait();
+
+                            request = sendRequestQueue.poll();
+                        }
+                        if (request != null)
+                        {
+                            if (request.getConnection().isConnected())
+                            {
+                                ByteBuffer buffer = buildData(request);
+
+                                buffer.flip();
+                                try
+                                {
+                                    while (buffer.hasRemaining())
+                                        request.getConnection().getChannel().write(buffer);
+                                } catch (IOException e)
+                                {
+                                    request.getConnection().onDisconnected(e);
+                                }
+                            } else {
+                                synchronized (sendRequestQueue) {
+                                    // move the same connection's request to the tail
+                                    LinkedList<Request> newQueue = new LinkedList<>();
+
+                                    for (int i = sendRequestQueue.size() - 1; i >= 0; i--) {
+                                        Request request1 = sendRequestQueue.get(i);
+                                        if (request1.getConnection().equals(request.getConnection())) {
+                                            newQueue.addFirst(request1);
+                                            sendRequestQueue.remove(i);
+                                        }
+                                    }
+                                    newQueue.addFirst(request);
+
+                                    sendRequestQueue.addAll(newQueue);
+                                }
+                                Thread.sleep(10);
+                            }
+                        }
+                    } catch (InterruptedException e)
+                    {
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
     private Thread readHandle()
     {
         return new Thread(new Runnable() {
@@ -124,8 +229,9 @@ public class Table {
                         while(!Thread.interrupted())
                         {   
                             connection = connections.poll();
-                            if (connection != null)
+                            if (connection != null) {
                                 connection.connect();
+                            }
                             else
                                 break;
                         }
@@ -188,6 +294,16 @@ public class Table {
 
     /**
      * Build a send TCP package
+     * @param request
+     * @return
+     */
+    public static ByteBuffer buildData(Request request)
+    {
+        return buildData(request.getAck(), request.getVersion(), request.getProtocol(), request.getRaw());
+    }
+
+    /**
+     * Build a send TCP package
      * @param ack
      * @param version
      * @param protocol
@@ -211,6 +327,28 @@ public class Table {
         return buffer;
     }
 
+    public void send(Request request) {
+
+        synchronized (sendRequestQueue)
+        {
+            sendRequestQueue.add(request);
+            sendRequestQueue.notify();
+        }
+    }
+
+    void removeSendRequest(Connection connection)
+    {
+        synchronized (sendRequestQueue)
+        {
+            for (int i = sendRequestQueue.size() - 1; i >= 0; i--) {
+                Request request = sendRequestQueue.get(i);
+                if (request.getConnection().equals(connection)) {
+                    sendRequestQueue.remove(i);
+                }
+            }
+            sendRequestQueue.notify();
+        }
+    }
 
     public interface IListener {
         void onSuccess(Response response);
