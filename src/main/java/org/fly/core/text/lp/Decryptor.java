@@ -42,6 +42,7 @@ public class Decryptor {
             return rsa.privateDecrypt(key);
         } catch (Exception e)
         {
+            e.printStackTrace();
             return null;
         }
     }

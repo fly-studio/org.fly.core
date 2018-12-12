@@ -41,7 +41,7 @@ public class Table {
 
         } catch (IOException e)
         {
-
+            e.printStackTrace();
         }
     }
 

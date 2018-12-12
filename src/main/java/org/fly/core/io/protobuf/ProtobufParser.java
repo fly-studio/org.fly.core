@@ -17,6 +17,7 @@ public class ProtobufParser <T extends Message> {
 
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e)
         {
+            e.printStackTrace();
         }
     }
 

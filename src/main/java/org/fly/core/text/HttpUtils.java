@@ -61,7 +61,7 @@ public class HttpUtils {
                 loadMimeTypes(MIME_TYPES, "META-INF/nanohttpd/mimetypes.properties");
             } catch (IOException e)
             {
-
+                e.printStackTrace();
             }
         }
         return MIME_TYPES;

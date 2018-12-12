@@ -39,6 +39,7 @@ public class Jacksonable implements AbstractJsonable {
                     return objectMapper.readValue(json, new TypeReference<Map<String, T>>(){});
                 } catch (IOException e)
                 {
+                    e.printStackTrace();
                     return null;
                 }
             }
@@ -55,6 +56,7 @@ public class Jacksonable implements AbstractJsonable {
                     return objectMapper.readValue(json, new TypeReference<List<Map<String, T>>>(){});
                 } catch (IOException e)
                 {
+                    e.printStackTrace();
                     return null;
                 }
             }
@@ -71,6 +73,7 @@ public class Jacksonable implements AbstractJsonable {
                     return objectMapper.readValue(json, new TypeReference<List<T>>(){});
                 } catch (IOException e)
                 {
+                    e.printStackTrace();
                     return null;
                 }
             }
@@ -117,7 +120,7 @@ public class Jacksonable implements AbstractJsonable {
             return objectMapper.writeValueAsString(this);
         } catch (JsonProcessingException e)
         {
-
+            e.printStackTrace();
         }
         return null;
     }

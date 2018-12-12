@@ -318,7 +318,7 @@ public class Connection {
 
         if (tcpPackage.isComplete())
         {
-
+            System.out.print("Package complete.");
             callback(tcpPackage);
 
             tcpPackage = null;

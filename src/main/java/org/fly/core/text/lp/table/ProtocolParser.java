@@ -47,6 +47,7 @@ public class ProtocolParser<T extends Message> {
 
         } catch (Exception e)
         {
+            e.printStackTrace();
             return null;
         }
     }
