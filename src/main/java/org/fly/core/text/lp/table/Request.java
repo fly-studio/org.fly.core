@@ -10,6 +10,7 @@ public class Request {
     private int protocol;
     private byte[] raw;
     private long timeout;
+    private Connection connection;
 
     public Request(int version, int protocol, byte[] raw, long timeout)
     {
@@ -21,6 +22,14 @@ public class Request {
 
     public void setAck(int ack) {
         this.ack = ack;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 
     public int getAck() {

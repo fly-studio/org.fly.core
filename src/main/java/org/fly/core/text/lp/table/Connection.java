@@ -3,8 +3,6 @@ package org.fly.core.text.lp.table;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Message;
 import com.sun.istack.NotNull;
-import com.sun.istack.Nullable;
-
 import org.apache.commons.codec.binary.StringUtils;
 import org.fly.core.io.buffer.ByteBufferPool;
 import org.fly.core.io.buffer.IoBuffer;
@@ -15,10 +13,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeoutException;
 
@@ -28,14 +24,13 @@ public class Connection {
     private int ACK = 0;
     private Package tcpPackage = null;
     private Decryptor decryptor = new Decryptor();
-    private Selector selector;
+    private Table table;
     private String host;
     private int port;
     private SocketChannel channel;
     private boolean connected = false;
-    private Timer timer = new Timer();
+    private Timer timer;
     private Table.IConnectionListener connectionListener;
-    private ConcurrentLinkedQueue<ByteBuffer> sendDataQueue = new ConcurrentLinkedQueue<>();
     private Map<Integer, ProtocolParser> protocolParsers = new HashMap<>();
     private Map<Integer, RunningRequest> runningRequests = new HashMap<>();
     private Map<Integer, Table.IListener> globalListeners = new HashMap<>();
@@ -43,13 +38,11 @@ public class Connection {
 
     private IoBuffer session = IoBuffer.allocateDirect(ByteBufferPool.BUFFER_SIZE);
 
-    public Connection(Selector selector, String host, int port) throws IOException {
+    public Connection(Table table, String host, int port) throws IOException {
         this.host = host;
         this.port = port;
-        this.selector = selector;
-
-        channel = SocketChannel.open();
-        channel.configureBlocking(false);
+        this.table = table;
+        this.timer = table.getTimer();
 
         sendEncryptedKey();
     }
@@ -57,8 +50,17 @@ public class Connection {
     public void connect() throws IOException
     {
         InetSocketAddress address = new InetSocketAddress(host, port);
-        channel.register(selector, SelectionKey.OP_CONNECT, this);
+
+        channel = SocketChannel.open();
+        channel.configureBlocking(false);
+        channel.register(table.getSelector(), SelectionKey.OP_CONNECT, this);
         channel.connect(address);
+    }
+
+    public void reconnect() throws IOException
+    {
+        close();
+        connect();
     }
 
     public boolean isConnected() {
@@ -68,6 +70,10 @@ public class Connection {
     public void setConnectionListener(Table.IConnectionListener connectionListener)
     {
         this.connectionListener = connectionListener;
+    }
+
+    public SocketChannel getChannel() {
+        return channel;
     }
 
     public int generateAck()
@@ -80,16 +86,15 @@ public class Connection {
 
     public <T extends Message> void registerProtocolParser(int protocol, Class<T> clazz)
     {
-        protocolParsers.put(protocol, new ProtocolParser(clazz, decryptor));
+        protocolParsers.put(protocol, new ProtocolParser<>(clazz, decryptor));
     }
 
     public void close()
     {
         try {
             connected = false;
-            if (null != timer)
-                timer.cancel();
-            timer = null;
+
+            table.removeSendRequest(this);
 
             if (null != countDownLatch)
                 countDownLatch.countDown();
@@ -148,6 +153,7 @@ public class Connection {
     {
         int ack = generateAck();
         request.setAck(ack);
+        request.setConnection(this);
 
         if (callback != null)
         {
@@ -190,6 +196,8 @@ public class Connection {
                 countDownLatch.countDown();
 
                 result.add(e);
+
+                onError(e);
             }
         });
 
@@ -233,32 +241,9 @@ public class Connection {
         );
     }
 
-    public void doSend(@Nullable Request request)
+    public void doSend(Request request)
     {
-        try {
-            if (null != request)
-            {
-                ByteBuffer buffer = Table.buildData(request.getAck(), request.getVersion(), request.getProtocol(), request.getRaw());
-
-                buffer.flip();
-                sendDataQueue.add(buffer);
-            }
-
-            while(isConnected())
-            {
-                ByteBuffer buffer = sendDataQueue.poll();
-                if (buffer != null)
-                {
-                    while (buffer.hasRemaining())
-                        channel.write(buffer);
-                } else
-                    break;
-            }
-        } catch (IOException e)
-        {
-            onDisconnected(e);
-        }
-
+        table.send(request);
     }
 
     public void onConnected() {
@@ -267,8 +252,6 @@ public class Connection {
         if (null != connectionListener) {
             connectionListener.onConnected();
         }
-
-        doSend(null);
     }
 
     public void onRecv(ByteBuffer byteBuffer) {
@@ -359,12 +342,16 @@ public class Connection {
         }
     }
 
+    public void onError(Throwable e) {
+
+
+    }
+
     public class RunningRequest
     {
         private TimerTask task = null;
         private Request request;
         private Table.IListener listener;
-        private CountDownLatch countDownLatch;
 
         public RunningRequest(@NotNull Request request, @NotNull Table.IListener listener) {
             this.request = request;
