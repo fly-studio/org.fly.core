@@ -62,7 +62,7 @@ public class RunningRequest
             task = connection.getTable().getTimers().schedule(connection, new Consumer<Connection>() {
                 @Override
                 public void accept(Connection connection) {
-                    callFail(new SocketTimeoutException("Table waited for receiving timeout"));
+                    callFail(new SocketTimeoutException("Table receiving timeout."));
                 }
             }, responseTimeout);
 

@@ -155,7 +155,7 @@ public class Table {
                 @Override
                 public void accept(Connection connection1) {
                     if (!connection1.isConnected()){
-                        connection1.onError(new SocketTimeoutException("Connected timeout."));
+                        connection1.onError(new SocketTimeoutException("Connecting timeout."));
                     }
                 }
             }, connectionTimeout);

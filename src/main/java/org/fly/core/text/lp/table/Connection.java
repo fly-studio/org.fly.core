@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Connection {
     private static final String TAG = Connection.class.getSimpleName();
@@ -33,7 +34,7 @@ public class Connection {
     private long lastResponseTime = 0;
     private long lastRequestTime = 0;
     private SocketChannel channel;
-    private boolean connected = false;
+    private AtomicBoolean connected = new AtomicBoolean(false);
     private Table.IConnectionListener connectionListener;
     private Map<Integer, RunningRequest> runningRequests = new HashMap<>();
     private Map<Integer, Table.IListener> globalListeners = new HashMap<>();
@@ -45,18 +46,6 @@ public class Connection {
         this.host = host;
         this.port = port;
         this.table = table;
-
-        sendEncryptedKey();
-    }
-
-    void doConnect() throws IOException
-    {
-        InetSocketAddress address = new InetSocketAddress(host, port);
-
-        channel = SocketChannel.open();
-        channel.configureBlocking(false);
-        channel.register(table.getSelector(), SelectionKey.OP_CONNECT, this);
-        channel.connect(address);
     }
 
     public long getLastResponseTime() {
@@ -78,7 +67,7 @@ public class Connection {
     }
 
     public boolean isConnected() {
-        return connected;
+        return connected.get();
     }
 
     public void setConnectionListener(Table.IConnectionListener connectionListener)
@@ -98,11 +87,23 @@ public class Connection {
         return ACK;
     }
 
-    void doClose()
+    synchronized void doConnect() throws IOException
+    {
+        InetSocketAddress address = new InetSocketAddress(host, port);
+
+        channel = SocketChannel.open();
+        channel.configureBlocking(false);
+        channel.register(table.getSelector(), SelectionKey.OP_CONNECT, this);
+        channel.connect(address);
+
+        sendEncryptedKey();
+    }
+
+    synchronized void doClose()
     {
         try {
 
-            connected = false;
+            connected.set(false);
 
             table.getTimers().cancel(this);
             table.removeSendRequests(this);
@@ -163,7 +164,7 @@ public class Connection {
      * @param request
      * @param callback
      */
-    public void send(Request request, @NotNull final Table.IListener callback)
+    synchronized public void send(Request request, @NotNull final Table.IListener callback)
     {
         int ack = generateAck();
         request.setAck(ack);
@@ -253,15 +254,15 @@ public class Connection {
         runningRequests.remove(ack);
     }
 
-    public void onConnected() {
-        connected = true;
+    synchronized public void onConnected() {
+        connected.set(true);
 
         if (null != connectionListener) {
             connectionListener.onConnected();
         }
     }
 
-    public void onDisconnected(Throwable e) {
+    synchronized public void onDisconnected(Throwable e) {
         doClose();
 
         if (null != connectionListener) {
@@ -269,13 +270,13 @@ public class Connection {
         }
     }
 
-    public void onError(Throwable e) {
+    synchronized public void onError(Throwable e) {
         if (null != connectionListener) {
             connectionListener.onError(e);
         }
     }
 
-    public void onRecv(ByteBuffer byteBuffer) {
+    synchronized public void onRecv(ByteBuffer byteBuffer) {
         if (byteBuffer.remaining() > session.remaining()) {
 
             int delta = (int)Math.ceil((double)byteBuffer.remaining() / (double)session.capacity());
