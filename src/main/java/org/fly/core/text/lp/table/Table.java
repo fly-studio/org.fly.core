@@ -4,6 +4,7 @@ import com.sun.istack.Nullable;
 
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.codec.net.URLCodec;
+import org.fly.core.function.Consumer;
 import org.fly.core.io.buffer.BufferUtils;
 import org.fly.core.io.buffer.ByteBufferPool;
 import org.fly.core.text.encrytor.Encryption;
@@ -18,8 +19,6 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Table {
@@ -34,14 +33,15 @@ public class Table {
     });
 
     private ConcurrentLinkedQueue<Connection> connections = new ConcurrentLinkedQueue<>();
-    private final LinkedList<Request> sendRequestQueue = new LinkedList<>();
+    private final LinkedList<RunningRequest> sendRequestQueue = new LinkedList<>();
 
     private Selector selector;
-    private Timer timer = new Timer();
+    private Timers timers = new Timers();
     private Thread recvThread;
     private Thread sendThread;
-    private long connectionTimeout = 5000;
-    private long reponseTimeout = 5000;
+    private long connectionTimeout = 5_000;
+    private long responseTimeout = 5_000;
+    private long idleTimeout = 60_000;
 
     public Table() {
         try {
@@ -59,21 +59,24 @@ public class Table {
         }
     }
 
-
     public Selector getSelector() {
         return selector;
     }
 
-    public Timer getTimer() {
-        return timer;
+    public Timers getTimers() {
+        return timers;
     }
 
     public long getConnectionTimeout() {
         return connectionTimeout;
     }
 
-    public long getReponseTimeout() {
-        return reponseTimeout;
+    public long getResponseTimeout() {
+        return responseTimeout;
+    }
+
+    public long getIdleTimeout() {
+        return idleTimeout;
     }
 
     public Table setConnectionTimeout(long connectionTimeout) {
@@ -81,8 +84,13 @@ public class Table {
         return this;
     }
 
-    public Table setReponseTimeout(long reponseTimeout) {
-        this.reponseTimeout = reponseTimeout;
+    public Table setResponseTimeout(long responseTimeout) {
+        this.responseTimeout = responseTimeout;
+        return this;
+    }
+
+    public Table setIdleTimeout(long idleTimeout) {
+        this.idleTimeout = idleTimeout;
         return this;
     }
 
@@ -113,43 +121,72 @@ public class Table {
         }
     }
 
-    public Connection connect(String host, int port) throws IOException
+    public Connection buildConnection(String host, int port)
     {
-        final Connection connection = new Connection(this, host, port);
+        return new Connection(this, host, port);
+    }
 
+    public void connect(final Connection connection)
+    {
         connections.add(connection);
 
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (!connection.isConnected()){
-                    connection.onError(new SocketTimeoutException("Connect timeout."));
+        //Idle timer
+        if (idleTimeout > 0)
+        {
+            timers.schedule(connection, new Consumer<Connection>() {
+                @Override
+                public void accept(Connection connection1) {
+                    long time = System.currentTimeMillis();
+                    if (connection1.isConnected()
+                            && time - connection1.getLastResponseTime() > idleTimeout
+                            && time - connection1.getLastRequestTime() > idleTimeout
+                            )
+                    {
+                        connection1.onError(new SocketTimeoutException("Idle timeout."));
+                    }
                 }
-            }
-        }, connectionTimeout);
+            }, idleTimeout, idleTimeout);
+        }
+
+        //connecting timer
+        if (connectionTimeout > 0)
+        {
+            timers.schedule(connection, new Consumer<Connection>() {
+                @Override
+                public void accept(Connection connection1) {
+                    if (!connection1.isConnected()){
+                        connection1.onError(new SocketTimeoutException("Connected timeout."));
+                    }
+                }
+            }, connectionTimeout);
+        }
 
         selector.wakeup();
+    }
 
-        return connection;
+    public void reconnect(Connection connection)
+    {
+        close(connection);
+        connect(connection);
     }
 
     public void close(Connection connection)
     {
-        connection.close();
+        connection.doClose();
     }
 
     public void shutdown()
     {
         recvThread.interrupt();
         sendThread.interrupt();
-        timer.cancel();
+        timers.cancel();
 
         for (SelectionKey key :selector.keys()
              ) {
             Connection connection = (Connection)key.attachment();
 
             if (connection.isConnected())
-                connection.close();
+                connection.doClose();
         }
 
         try {
@@ -162,6 +199,7 @@ public class Table {
 
     }
 
+    // Send to server
     private Thread writeHandle() {
         return new Thread(new Runnable() {
             @Override
@@ -169,42 +207,46 @@ public class Table {
                 while (!Thread.interrupted())
                 {
                     try {
-                        Request request;
+                        RunningRequest runningRequest;
                         synchronized (sendRequestQueue) {
 
                             while (sendRequestQueue.isEmpty())
                                 sendRequestQueue.wait();
 
-                            request = sendRequestQueue.poll();
+                            runningRequest = sendRequestQueue.poll();
                         }
-                        if (request != null)
+                        if (runningRequest != null)
                         {
-                            if (request.getConnection().isConnected())
+                            if (runningRequest.isConnected())
                             {
-                                ByteBuffer buffer = buildData(request);
+                                ByteBuffer buffer = buildData(runningRequest.getRequest());
 
                                 buffer.flip();
                                 try
                                 {
                                     while (buffer.hasRemaining())
-                                        request.getConnection().getChannel().write(buffer);
+                                        runningRequest.writeChannel(buffer);
+
+                                    runningRequest.getConnection().touchRequestTime();
+                                    runningRequest.startTimer(responseTimeout);
+
                                 } catch (IOException e)
                                 {
-                                    request.getConnection().onDisconnected(e);
+                                    runningRequest.getConnection().onDisconnected(e);
                                 }
                             } else {
                                 synchronized (sendRequestQueue) {
                                     // move the same connection's request to the tail
-                                    LinkedList<Request> newQueue = new LinkedList<>();
+                                    LinkedList<RunningRequest> newQueue = new LinkedList<>();
 
                                     for (int i = sendRequestQueue.size() - 1; i >= 0; i--) {
-                                        Request request1 = sendRequestQueue.get(i);
-                                        if (request1.getConnection().equals(request.getConnection())) {
+                                        RunningRequest request1 = sendRequestQueue.get(i);
+                                        if (request1.getConnection().equals(runningRequest.getConnection())) {
                                             newQueue.addFirst(request1);
                                             sendRequestQueue.remove(i);
                                         }
                                     }
-                                    newQueue.addFirst(request);
+                                    newQueue.addFirst(runningRequest);
 
                                     sendRequestQueue.addAll(newQueue);
                                 }
@@ -220,6 +262,7 @@ public class Table {
         });
     }
 
+    // Receive
     private Thread readHandle()
     {
         return new Thread(new Runnable() {
@@ -231,11 +274,17 @@ public class Table {
                 while(!Thread.interrupted()) {
                     try {
 
+                        // connecting
                         while(!Thread.interrupted())
-                        {   
+                        {
                             connection = connections.poll();
                             if (connection != null) {
-                                connection.connect();
+                                try {
+                                    connection.doConnect();
+                                } catch (IOException e)
+                                {
+                                    connection.onError(e);
+                                }
                             }
                             else
                                 break;
@@ -255,7 +304,6 @@ public class Table {
                         while (keyIterator.hasNext() && !Thread.interrupted()) {
                             SelectionKey key = keyIterator.next();
                             connection = (Connection) key.attachment();
-
 
                             if (key.isValid()) {
                                 keyIterator.remove();
@@ -288,8 +336,9 @@ public class Table {
                         connection = null;
 
                     } catch (IOException | ConnectionPendingException e) {
-                        if (null != connection)
+                        if (null != connection) {
                             connection.onDisconnected(e);
+                        }
                     }
                 }
             }
@@ -332,22 +381,22 @@ public class Table {
         return buffer;
     }
 
-    public void send(Request request) {
+    public void send(RunningRequest runningRequest) {
 
         synchronized (sendRequestQueue)
         {
-            sendRequestQueue.add(request);
+            sendRequestQueue.add(runningRequest);
             sendRequestQueue.notify();
         }
     }
 
-    void removeSendRequest(Connection connection)
+    void removeSendRequests(Connection connection)
     {
         synchronized (sendRequestQueue)
         {
             for (int i = sendRequestQueue.size() - 1; i >= 0; i--) {
-                Request request = sendRequestQueue.get(i);
-                if (request.getConnection().equals(connection)) {
+                RunningRequest runningRequest = sendRequestQueue.get(i);
+                if (runningRequest.getConnection().equals(connection)) {
                     sendRequestQueue.remove(i);
                 }
             }
@@ -356,13 +405,14 @@ public class Table {
     }
 
     public interface IListener {
-        void onSuccess(Response response);
+        void onResponse(Response response);
         void onFail(Request request, Throwable e);
     }
 
     public interface IConnectionListener {
         void onConnected();
         void onDisconnected(Throwable e);
+        void onError(Throwable e);
     }
 
 }

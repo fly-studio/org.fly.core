@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeoutException;
 
@@ -32,9 +30,10 @@ public class Connection {
     private Table table;
     private String host;
     private int port;
+    private long lastResponseTime = 0;
+    private long lastRequestTime = 0;
     private SocketChannel channel;
     private boolean connected = false;
-    private Timer timer;
     private Table.IConnectionListener connectionListener;
     private Map<Integer, RunningRequest> runningRequests = new HashMap<>();
     private Map<Integer, Table.IListener> globalListeners = new HashMap<>();
@@ -42,16 +41,15 @@ public class Connection {
 
     private IoBuffer session = IoBuffer.allocateDirect(ByteBufferPool.BUFFER_SIZE);
 
-    public Connection(Table table, String host, int port) throws IOException {
+    public Connection(Table table, String host, int port) {
         this.host = host;
         this.port = port;
         this.table = table;
-        this.timer = table.getTimer();
 
         sendEncryptedKey();
     }
 
-    public void connect() throws IOException
+    void doConnect() throws IOException
     {
         InetSocketAddress address = new InetSocketAddress(host, port);
 
@@ -61,10 +59,22 @@ public class Connection {
         channel.connect(address);
     }
 
-    public void reconnect() throws IOException
+    public long getLastResponseTime() {
+        return lastResponseTime;
+    }
+
+    public long getLastRequestTime() {
+        return lastRequestTime;
+    }
+
+    public void touchResponseTime()
     {
-        close();
-        connect();
+        lastResponseTime = System.currentTimeMillis();
+    }
+
+    public void touchRequestTime()
+    {
+        lastRequestTime = System.currentTimeMillis();
     }
 
     public boolean isConnected() {
@@ -88,18 +98,23 @@ public class Connection {
         return ACK;
     }
 
-    public void close()
+    void doClose()
     {
         try {
+
             connected = false;
 
-            table.removeSendRequest(this);
+            table.getTimers().cancel(this);
+            table.removeSendRequests(this);
 
             if (null != countDownLatch)
                 countDownLatch.countDown();
             countDownLatch = null;
 
-            channel.close();
+            if (null != channel)
+                channel.close();
+
+            channel = null;
 
         } catch (IOException e)
         {
@@ -154,16 +169,10 @@ public class Connection {
         request.setAck(ack);
         request.setConnection(this);
 
-        if (callback != null)
-        {
-            RunningRequest runningRequest = new RunningRequest(request, callback);
-            runningRequests.put(ack, runningRequest);
-        } else {
-            runningRequests.remove(ack);
+        RunningRequest runningRequest = new RunningRequest(this, request, callback);
+        runningRequests.put(ack, runningRequest);
 
-        }
-
-        doSend(request);
+        table.send(runningRequest);
     }
 
     /**
@@ -184,7 +193,7 @@ public class Connection {
 
         send(request, new Table.IListener() {
             @Override
-            public void onSuccess(Response response) {
+            public void onResponse(Response response) {
                 countDownLatch.countDown();
 
                 result.add(response);
@@ -240,9 +249,8 @@ public class Connection {
         );
     }
 
-    public void doSend(Request request)
-    {
-        table.send(request);
+    public void removeRunningRequest(int ack) {
+        runningRequests.remove(ack);
     }
 
     public void onConnected() {
@@ -250,6 +258,20 @@ public class Connection {
 
         if (null != connectionListener) {
             connectionListener.onConnected();
+        }
+    }
+
+    public void onDisconnected(Throwable e) {
+        doClose();
+
+        if (null != connectionListener) {
+            connectionListener.onDisconnected(e);
+        }
+    }
+
+    public void onError(Throwable e) {
+        if (null != connectionListener) {
+            connectionListener.onError(e);
         }
     }
 
@@ -264,16 +286,9 @@ public class Connection {
 
         session.put(byteBuffer);
 
+        touchResponseTime();
+
         updateSession(session);
-    }
-
-    public void onDisconnected(Throwable e) {
-        close();
-
-        if (null != connectionListener) {
-            connectionListener.onDisconnected(e);
-        }
-
     }
 
     // 接近粘包，分包问题
@@ -326,7 +341,7 @@ public class Connection {
 
             if (globalListeners.containsKey(protocol))
             {
-                globalListeners.get(protocol).onSuccess(response);
+                globalListeners.get(protocol).onResponse(response);
             }
 
         } catch (Exception e)
@@ -335,67 +350,7 @@ public class Connection {
         }
     }
 
-    public void onError(Throwable e) {
-
-
+    public Table getTable() {
+        return table;
     }
-
-    public class RunningRequest
-    {
-        private TimerTask task = null;
-        private Request request;
-        private Table.IListener listener;
-
-        public RunningRequest(@NotNull Request request, @NotNull Table.IListener listener) {
-            this.request = request;
-            this.listener = listener;
-            startTimer();
-        }
-
-        private void callSuccess(Response response)
-        {
-            cancel();
-
-            if (null != listener) {
-                listener.onSuccess(response);
-            }
-        }
-
-        private void callFail(Throwable e)
-        {
-            cancel();
-
-            if (null != listener) {
-                listener.onFail(request, e);
-            }
-        }
-
-        private void startTimer()
-        {
-            if (request.getTimeout() > 0)
-            {
-                task = new TimerTask() {
-                    @Override
-                    public void run() {
-                        callFail(new TimeoutException("Table waited for receiving timeout"));
-                    }
-                };
-                timer.schedule(task, request.getTimeout());
-            }
-        }
-
-        public void cancel()
-        {
-            if (null != task)
-                task.cancel();
-
-            task = null;
-
-            runningRequests.remove(request.getAck());
-
-        }
-
-    }
-
-
 }

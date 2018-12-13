@@ -9,15 +9,13 @@ public class Request {
     private int version;
     private int protocol;
     private byte[] raw;
-    private long timeout;
     private Connection connection;
 
-    public Request(int version, int protocol, byte[] raw, long timeout)
+    public Request(int version, int protocol, byte[] raw)
     {
         this.version = version;
         this.protocol = protocol;
         this.raw = raw;
-        this.timeout = timeout;
     }
 
     public void setAck(int ack) {
@@ -48,20 +46,10 @@ public class Request {
         return raw;
     }
 
-    public long getTimeout() {
-        return timeout;
-    }
-
     public static class Builder {
         private int version = 0;
         private int protocol = 0;
-        private Message message = null;
         private byte[] raw = null;
-        private long timeout = 20 * 1000L;
-
-        public void setTimeout(long timeout) {
-            this.timeout = timeout;
-        }
 
         public Builder setVersion(int version) {
             this.version = version;
@@ -85,7 +73,7 @@ public class Request {
 
         public Request build()
         {
-            return new Request(version, protocol, raw, timeout);
+            return new Request(version, protocol, raw);
         }
     }
 }
