@@ -1,6 +1,8 @@
 package org.fly.core.text.regex;
 
-import java.util.regex.*;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CallbackMatcher {
     public interface Callback

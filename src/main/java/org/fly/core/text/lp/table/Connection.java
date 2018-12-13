@@ -1,8 +1,8 @@
 package org.fly.core.text.lp.table;
 
 import com.google.protobuf.ByteString;
-import com.google.protobuf.Message;
 import com.sun.istack.NotNull;
+
 import org.apache.commons.codec.binary.StringUtils;
 import org.fly.core.io.buffer.ByteBufferPool;
 import org.fly.core.io.buffer.IoBuffer;
@@ -14,7 +14,12 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeoutException;
 
@@ -31,7 +36,6 @@ public class Connection {
     private boolean connected = false;
     private Timer timer;
     private Table.IConnectionListener connectionListener;
-    private Map<Integer, ProtocolParser> protocolParsers = new HashMap<>();
     private Map<Integer, RunningRequest> runningRequests = new HashMap<>();
     private Map<Integer, Table.IListener> globalListeners = new HashMap<>();
     private CountDownLatch countDownLatch;
@@ -82,11 +86,6 @@ public class Connection {
             ACK = ACK & 0xFFFF;
 
         return ACK;
-    }
-
-    public <T extends Message> void registerProtocolParser(int protocol, Class<T> clazz)
-    {
-        protocolParsers.put(protocol, new ProtocolParser<>(clazz, decryptor));
     }
 
     public void close()
@@ -314,16 +313,10 @@ public class Connection {
 
             int ack = tcpPackage.getAck();
             int protocol = tcpPackage.getProtocol();
-            Message message = null;
-
-            if (protocolParsers.containsKey(protocol)) {
-                message = protocolParsers.get(protocol).parse(tcpPackage.getBuffer());
-                tcpPackage.getBuffer().position(0);
-            }
 
             Response response = new Response.Builder()
                     .setTcpPackage(tcpPackage)
-                    .setMessage(message)
+                    .setDecryptor(decryptor)
                     .build();
 
             if (runningRequests.containsKey(ack))

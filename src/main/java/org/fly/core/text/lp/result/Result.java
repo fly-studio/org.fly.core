@@ -1,6 +1,7 @@
 package org.fly.core.text.lp.result;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.fly.core.text.json.Jsonable;
 
 import java.util.Date;
