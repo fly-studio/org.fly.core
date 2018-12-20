@@ -7,6 +7,7 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.fly.core.io.buffer.ByteBufferPool;
 import org.fly.core.io.buffer.IoBuffer;
 import org.fly.core.io.network.client.ClientManager;
+import org.fly.core.io.network.result.ResultProto;
 import org.fly.core.text.encrytor.Decryptor;
 
 import java.io.IOException;
@@ -134,13 +135,15 @@ public abstract class BaseClient {
 
     public void sendEncryptedKey()
     {
-        org.fly.core.io.network.result.ResultProto.EncryptKey.Builder encryptBuilder = org.fly.core.io.network.result.ResultProto.EncryptKey.newBuilder();
+        ResultProto.EncryptKey.Builder encryptBuilder = ResultProto.EncryptKey.newBuilder();
 
         byte[] key = ClientManager.encodeString(
                 StringUtils.getBytesUsAscii(
                         decryptor.getPublicKey()
                 )
         );
+
+        System.out.print(key);
 
         encryptBuilder.setKey(
                 ByteString.copyFrom(key)

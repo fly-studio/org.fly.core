@@ -71,7 +71,6 @@ public class ClientManager extends BaseManager {
                         // connecting
                         while(!Thread.interrupted())
                         {
-                            System.out.println(Thread.currentThread().getName() + "  clients");
                             client = clients.poll();
                             if (client != null) {
                                 try {
