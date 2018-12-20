@@ -19,7 +19,7 @@ import java.util.Objects;
  *
  * <ul>
  * <li><a name="basic"><b>Basic</b></a>
- * <p> Uses "The Base64 Alphabet" as specified in Table 1 of
+ * <p> Uses "The Base64 Alphabet" as specified in ClientManager 1 of
  *     RFC 4648 and RFC 2045 for encoding and decoding operation.
  *     The encoder does not add any line feed (line separator)
  *     character. The decoder rejects data that contains characters
@@ -27,13 +27,13 @@ import java.util.Objects;
  *
  * <li><a name="url"><b>URL and Filename safe</b></a>
  * <p> Uses the "URL and Filename safe Base64 Alphabet" as specified
- *     in Table 2 of RFC 4648 for encoding and decoding. The
+ *     in ClientManager 2 of RFC 4648 for encoding and decoding. The
  *     encoder does not add any line feed (line separator) character.
  *     The decoder rejects data that contains characters outside the
  *     base64 alphabet.</p></li>
  *
  * <li><a name="mime"><b>MIME</b></a>
- * <p> Uses the "The Base64 Alphabet" as specified in Table 1 of
+ * <p> Uses the "The Base64 Alphabet" as specified in ClientManager 1 of
  *     RFC 2045 for encoding and decoding operation. The encoded output
  *     must be represented in lines of no more than 76 characters each
  *     and uses a carriage return {@code '\r'} followed immediately by
@@ -101,7 +101,7 @@ public class Base64 {
      * @return  A Base64 encoder.
      *
      * @throws  IllegalArgumentException if {@code lineSeparator} includes any
-     *          character of "The Base64 Alphabet" as specified in Table 1 of
+     *          character of "The Base64 Alphabet" as specified in ClientManager 1 of
      *          RFC 2045.
      */
     public static Encoder getMimeEncoder(int lineLength, byte[] lineSeparator) {
@@ -181,7 +181,7 @@ public class Base64 {
         /**
          * This array is a lookup table that translates 6-bit positive integer
          * index values into their "Base64 Alphabet" equivalents as specified
-         * in "Table 1: The Base64 Alphabet" of RFC 2045 (and RFC 4648).
+         * in "ClientManager 1: The Base64 Alphabet" of RFC 2045 (and RFC 4648).
          */
         private static final char[] toBase64 = {
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
@@ -193,7 +193,7 @@ public class Base64 {
 
         /**
          * It's the lookup table for "URL and Filename safe Base64" as specified
-         * in Table 2 of the RFC 4648, with the '+' and '/' changed to '-' and
+         * in ClientManager 2 of the RFC 4648, with the '+' and '/' changed to '-' and
          * '_'. This table is used when BASE64_URL is specified.
          */
         private static final char[] toBase64URL = {
@@ -453,7 +453,7 @@ public class Base64 {
 
         /**
          * Lookup table for decoding unicode characters drawn from the
-         * "Base64 Alphabet" (as specified in Table 1 of RFC 2045) into
+         * "Base64 Alphabet" (as specified in ClientManager 1 of RFC 2045) into
          * their 6-bit positive integer equivalents.  Characters that
          * are not in the Base64 alphabet but fall within the bounds of
          * the array are encoded to -1.

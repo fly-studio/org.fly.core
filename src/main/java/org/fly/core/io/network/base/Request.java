@@ -1,4 +1,4 @@
-package org.fly.core.text.lp.table;
+package org.fly.core.io.network.base;
 
 import com.google.protobuf.Message;
 
@@ -8,26 +8,26 @@ public class Request {
     private int ack = 0;
     private int version;
     private int protocol;
-    private byte[] raw;
-    private Connection connection;
+    private byte[] data;
+    private BaseClient client;
 
-    public Request(int version, int protocol, byte[] raw)
+    public Request(int version, int protocol, byte[] data)
     {
         this.version = version;
         this.protocol = protocol;
-        this.raw = raw;
+        this.data = data;
     }
 
     public void setAck(int ack) {
         this.ack = ack;
     }
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
+    public void setClient(BaseClient client) {
+        this.client = client;
     }
 
-    public Connection getConnection() {
-        return connection;
+    public BaseClient getClient() {
+        return client;
     }
 
     public int getAck() {
@@ -42,14 +42,18 @@ public class Request {
         return protocol;
     }
 
-    public byte[] getRaw() {
-        return raw;
+    public Package toPackage() {
+        return Package.build(getAck(), getVersion(), getProtocol(), getData());
+    }
+
+    public byte[] getData() {
+        return data;
     }
 
     public static class Builder {
         private int version = 0;
         private int protocol = 0;
-        private byte[] raw = null;
+        private byte[] data = null;
 
         public Builder setVersion(int version) {
             this.version = version;
@@ -61,19 +65,19 @@ public class Request {
             return this;
         }
 
-        public Builder setRaw(byte[] raw) {
-            this.raw = raw;
+        public Builder setData(byte[] data) {
+            this.data = data;
             return this;
         }
 
         public Builder setMessage(Message message) {
-            this.raw = message.toByteArray();
+            this.data = message.toByteArray();
             return this;
         }
 
         public Request build()
         {
-            return new Request(version, protocol, raw);
+            return new Request(version, protocol, data);
         }
     }
 }

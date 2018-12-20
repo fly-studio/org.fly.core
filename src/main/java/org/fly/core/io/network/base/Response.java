@@ -1,4 +1,4 @@
-package org.fly.core.text.lp.table;
+package org.fly.core.io.network.base;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -6,26 +6,30 @@ import com.google.protobuf.Message;
 
 import org.fly.core.io.buffer.IoBuffer;
 import org.fly.core.io.protobuf.ProtobufParser;
-import org.fly.core.text.lp.Decryptor;
-import org.fly.core.text.lp.result.ResultProto;
+import org.fly.core.text.encrytor.Decryptor;
 
 public class Response {
     private int ack;
     private int version;
     private int protocol;
-    private IoBuffer raw;
+    private IoBuffer data;
     private Decryptor decryptor;
 
-    public Response(int ack, int version, int protocol, IoBuffer raw) {
-        this(ack, version, protocol, raw, null);
+    public Response(int ack, int version, int protocol, IoBuffer data) {
+        this(ack, version, protocol, data, null);
     }
 
-    public Response(int ack, int version, int protocol, IoBuffer raw, Decryptor decryptor) {
+    public Response(int ack, int version, int protocol, IoBuffer data, Decryptor decryptor) {
         this.ack = ack;
         this.version = version;
         this.protocol = protocol;
-        this.raw = raw;
+        this.data = data;
         this.decryptor = decryptor;
+    }
+
+    public Response setDecryptor(Decryptor decryptor) {
+        this.decryptor = decryptor;
+        return this;
     }
 
     public int getAck() {
@@ -40,8 +44,8 @@ public class Response {
         return protocol;
     }
 
-    public IoBuffer getRaw() {
-        return raw;
+    public IoBuffer getData() {
+        return data;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -50,12 +54,12 @@ public class Response {
         try {
 
             T message = new ProtobufParser<>(clazz)
-                    .deserialize(raw.duplicate());
+                    .deserialize(data.duplicate());
 
-            if (null != decryptor && message instanceof ResultProto.Output)
+            if (null != decryptor && message instanceof org.fly.core.io.network.result.ResultProto.Output)
             {
                 // Decode
-                ResultProto.Output output = ((ResultProto.Output) message);
+                org.fly.core.io.network.result.ResultProto.Output output = ((org.fly.core.io.network.result.ResultProto.Output) message);
 
                 if (!output.getEncrypted().isEmpty())
                 {
@@ -94,7 +98,9 @@ public class Response {
 
         public Response build()
         {
-            return new Response(tcpPackage.getAck(), tcpPackage.getVersion(), tcpPackage.getProtocol(), tcpPackage.getBuffer(), decryptor);
+            Response response = new Response(tcpPackage.getAck(), tcpPackage.getVersion(), tcpPackage.getProtocol(), tcpPackage.getBuffer());
+            response.setDecryptor(decryptor);
+            return response;
         }
     }
 }

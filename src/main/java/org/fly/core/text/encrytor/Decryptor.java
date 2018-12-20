@@ -1,9 +1,7 @@
-package org.fly.core.text.lp;
+package org.fly.core.text.encrytor;
 
 import org.apache.commons.codec.binary.StringUtils;
-import org.fly.core.text.encrytor.Encryption;
 import org.fly.core.text.json.Jsonable;
-import org.fly.core.text.lp.result.EncryptKey;
 
 public class Decryptor {
 
@@ -67,7 +65,7 @@ public class Decryptor {
 
             byte[] keyBytes = rsa.privateDecrypt(encrypted);
 
-            EncryptKey encryptKey = Jsonable.fromJson(EncryptKey.class, keyBytes);
+            org.fly.core.io.network.result.EncryptKey encryptKey = Jsonable.fromJson(org.fly.core.io.network.result.EncryptKey.class, keyBytes);
 
             Encryption.AES aes = new Encryption.AES(
                 Encryption.Base64.decode(encryptKey.key),

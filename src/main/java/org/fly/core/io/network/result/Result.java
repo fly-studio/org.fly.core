@@ -1,11 +1,13 @@
-package org.fly.core.text.lp.result;
+package org.fly.core.io.network.result;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.fly.core.annotation.NotProguard;
 import org.fly.core.text.json.Jsonable;
 
 import java.util.Date;
 
+@NotProguard
 public class Result extends Jsonable
 {
     public enum RESULT {

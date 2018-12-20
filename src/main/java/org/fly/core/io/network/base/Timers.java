@@ -1,4 +1,4 @@
-package org.fly.core.text.lp.table;
+package org.fly.core.io.network.base;
 
 import org.fly.core.function.Consumer;
 
@@ -10,9 +10,9 @@ public class Timers {
     private final List<TimerTask> timerTaskList = new ArrayList<>();
     private Timer timer = new Timer();
 
-    public TimerTask schedule(Connection connection, Consumer<Connection> callback, long delay)
+    public TimerTask schedule(BaseClient client, Consumer<BaseClient> callback, long delay)
     {
-        TimerTask timerTask = new TimerTask(connection, callback);
+        TimerTask timerTask = new TimerTask(client, callback);
 
         synchronized (timerTaskList) {
             timerTaskList.add(timerTask);
@@ -23,9 +23,9 @@ public class Timers {
         return timerTask;
     }
 
-    public TimerTask schedule(Connection connection, Consumer<Connection> callback, long delay, long loopDelay)
+    public TimerTask schedule(BaseClient client, Consumer<BaseClient> callback, long delay, long loopDelay)
     {
-        TimerTask timerTask = new TimerTask(connection, callback);
+        TimerTask timerTask = new TimerTask(client, callback);
         synchronized (timerTaskList) {
             timerTaskList.add(timerTask);
         }
@@ -34,13 +34,13 @@ public class Timers {
         return timerTask;
     }
 
-    public void cancel(Connection connection)
+    public void cancel(BaseClient client)
     {
         synchronized (timerTaskList) {
             for (int i = timerTaskList.size() - 1; i >= 0; i--) {
                 TimerTask task = timerTaskList.get(i);
 
-                if (task.getConnection().equals(connection)) {
+                if (task.getClient().equals(client)) {
                     task.cancel();
                     timerTaskList.remove(i);
                 }
@@ -61,21 +61,21 @@ public class Timers {
 
     private static class TimerTask extends java.util.TimerTask {
 
-        private Connection connection;
-        private Consumer<Connection> callback;
+        private BaseClient client;
+        private Consumer<BaseClient> callback;
 
-        public TimerTask(Connection connection, Consumer<Connection> callback) {
-            this.connection = connection;
+        public TimerTask(BaseClient client, Consumer<BaseClient> callback) {
+            this.client = client;
             this.callback = callback;
         }
 
-        public Connection getConnection() {
-            return connection;
+        public BaseClient getClient() {
+            return client;
         }
 
         @Override
         public void run() {
-            callback.accept(connection);
+            callback.accept(client);
         }
     }
 }

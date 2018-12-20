@@ -1,4 +1,4 @@
-package org.fly.core.text.lp.table;
+package org.fly.core.io.network.base;
 
 import com.sun.istack.NotNull;
 
@@ -11,14 +11,14 @@ import java.util.TimerTask;
 
 public class RunningRequest
 {
-    private Connection connection;
+    private BaseClient client;
     private TimerTask task = null;
     private Request request;
-    private Table.IListener listener;
+    private IListener listener;
     private boolean replied = false;
 
-    public RunningRequest(Connection connection, @NotNull Request request, @NotNull Table.IListener listener) {
-        this.connection = connection;
+    public RunningRequest(BaseClient client, @NotNull Request request, @NotNull IListener listener) {
+        this.client = client;
         this.request = request;
         this.listener = listener;
     }
@@ -59,10 +59,10 @@ public class RunningRequest
     {
         if (responseTimeout > 0 && listener != null)
         {
-            task = connection.getTable().getTimers().schedule(connection, new Consumer<Connection>() {
+            task = client.getManager().getTimers().schedule(client, new Consumer<BaseClient>() {
                 @Override
-                public void accept(Connection connection) {
-                    callFail(new SocketTimeoutException("Table receiving timeout."));
+                public void accept(BaseClient connection) {
+                    callFail(new SocketTimeoutException("ClientManager receiving timeout."));
                 }
             }, responseTimeout);
 
@@ -78,18 +78,18 @@ public class RunningRequest
 
         setReplied(false);
 
-        connection.removeRunningRequest(request.getAck());
+        client.removeRunningRequest(request.getAck());
     }
 
     public boolean isConnected() {
-        return connection.isConnected();
+        return client.isConnected();
     }
 
     public int writeChannel(ByteBuffer buffer) throws IOException {
-        return connection.getChannel().write(buffer);
+        return client.getChannel().write(buffer);
     }
 
-    public Connection getConnection() {
-        return connection;
+    public BaseClient getClient() {
+        return client;
     }
 }
