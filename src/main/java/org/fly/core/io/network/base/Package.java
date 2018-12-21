@@ -65,7 +65,8 @@ public class Package {
 
     public void append(byte[] data)
     {
-        append(IoBuffer.wrap(data));
+        if (data != null)
+            append(IoBuffer.wrap(data));
     }
 
     public void append(IoBuffer data)
