@@ -22,9 +22,9 @@ import java.util.Map;
 public class LRUCache<K, V> extends LinkedHashMap<K, V>
 {
     private int maxSize;
-    private CleanupCallback callback;
+    private CleanupCallback<K, V> callback;
 
-    public LRUCache(int maxSize, CleanupCallback callback)
+    public LRUCache(int maxSize, CleanupCallback<K, V> callback)
     {
         super(maxSize + 1, 1, true);
 
@@ -43,8 +43,8 @@ public class LRUCache<K, V> extends LinkedHashMap<K, V>
         return false;
     }
 
-    public static interface CleanupCallback<K, V>
+    public interface CleanupCallback<K, V>
     {
-        public void cleanup(Map.Entry<K, V> eldest);
+        void cleanup(Map.Entry<K, V> eldest);
     }
 }

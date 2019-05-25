@@ -14,12 +14,12 @@ repositories {
     maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {
-    compile group: 'com.sun.istack', name: 'istack-commons-runtime', version:'3.0.5'
-    compile group: 'com.squareup.okio', name: 'okio', version:'1.15.0'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.9.8'
-    compile group: 'commons-codec', name: 'commons-codec', version: '1.11'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
-    compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.6.1'
+    compile group: 'com.sun.istack', name: 'istack-commons-runtime', version:'3.0.8'
+    compile group: 'com.squareup.okio', name: 'okio', version:'2.2.2'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.9.9'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.12'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.7.1'
 }
 
 tasks.withType(JavaCompile) {
