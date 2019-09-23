@@ -12,6 +12,7 @@ import org.fly.core.contract.AbstractJsonable;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -57,12 +58,17 @@ public class Jacksonable implements AbstractJsonable {
             objectMapper.writeValue(file, o);
         }
 
-        public static <T> Map<String, T> jsonToMap(ObjectMapper objectMapper, String json)
+        public static <T extends Object> T jsonToObject(ObjectMapper objectMapper, String json)
+        {
+            return jsonToObject(objectMapper, json, new TypeReference<T>() {});
+        }
+
+        public static <T extends Object> T jsonToObject(ObjectMapper objectMapper, String json, TypeReference<T> typeReference)
         {
             if (json != null && !json.isEmpty()) {
 
                 try {
-                    return objectMapper.readValue(json, new TypeReference<Map<String, T>>(){});
+                    return objectMapper.readValue(json, typeReference);
                 } catch (IOException e)
                 {
                     e.printStackTrace();
@@ -71,6 +77,11 @@ public class Jacksonable implements AbstractJsonable {
             }
 
             return null;
+        }
+
+        public static <T> Map<String, T> jsonToMap(ObjectMapper objectMapper, String json)
+        {
+            return jsonToObject(objectMapper, json, new TypeReference<Map<String, T>>(){});
         }
 
         public static <T> Map<String, T> jsonToMap(String json)
@@ -85,18 +96,7 @@ public class Jacksonable implements AbstractJsonable {
 
         public static <T> List<Map<String, T>> jsonToRecords(ObjectMapper objectMapper, String json)
         {
-            if (json != null && !json.isEmpty()) {
-
-                try {
-                    return objectMapper.readValue(json, new TypeReference<List<Map<String, T>>>(){});
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            return null;
+            return jsonToObject(objectMapper, json, new TypeReference<List<Map<String, T>>>() {});
         }
 
         public static <T> List<T> jsonToList(String json){
@@ -105,17 +105,7 @@ public class Jacksonable implements AbstractJsonable {
 
         public static <T> List<T> jsonToList(ObjectMapper objectMapper, String json)
         {
-            if (json != null && !json.isEmpty()) {
-                try {
-                    return objectMapper.readValue(json, new TypeReference<List<T>>(){});
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            return null;
+            return jsonToObject(objectMapper, json, new TypeReference<List<T>>() {});
         }
 
     }
