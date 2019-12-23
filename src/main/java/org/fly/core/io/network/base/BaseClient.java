@@ -2,7 +2,6 @@ package org.fly.core.io.network.base;
 
 import com.google.protobuf.ByteString;
 import com.sun.istack.NotNull;
-
 import org.apache.commons.codec.binary.StringUtils;
 import org.fly.core.io.buffer.ByteBufferPool;
 import org.fly.core.io.buffer.IoBuffer;

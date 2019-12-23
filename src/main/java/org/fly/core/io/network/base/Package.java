@@ -1,7 +1,6 @@
 package org.fly.core.io.network.base;
 
 import com.sun.istack.Nullable;
-
 import org.fly.core.io.buffer.BufferUtils;
 import org.fly.core.io.buffer.ByteBufferPool;
 import org.fly.core.io.buffer.IoBuffer;

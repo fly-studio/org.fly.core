@@ -1,7 +1,6 @@
 package org.fly.core.io.network.base;
 
 import com.sun.istack.NotNull;
-
 import org.fly.core.function.Consumer;
 
 import java.io.IOException;

@@ -1,35 +1,156 @@
 package org.fly.core.text.encrytor;
 
 import com.sun.istack.Nullable;
-
 import org.apache.commons.codec.binary.StringUtils;
 import org.fly.core.io.IoUtils;
 
+import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.io.InputStream;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
+import java.util.Random;
 
 public class Encryption {
     private static final org.fly.core.text.encrytor.Base64.Decoder base64Decoder = org.fly.core.text.encrytor.Base64.getDecoder();
     private static final org.fly.core.text.encrytor.Base64.Encoder base64Encoder = org.fly.core.text.encrytor.Base64.getEncoder();
+
+    /**
+     * 随机bytes
+     *
+     * @param size
+     * @return
+     */
+    public static byte[] randomBytes(int size)
+    {
+        byte[] bytes = new byte[size];
+        Random rnd = new Random();
+        rnd.nextBytes(bytes);
+
+        return bytes;
+    }
+
+    /**
+     * 将byte转为16进制
+     *
+     * @param bytes
+     * @return
+     */
+    public static String byte2Hex(byte[] bytes) {
+        StringBuffer stringBuffer = new StringBuffer();
+        String temp = null;
+
+        for (int i = 0; i < bytes.length; i++) {
+            temp = Integer.toHexString(bytes[i] & 0xFF);
+
+            if (temp.length() == 1) {
+                // 1得到一位的进行补0操作
+                stringBuffer.append("0");
+            }
+
+            stringBuffer.append(temp);
+        }
+
+        return stringBuffer.toString();
+    }
+
+    public static class Hash {
+        public static String Sha1(String string)  {
+            return Sha1(string.getBytes());
+        }
+
+        public static String Sha1(byte[] bytes) {
+            try {
+                return hash("SHA-1", bytes);
+            } catch (NoSuchAlgorithmException e) {
+                return "";
+            }
+        }
+
+        public static String Md5(String string)  {
+            return Md5(string.getBytes());
+        }
+
+        public static String Md5(byte[] bytes) {
+            try {
+                return hash("MD5", bytes);
+            } catch (NoSuchAlgorithmException e) {
+                return "";
+            }
+        }
+
+        /**
+         * Returns the lowercase hex string representation of a file's MD5 hash sum.
+         */
+        public static String Md5File(String file) throws IOException {
+            try {
+                MessageDigest digest = MessageDigest.getInstance("MD5");
+                InputStream is = new FileInputStream(file);
+                byte[] buffer = new byte[8192];
+                int read;
+                while ((read = is.read(buffer)) > 0) {
+                    digest.update(buffer, 0, read);
+                }
+                is.close();
+
+                return byte2Hex(digest.digest());
+            } catch (NoSuchAlgorithmException e) {
+                return "";
+            }
+        }
+
+        public static String Sha256(String string)  {
+            return Sha256(string.getBytes());
+        }
+
+        public static String Sha256(byte[] bytes) {
+            try {
+                return hash("SHA-256", bytes);
+            } catch (NoSuchAlgorithmException e) {
+                return "";
+            }
+        }
+
+        public static String hash(String algorithm, byte[] bytes) throws NoSuchAlgorithmException
+        {
+            MessageDigest digest = MessageDigest.getInstance(algorithm);
+            digest.update(bytes);
+
+            return byte2Hex(digest.digest());
+        }
+    }
+
+    public static class Mac {
+        public static String sha1(byte[] bytes, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException
+        {
+            return hmac("HmacSHA1", bytes, key);
+        }
+
+        public static String sha256(byte[] bytes, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException
+        {
+            return hmac("HmacSHA256", bytes, key);
+        }
+
+        public static String md5(byte[] bytes, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException
+        {
+            return hmac("HmacMD5", bytes, key);
+        }
+
+        public static String hmac(String algorithm, byte[] bytes, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException
+        {
+            SecretKeySpec signingKey = new SecretKeySpec(key, algorithm);
+            javax.crypto.Mac mac = javax.crypto.Mac.getInstance(algorithm);
+            mac.init(signingKey);
+
+            return byte2Hex(mac.doFinal(bytes));
+        }
+    }
 
     public static class Base64 {
 
@@ -216,6 +337,7 @@ public class Encryption {
         {
             KeyPairGenerator kpg = KeyPairGenerator.getInstance(RSA);
             kpg.initialize(length);
+
             KeyPair kp = kpg.generateKeyPair();
 
             privateKey = kp.getPrivate();

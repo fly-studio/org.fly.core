@@ -3,7 +3,6 @@ package org.fly.core.io.network.base;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
-
 import org.fly.core.io.buffer.IoBuffer;
 import org.fly.core.io.protobuf.ProtobufParser;
 import org.fly.core.text.encrytor.Decryptor;

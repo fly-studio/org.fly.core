@@ -3,7 +3,6 @@ package org.fly.core.io.protobuf;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.Parser;
-
 import org.fly.core.io.buffer.IoBuffer;
 
 import java.lang.reflect.InvocationTargetException;

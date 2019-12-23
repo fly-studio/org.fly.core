@@ -1,5 +1,8 @@
 package org.fly.core.io;
 
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.Okio;
 import org.fly.core.text.json.StripJsonComment;
 
 import java.io.Closeable;
@@ -10,10 +13,6 @@ import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-
-import okio.BufferedSink;
-import okio.BufferedSource;
-import okio.Okio;
 
 public class IoUtils {
 
