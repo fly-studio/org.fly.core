@@ -25,7 +25,7 @@ public class Jacksonable implements AbstractJsonable {
             objectMapper.enable(JsonParser.Feature.IGNORE_UNDEFINED);
             objectMapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
             objectMapper.enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
-            objectMapper.enable(JsonParser.Feature.ALLOW_TRAILING_COMMA);
+            //objectMapper.enable(JsonParser.Feature.ALLOW_TRAILING_COMMA);
             objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
             objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             return objectMapper;
@@ -58,12 +58,12 @@ public class Jacksonable implements AbstractJsonable {
             objectMapper.writeValue(file, o);
         }
 
-        public static <T extends Object> T jsonToObject(ObjectMapper objectMapper, String json)
+        public static <T> T jsonToObject(ObjectMapper objectMapper, String json)
         {
             return jsonToObject(objectMapper, json, new TypeReference<T>() {});
         }
 
-        public static <T extends Object> T jsonToObject(ObjectMapper objectMapper, String json, TypeReference<T> typeReference)
+        public static <T> T jsonToObject(ObjectMapper objectMapper, String json, TypeReference<T> typeReference)
         {
             if (json != null && !json.isEmpty()) {
 

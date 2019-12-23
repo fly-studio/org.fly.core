@@ -20,16 +20,19 @@ public final class ResultProto {
 
     /**
      * <code>bytes key = 1;</code>
+     * @return The key.
      */
     com.google.protobuf.ByteString getKey();
 
     /**
      * <code>bytes iv = 2;</code>
+     * @return The iv.
      */
     com.google.protobuf.ByteString getIv();
 
     /**
      * <code>bytes mac = 3;</code>
+     * @return The mac.
      */
     com.google.protobuf.ByteString getMac();
   }
@@ -52,6 +55,13 @@ public final class ResultProto {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+            UnusedPrivateParameter unused) {
+      return new EncryptKey();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -64,7 +74,6 @@ public final class ResultProto {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
               com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -75,13 +84,6 @@ public final class ResultProto {
             case 0:
               done = true;
               break;
-            default: {
-              if (!parseUnknownFieldProto3(
-                      input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
 
               key_ = input.readBytes();
@@ -95,6 +97,13 @@ public final class ResultProto {
             case 26: {
 
               mac_ = input.readBytes();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                      input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -111,20 +120,22 @@ public final class ResultProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
     getDescriptor() {
-      return ResultProto.internal_static_EncryptKey_descriptor;
+      return org.fly.core.io.network.result.ResultProto.internal_static_EncryptKey_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
     internalGetFieldAccessorTable() {
-      return ResultProto.internal_static_EncryptKey_fieldAccessorTable
+      return org.fly.core.io.network.result.ResultProto.internal_static_EncryptKey_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
-                      ResultProto.EncryptKey.class, ResultProto.EncryptKey.Builder.class);
+                      org.fly.core.io.network.result.ResultProto.EncryptKey.class, org.fly.core.io.network.result.ResultProto.EncryptKey.Builder.class);
     }
 
     public static final int KEY_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString key_;
     /**
      * <code>bytes key = 1;</code>
+     * @return The key.
      */
     public com.google.protobuf.ByteString getKey() {
       return key_;
@@ -134,6 +145,7 @@ public final class ResultProto {
     private com.google.protobuf.ByteString iv_;
     /**
      * <code>bytes iv = 2;</code>
+     * @return The iv.
      */
     public com.google.protobuf.ByteString getIv() {
       return iv_;
@@ -143,12 +155,14 @@ public final class ResultProto {
     private com.google.protobuf.ByteString mac_;
     /**
      * <code>bytes mac = 3;</code>
+     * @return The mac.
      */
     public com.google.protobuf.ByteString getMac() {
       return mac_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -158,6 +172,7 @@ public final class ResultProto {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
             throws java.io.IOException {
       if (!key_.isEmpty()) {
@@ -172,6 +187,7 @@ public final class ResultProto {
       unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -199,20 +215,19 @@ public final class ResultProto {
       if (obj == this) {
         return true;
       }
-      if (!(obj instanceof ResultProto.EncryptKey)) {
+      if (!(obj instanceof org.fly.core.io.network.result.ResultProto.EncryptKey)) {
         return super.equals(obj);
       }
-      ResultProto.EncryptKey other = (ResultProto.EncryptKey) obj;
+      org.fly.core.io.network.result.ResultProto.EncryptKey other = (org.fly.core.io.network.result.ResultProto.EncryptKey) obj;
 
-      boolean result = true;
-      result = result && getKey()
-              .equals(other.getKey());
-      result = result && getIv()
-              .equals(other.getIv());
-      result = result && getMac()
-              .equals(other.getMac());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
+      if (!getKey()
+              .equals(other.getKey())) return false;
+      if (!getIv()
+              .equals(other.getIv())) return false;
+      if (!getMac()
+              .equals(other.getMac())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -233,69 +248,69 @@ public final class ResultProto {
       return hash;
     }
 
-    public static ResultProto.EncryptKey parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseFrom(
             java.nio.ByteBuffer data)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static ResultProto.EncryptKey parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseFrom(
             java.nio.ByteBuffer data,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static ResultProto.EncryptKey parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseFrom(
             com.google.protobuf.ByteString data)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static ResultProto.EncryptKey parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseFrom(
             com.google.protobuf.ByteString data,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static ResultProto.EncryptKey parseFrom(byte[] data)
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseFrom(byte[] data)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static ResultProto.EncryptKey parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseFrom(
             byte[] data,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static ResultProto.EncryptKey parseFrom(java.io.InputStream input)
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseFrom(java.io.InputStream input)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseWithIOException(PARSER, input);
     }
-    public static ResultProto.EncryptKey parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseFrom(
             java.io.InputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static ResultProto.EncryptKey parseDelimitedFrom(java.io.InputStream input)
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseDelimitedFrom(java.io.InputStream input)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseDelimitedWithIOException(PARSER, input);
     }
-    public static ResultProto.EncryptKey parseDelimitedFrom(
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseDelimitedFrom(
             java.io.InputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static ResultProto.EncryptKey parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseFrom(
             com.google.protobuf.CodedInputStream input)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseWithIOException(PARSER, input);
     }
-    public static ResultProto.EncryptKey parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey parseFrom(
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
@@ -303,13 +318,15 @@ public final class ResultProto {
               .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(ResultProto.EncryptKey prototype) {
+    public static Builder newBuilder(org.fly.core.io.network.result.ResultProto.EncryptKey prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
               ? new Builder() : new Builder().mergeFrom(this);
@@ -327,20 +344,21 @@ public final class ResultProto {
     public static final class Builder extends
             com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
             // @@protoc_insertion_point(builder_implements:EncryptKey)
-            ResultProto.EncryptKeyOrBuilder {
+            org.fly.core.io.network.result.ResultProto.EncryptKeyOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-        return ResultProto.internal_static_EncryptKey_descriptor;
+        return org.fly.core.io.network.result.ResultProto.internal_static_EncryptKey_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-        return ResultProto.internal_static_EncryptKey_fieldAccessorTable
+        return org.fly.core.io.network.result.ResultProto.internal_static_EncryptKey_fieldAccessorTable
                 .ensureFieldAccessorsInitialized(
-                        ResultProto.EncryptKey.class, ResultProto.EncryptKey.Builder.class);
+                        org.fly.core.io.network.result.ResultProto.EncryptKey.class, org.fly.core.io.network.result.ResultProto.EncryptKey.Builder.class);
       }
 
-      // Construct using ResultProto.EncryptKey.newBuilder()
+      // Construct using org.fly.core.io.network.result.ResultProto.EncryptKey.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -355,6 +373,7 @@ public final class ResultProto {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         key_ = com.google.protobuf.ByteString.EMPTY;
@@ -366,25 +385,29 @@ public final class ResultProto {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
       getDescriptorForType() {
-        return ResultProto.internal_static_EncryptKey_descriptor;
+        return org.fly.core.io.network.result.ResultProto.internal_static_EncryptKey_descriptor;
       }
 
-      public ResultProto.EncryptKey getDefaultInstanceForType() {
-        return ResultProto.EncryptKey.getDefaultInstance();
+      @java.lang.Override
+      public org.fly.core.io.network.result.ResultProto.EncryptKey getDefaultInstanceForType() {
+        return org.fly.core.io.network.result.ResultProto.EncryptKey.getDefaultInstance();
       }
 
-      public ResultProto.EncryptKey build() {
-        ResultProto.EncryptKey result = buildPartial();
+      @java.lang.Override
+      public org.fly.core.io.network.result.ResultProto.EncryptKey build() {
+        org.fly.core.io.network.result.ResultProto.EncryptKey result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public ResultProto.EncryptKey buildPartial() {
-        ResultProto.EncryptKey result = new ResultProto.EncryptKey(this);
+      @java.lang.Override
+      public org.fly.core.io.network.result.ResultProto.EncryptKey buildPartial() {
+        org.fly.core.io.network.result.ResultProto.EncryptKey result = new org.fly.core.io.network.result.ResultProto.EncryptKey(this);
         result.key_ = key_;
         result.iv_ = iv_;
         result.mac_ = mac_;
@@ -392,43 +415,50 @@ public final class ResultProto {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
               com.google.protobuf.Descriptors.FieldDescriptor field,
               java.lang.Object value) {
-        return (Builder) super.setField(field, value);
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
               com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
               com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
               com.google.protobuf.Descriptors.FieldDescriptor field,
               int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
               com.google.protobuf.Descriptors.FieldDescriptor field,
               java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof ResultProto.EncryptKey) {
-          return mergeFrom((ResultProto.EncryptKey)other);
+        if (other instanceof org.fly.core.io.network.result.ResultProto.EncryptKey) {
+          return mergeFrom((org.fly.core.io.network.result.ResultProto.EncryptKey)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(ResultProto.EncryptKey other) {
-        if (other == ResultProto.EncryptKey.getDefaultInstance()) return this;
+      public Builder mergeFrom(org.fly.core.io.network.result.ResultProto.EncryptKey other) {
+        if (other == org.fly.core.io.network.result.ResultProto.EncryptKey.getDefaultInstance()) return this;
         if (other.getKey() != com.google.protobuf.ByteString.EMPTY) {
           setKey(other.getKey());
         }
@@ -443,19 +473,21 @@ public final class ResultProto {
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
               com.google.protobuf.CodedInputStream input,
               com.google.protobuf.ExtensionRegistryLite extensionRegistry)
               throws java.io.IOException {
-        ResultProto.EncryptKey parsedMessage = null;
+        org.fly.core.io.network.result.ResultProto.EncryptKey parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (ResultProto.EncryptKey) e.getUnfinishedMessage();
+          parsedMessage = (org.fly.core.io.network.result.ResultProto.EncryptKey) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -468,12 +500,15 @@ public final class ResultProto {
       private com.google.protobuf.ByteString key_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes key = 1;</code>
+       * @return The key.
        */
       public com.google.protobuf.ByteString getKey() {
         return key_;
       }
       /**
        * <code>bytes key = 1;</code>
+       * @param value The key to set.
+       * @return This builder for chaining.
        */
       public Builder setKey(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -486,6 +521,7 @@ public final class ResultProto {
       }
       /**
        * <code>bytes key = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearKey() {
 
@@ -497,12 +533,15 @@ public final class ResultProto {
       private com.google.protobuf.ByteString iv_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes iv = 2;</code>
+       * @return The iv.
        */
       public com.google.protobuf.ByteString getIv() {
         return iv_;
       }
       /**
        * <code>bytes iv = 2;</code>
+       * @param value The iv to set.
+       * @return This builder for chaining.
        */
       public Builder setIv(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -515,6 +554,7 @@ public final class ResultProto {
       }
       /**
        * <code>bytes iv = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearIv() {
 
@@ -526,12 +566,15 @@ public final class ResultProto {
       private com.google.protobuf.ByteString mac_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes mac = 3;</code>
+       * @return The mac.
        */
       public com.google.protobuf.ByteString getMac() {
         return mac_;
       }
       /**
        * <code>bytes mac = 3;</code>
+       * @param value The mac to set.
+       * @return This builder for chaining.
        */
       public Builder setMac(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -544,6 +587,7 @@ public final class ResultProto {
       }
       /**
        * <code>bytes mac = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMac() {
 
@@ -551,11 +595,13 @@ public final class ResultProto {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
               final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
               final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -566,17 +612,18 @@ public final class ResultProto {
     }
 
     // @@protoc_insertion_point(class_scope:EncryptKey)
-    private static final ResultProto.EncryptKey DEFAULT_INSTANCE;
+    private static final org.fly.core.io.network.result.ResultProto.EncryptKey DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new ResultProto.EncryptKey();
+      DEFAULT_INSTANCE = new org.fly.core.io.network.result.ResultProto.EncryptKey();
     }
 
-    public static ResultProto.EncryptKey getDefaultInstance() {
+    public static org.fly.core.io.network.result.ResultProto.EncryptKey getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
     private static final com.google.protobuf.Parser<EncryptKey>
             PARSER = new com.google.protobuf.AbstractParser<EncryptKey>() {
+      @java.lang.Override
       public EncryptKey parsePartialFrom(
               com.google.protobuf.CodedInputStream input,
               com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -594,719 +641,69 @@ public final class ResultProto {
       return PARSER;
     }
 
-    public ResultProto.EncryptKey getDefaultInstanceForType() {
+    @java.lang.Override
+    public org.fly.core.io.network.result.ResultProto.EncryptKey getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface OutputMessageOrBuilder extends
-          // @@protoc_insertion_point(interface_extends:OutputMessage)
-          com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>string title = 1;</code>
-     */
-    java.lang.String getTitle();
-    /**
-     * <code>string title = 1;</code>
-     */
-    com.google.protobuf.ByteString
-    getTitleBytes();
-
-    /**
-     * <code>string content = 2;</code>
-     */
-    java.lang.String getContent();
-    /**
-     * <code>string content = 2;</code>
-     */
-    com.google.protobuf.ByteString
-    getContentBytes();
-  }
-  /**
-   * Protobuf type {@code OutputMessage}
-   */
-  public  static final class OutputMessage extends
-          com.google.protobuf.GeneratedMessageV3 implements
-          // @@protoc_insertion_point(message_implements:OutputMessage)
-          OutputMessageOrBuilder {
-    private static final long serialVersionUID = 0L;
-    // Use OutputMessage.newBuilder() to construct.
-    private OutputMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private OutputMessage() {
-      title_ = "";
-      content_ = "";
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private OutputMessage(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-              com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownFieldProto3(
-                      input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              title_ = s;
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              content_ = s;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-                e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-    getDescriptor() {
-      return ResultProto.internal_static_OutputMessage_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-    internalGetFieldAccessorTable() {
-      return ResultProto.internal_static_OutputMessage_fieldAccessorTable
-              .ensureFieldAccessorsInitialized(
-                      ResultProto.OutputMessage.class, ResultProto.OutputMessage.Builder.class);
-    }
-
-    public static final int TITLE_FIELD_NUMBER = 1;
-    private volatile java.lang.Object title_;
-    /**
-     * <code>string title = 1;</code>
-     */
-    public java.lang.String getTitle() {
-      java.lang.Object ref = title_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        title_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string title = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-    getTitleBytes() {
-      java.lang.Object ref = title_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
-                com.google.protobuf.ByteString.copyFromUtf8(
-                        (java.lang.String) ref);
-        title_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CONTENT_FIELD_NUMBER = 2;
-    private volatile java.lang.Object content_;
-    /**
-     * <code>string content = 2;</code>
-     */
-    public java.lang.String getContent() {
-      java.lang.Object ref = content_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        content_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string content = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-    getContentBytes() {
-      java.lang.Object ref = content_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
-                com.google.protobuf.ByteString.copyFromUtf8(
-                        (java.lang.String) ref);
-        content_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-            throws java.io.IOException {
-      if (!getTitleBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, title_);
-      }
-      if (!getContentBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, content_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getTitleBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, title_);
-      }
-      if (!getContentBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, content_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-        return true;
-      }
-      if (!(obj instanceof ResultProto.OutputMessage)) {
-        return super.equals(obj);
-      }
-      ResultProto.OutputMessage other = (ResultProto.OutputMessage) obj;
-
-      boolean result = true;
-      result = result && getTitle()
-              .equals(other.getTitle());
-      result = result && getContent()
-              .equals(other.getContent());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + TITLE_FIELD_NUMBER;
-      hash = (53 * hash) + getTitle().hashCode();
-      hash = (37 * hash) + CONTENT_FIELD_NUMBER;
-      hash = (53 * hash) + getContent().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static ResultProto.OutputMessage parseFrom(
-            java.nio.ByteBuffer data)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static ResultProto.OutputMessage parseFrom(
-            java.nio.ByteBuffer data,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static ResultProto.OutputMessage parseFrom(
-            com.google.protobuf.ByteString data)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static ResultProto.OutputMessage parseFrom(
-            com.google.protobuf.ByteString data,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static ResultProto.OutputMessage parseFrom(byte[] data)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static ResultProto.OutputMessage parseFrom(
-            byte[] data,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static ResultProto.OutputMessage parseFrom(java.io.InputStream input)
-            throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-              .parseWithIOException(PARSER, input);
-    }
-    public static ResultProto.OutputMessage parseFrom(
-            java.io.InputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-              .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static ResultProto.OutputMessage parseDelimitedFrom(java.io.InputStream input)
-            throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-              .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static ResultProto.OutputMessage parseDelimitedFrom(
-            java.io.InputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static ResultProto.OutputMessage parseFrom(
-            com.google.protobuf.CodedInputStream input)
-            throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-              .parseWithIOException(PARSER, input);
-    }
-    public static ResultProto.OutputMessage parseFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-              .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(ResultProto.OutputMessage prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-              ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code OutputMessage}
-     */
-    public static final class Builder extends
-            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-            // @@protoc_insertion_point(builder_implements:OutputMessage)
-            ResultProto.OutputMessageOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
-        return ResultProto.internal_static_OutputMessage_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internalGetFieldAccessorTable() {
-        return ResultProto.internal_static_OutputMessage_fieldAccessorTable
-                .ensureFieldAccessorsInitialized(
-                        ResultProto.OutputMessage.class, ResultProto.OutputMessage.Builder.class);
-      }
-
-      // Construct using ResultProto.OutputMessage.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        title_ = "";
-
-        content_ = "";
-
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-      getDescriptorForType() {
-        return ResultProto.internal_static_OutputMessage_descriptor;
-      }
-
-      public ResultProto.OutputMessage getDefaultInstanceForType() {
-        return ResultProto.OutputMessage.getDefaultInstance();
-      }
-
-      public ResultProto.OutputMessage build() {
-        ResultProto.OutputMessage result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public ResultProto.OutputMessage buildPartial() {
-        ResultProto.OutputMessage result = new ResultProto.OutputMessage(this);
-        result.title_ = title_;
-        result.content_ = content_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-              com.google.protobuf.Descriptors.FieldDescriptor field,
-              java.lang.Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-              com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-              com.google.protobuf.Descriptors.FieldDescriptor field,
-              int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-              com.google.protobuf.Descriptors.FieldDescriptor field,
-              java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof ResultProto.OutputMessage) {
-          return mergeFrom((ResultProto.OutputMessage)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(ResultProto.OutputMessage other) {
-        if (other == ResultProto.OutputMessage.getDefaultInstance()) return this;
-        if (!other.getTitle().isEmpty()) {
-          title_ = other.title_;
-          onChanged();
-        }
-        if (!other.getContent().isEmpty()) {
-          content_ = other.content_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-              com.google.protobuf.CodedInputStream input,
-              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-              throws java.io.IOException {
-        ResultProto.OutputMessage parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (ResultProto.OutputMessage) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object title_ = "";
-      /**
-       * <code>string title = 1;</code>
-       */
-      public java.lang.String getTitle() {
-        java.lang.Object ref = title_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-                  (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          title_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string title = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-      getTitleBytes() {
-        java.lang.Object ref = title_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
-                  com.google.protobuf.ByteString.copyFromUtf8(
-                          (java.lang.String) ref);
-          title_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string title = 1;</code>
-       */
-      public Builder setTitle(
-              java.lang.String value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-
-        title_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string title = 1;</code>
-       */
-      public Builder clearTitle() {
-
-        title_ = getDefaultInstance().getTitle();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string title = 1;</code>
-       */
-      public Builder setTitleBytes(
-              com.google.protobuf.ByteString value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        checkByteStringIsUtf8(value);
-
-        title_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object content_ = "";
-      /**
-       * <code>string content = 2;</code>
-       */
-      public java.lang.String getContent() {
-        java.lang.Object ref = content_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-                  (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          content_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string content = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-      getContentBytes() {
-        java.lang.Object ref = content_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
-                  com.google.protobuf.ByteString.copyFromUtf8(
-                          (java.lang.String) ref);
-          content_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string content = 2;</code>
-       */
-      public Builder setContent(
-              java.lang.String value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-
-        content_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string content = 2;</code>
-       */
-      public Builder clearContent() {
-
-        content_ = getDefaultInstance().getContent();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string content = 2;</code>
-       */
-      public Builder setContentBytes(
-              com.google.protobuf.ByteString value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        checkByteStringIsUtf8(value);
-
-        content_ = value;
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-              final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-              final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:OutputMessage)
-    }
-
-    // @@protoc_insertion_point(class_scope:OutputMessage)
-    private static final ResultProto.OutputMessage DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new ResultProto.OutputMessage();
-    }
-
-    public static ResultProto.OutputMessage getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<OutputMessage>
-            PARSER = new com.google.protobuf.AbstractParser<OutputMessage>() {
-      public OutputMessage parsePartialFrom(
-              com.google.protobuf.CodedInputStream input,
-              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-              throws com.google.protobuf.InvalidProtocolBufferException {
-        return new OutputMessage(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<OutputMessage> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<OutputMessage> getParserForType() {
-      return PARSER;
-    }
-
-    public ResultProto.OutputMessage getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface OutputTipTypeOrBuilder extends
-          // @@protoc_insertion_point(interface_extends:OutputTipType)
+  public interface ActionOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:Action)
           com.google.protobuf.MessageOrBuilder {
 
     /**
      * <code>string type = 1;</code>
+     * @return The type.
      */
     java.lang.String getType();
     /**
      * <code>string type = 1;</code>
+     * @return The bytes for type.
      */
     com.google.protobuf.ByteString
     getTypeBytes();
 
     /**
      * <code>uint32 timeout = 2;</code>
+     * @return The timeout.
      */
     int getTimeout();
 
     /**
      * <code>string url = 3;</code>
+     * @return The url.
      */
     java.lang.String getUrl();
     /**
      * <code>string url = 3;</code>
+     * @return The bytes for url.
      */
     com.google.protobuf.ByteString
     getUrlBytes();
   }
   /**
-   * Protobuf type {@code OutputTipType}
+   * Protobuf type {@code Action}
    */
-  public  static final class OutputTipType extends
+  public  static final class Action extends
           com.google.protobuf.GeneratedMessageV3 implements
-          // @@protoc_insertion_point(message_implements:OutputTipType)
-          OutputTipTypeOrBuilder {
+          // @@protoc_insertion_point(message_implements:Action)
+          ActionOrBuilder {
     private static final long serialVersionUID = 0L;
-    // Use OutputTipType.newBuilder() to construct.
-    private OutputTipType(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use Action.newBuilder() to construct.
+    private Action(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private OutputTipType() {
+    private Action() {
       type_ = "";
-      timeout_ = 0;
       url_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+            UnusedPrivateParameter unused) {
+      return new Action();
     }
 
     @java.lang.Override
@@ -1314,7 +711,7 @@ public final class ResultProto {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private OutputTipType(
+    private Action(
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1322,7 +719,6 @@ public final class ResultProto {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
               com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -1333,13 +729,6 @@ public final class ResultProto {
             case 0:
               done = true;
               break;
-            default: {
-              if (!parseUnknownFieldProto3(
-                      input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -1357,6 +746,13 @@ public final class ResultProto {
               url_ = s;
               break;
             }
+            default: {
+              if (!parseUnknownField(
+                      input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1371,20 +767,22 @@ public final class ResultProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
     getDescriptor() {
-      return ResultProto.internal_static_OutputTipType_descriptor;
+      return org.fly.core.io.network.result.ResultProto.internal_static_Action_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
     internalGetFieldAccessorTable() {
-      return ResultProto.internal_static_OutputTipType_fieldAccessorTable
+      return org.fly.core.io.network.result.ResultProto.internal_static_Action_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
-                      ResultProto.OutputTipType.class, ResultProto.OutputTipType.Builder.class);
+                      org.fly.core.io.network.result.ResultProto.Action.class, org.fly.core.io.network.result.ResultProto.Action.Builder.class);
     }
 
     public static final int TYPE_FIELD_NUMBER = 1;
     private volatile java.lang.Object type_;
     /**
      * <code>string type = 1;</code>
+     * @return The type.
      */
     public java.lang.String getType() {
       java.lang.Object ref = type_;
@@ -1400,6 +798,7 @@ public final class ResultProto {
     }
     /**
      * <code>string type = 1;</code>
+     * @return The bytes for type.
      */
     public com.google.protobuf.ByteString
     getTypeBytes() {
@@ -1419,6 +818,7 @@ public final class ResultProto {
     private int timeout_;
     /**
      * <code>uint32 timeout = 2;</code>
+     * @return The timeout.
      */
     public int getTimeout() {
       return timeout_;
@@ -1428,6 +828,7 @@ public final class ResultProto {
     private volatile java.lang.Object url_;
     /**
      * <code>string url = 3;</code>
+     * @return The url.
      */
     public java.lang.String getUrl() {
       java.lang.Object ref = url_;
@@ -1443,6 +844,7 @@ public final class ResultProto {
     }
     /**
      * <code>string url = 3;</code>
+     * @return The bytes for url.
      */
     public com.google.protobuf.ByteString
     getUrlBytes() {
@@ -1459,6 +861,7 @@ public final class ResultProto {
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1468,6 +871,7 @@ public final class ResultProto {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
             throws java.io.IOException {
       if (!getTypeBytes().isEmpty()) {
@@ -1482,6 +886,7 @@ public final class ResultProto {
       unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1507,20 +912,19 @@ public final class ResultProto {
       if (obj == this) {
         return true;
       }
-      if (!(obj instanceof ResultProto.OutputTipType)) {
+      if (!(obj instanceof org.fly.core.io.network.result.ResultProto.Action)) {
         return super.equals(obj);
       }
-      ResultProto.OutputTipType other = (ResultProto.OutputTipType) obj;
+      org.fly.core.io.network.result.ResultProto.Action other = (org.fly.core.io.network.result.ResultProto.Action) obj;
 
-      boolean result = true;
-      result = result && getType()
-              .equals(other.getType());
-      result = result && (getTimeout()
-              == other.getTimeout());
-      result = result && getUrl()
-              .equals(other.getUrl());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
+      if (!getType()
+              .equals(other.getType())) return false;
+      if (getTimeout()
+              != other.getTimeout()) return false;
+      if (!getUrl()
+              .equals(other.getUrl())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1541,69 +945,69 @@ public final class ResultProto {
       return hash;
     }
 
-    public static ResultProto.OutputTipType parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Action parseFrom(
             java.nio.ByteBuffer data)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static ResultProto.OutputTipType parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Action parseFrom(
             java.nio.ByteBuffer data,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static ResultProto.OutputTipType parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Action parseFrom(
             com.google.protobuf.ByteString data)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static ResultProto.OutputTipType parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Action parseFrom(
             com.google.protobuf.ByteString data,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static ResultProto.OutputTipType parseFrom(byte[] data)
+    public static org.fly.core.io.network.result.ResultProto.Action parseFrom(byte[] data)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static ResultProto.OutputTipType parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Action parseFrom(
             byte[] data,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static ResultProto.OutputTipType parseFrom(java.io.InputStream input)
+    public static org.fly.core.io.network.result.ResultProto.Action parseFrom(java.io.InputStream input)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseWithIOException(PARSER, input);
     }
-    public static ResultProto.OutputTipType parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Action parseFrom(
             java.io.InputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static ResultProto.OutputTipType parseDelimitedFrom(java.io.InputStream input)
+    public static org.fly.core.io.network.result.ResultProto.Action parseDelimitedFrom(java.io.InputStream input)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseDelimitedWithIOException(PARSER, input);
     }
-    public static ResultProto.OutputTipType parseDelimitedFrom(
+    public static org.fly.core.io.network.result.ResultProto.Action parseDelimitedFrom(
             java.io.InputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static ResultProto.OutputTipType parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Action parseFrom(
             com.google.protobuf.CodedInputStream input)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseWithIOException(PARSER, input);
     }
-    public static ResultProto.OutputTipType parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Action parseFrom(
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
@@ -1611,13 +1015,15 @@ public final class ResultProto {
               .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(ResultProto.OutputTipType prototype) {
+    public static Builder newBuilder(org.fly.core.io.network.result.ResultProto.Action prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
               ? new Builder() : new Builder().mergeFrom(this);
@@ -1630,25 +1036,26 @@ public final class ResultProto {
       return builder;
     }
     /**
-     * Protobuf type {@code OutputTipType}
+     * Protobuf type {@code Action}
      */
     public static final class Builder extends
             com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-            // @@protoc_insertion_point(builder_implements:OutputTipType)
-            ResultProto.OutputTipTypeOrBuilder {
+            // @@protoc_insertion_point(builder_implements:Action)
+            org.fly.core.io.network.result.ResultProto.ActionOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-        return ResultProto.internal_static_OutputTipType_descriptor;
+        return org.fly.core.io.network.result.ResultProto.internal_static_Action_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-        return ResultProto.internal_static_OutputTipType_fieldAccessorTable
+        return org.fly.core.io.network.result.ResultProto.internal_static_Action_fieldAccessorTable
                 .ensureFieldAccessorsInitialized(
-                        ResultProto.OutputTipType.class, ResultProto.OutputTipType.Builder.class);
+                        org.fly.core.io.network.result.ResultProto.Action.class, org.fly.core.io.network.result.ResultProto.Action.Builder.class);
       }
 
-      // Construct using ResultProto.OutputTipType.newBuilder()
+      // Construct using org.fly.core.io.network.result.ResultProto.Action.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1663,6 +1070,7 @@ public final class ResultProto {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
         type_ = "";
@@ -1674,25 +1082,29 @@ public final class ResultProto {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
       getDescriptorForType() {
-        return ResultProto.internal_static_OutputTipType_descriptor;
+        return org.fly.core.io.network.result.ResultProto.internal_static_Action_descriptor;
       }
 
-      public ResultProto.OutputTipType getDefaultInstanceForType() {
-        return ResultProto.OutputTipType.getDefaultInstance();
+      @java.lang.Override
+      public org.fly.core.io.network.result.ResultProto.Action getDefaultInstanceForType() {
+        return org.fly.core.io.network.result.ResultProto.Action.getDefaultInstance();
       }
 
-      public ResultProto.OutputTipType build() {
-        ResultProto.OutputTipType result = buildPartial();
+      @java.lang.Override
+      public org.fly.core.io.network.result.ResultProto.Action build() {
+        org.fly.core.io.network.result.ResultProto.Action result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public ResultProto.OutputTipType buildPartial() {
-        ResultProto.OutputTipType result = new ResultProto.OutputTipType(this);
+      @java.lang.Override
+      public org.fly.core.io.network.result.ResultProto.Action buildPartial() {
+        org.fly.core.io.network.result.ResultProto.Action result = new org.fly.core.io.network.result.ResultProto.Action(this);
         result.type_ = type_;
         result.timeout_ = timeout_;
         result.url_ = url_;
@@ -1700,43 +1112,50 @@ public final class ResultProto {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
               com.google.protobuf.Descriptors.FieldDescriptor field,
               java.lang.Object value) {
-        return (Builder) super.setField(field, value);
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
               com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
               com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
               com.google.protobuf.Descriptors.FieldDescriptor field,
               int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
               com.google.protobuf.Descriptors.FieldDescriptor field,
               java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof ResultProto.OutputTipType) {
-          return mergeFrom((ResultProto.OutputTipType)other);
+        if (other instanceof org.fly.core.io.network.result.ResultProto.Action) {
+          return mergeFrom((org.fly.core.io.network.result.ResultProto.Action)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(ResultProto.OutputTipType other) {
-        if (other == ResultProto.OutputTipType.getDefaultInstance()) return this;
+      public Builder mergeFrom(org.fly.core.io.network.result.ResultProto.Action other) {
+        if (other == org.fly.core.io.network.result.ResultProto.Action.getDefaultInstance()) return this;
         if (!other.getType().isEmpty()) {
           type_ = other.type_;
           onChanged();
@@ -1753,19 +1172,21 @@ public final class ResultProto {
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
               com.google.protobuf.CodedInputStream input,
               com.google.protobuf.ExtensionRegistryLite extensionRegistry)
               throws java.io.IOException {
-        ResultProto.OutputTipType parsedMessage = null;
+        org.fly.core.io.network.result.ResultProto.Action parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (ResultProto.OutputTipType) e.getUnfinishedMessage();
+          parsedMessage = (org.fly.core.io.network.result.ResultProto.Action) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -1778,6 +1199,7 @@ public final class ResultProto {
       private java.lang.Object type_ = "";
       /**
        * <code>string type = 1;</code>
+       * @return The type.
        */
       public java.lang.String getType() {
         java.lang.Object ref = type_;
@@ -1793,6 +1215,7 @@ public final class ResultProto {
       }
       /**
        * <code>string type = 1;</code>
+       * @return The bytes for type.
        */
       public com.google.protobuf.ByteString
       getTypeBytes() {
@@ -1809,6 +1232,8 @@ public final class ResultProto {
       }
       /**
        * <code>string type = 1;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
        */
       public Builder setType(
               java.lang.String value) {
@@ -1822,6 +1247,7 @@ public final class ResultProto {
       }
       /**
        * <code>string type = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearType() {
 
@@ -1831,6 +1257,8 @@ public final class ResultProto {
       }
       /**
        * <code>string type = 1;</code>
+       * @param value The bytes for type to set.
+       * @return This builder for chaining.
        */
       public Builder setTypeBytes(
               com.google.protobuf.ByteString value) {
@@ -1847,12 +1275,15 @@ public final class ResultProto {
       private int timeout_ ;
       /**
        * <code>uint32 timeout = 2;</code>
+       * @return The timeout.
        */
       public int getTimeout() {
         return timeout_;
       }
       /**
        * <code>uint32 timeout = 2;</code>
+       * @param value The timeout to set.
+       * @return This builder for chaining.
        */
       public Builder setTimeout(int value) {
 
@@ -1862,6 +1293,7 @@ public final class ResultProto {
       }
       /**
        * <code>uint32 timeout = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTimeout() {
 
@@ -1873,6 +1305,7 @@ public final class ResultProto {
       private java.lang.Object url_ = "";
       /**
        * <code>string url = 3;</code>
+       * @return The url.
        */
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
@@ -1888,6 +1321,7 @@ public final class ResultProto {
       }
       /**
        * <code>string url = 3;</code>
+       * @return The bytes for url.
        */
       public com.google.protobuf.ByteString
       getUrlBytes() {
@@ -1904,6 +1338,8 @@ public final class ResultProto {
       }
       /**
        * <code>string url = 3;</code>
+       * @param value The url to set.
+       * @return This builder for chaining.
        */
       public Builder setUrl(
               java.lang.String value) {
@@ -1917,6 +1353,7 @@ public final class ResultProto {
       }
       /**
        * <code>string url = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearUrl() {
 
@@ -1926,6 +1363,8 @@ public final class ResultProto {
       }
       /**
        * <code>string url = 3;</code>
+       * @param value The bytes for url to set.
+       * @return This builder for chaining.
        */
       public Builder setUrlBytes(
               com.google.protobuf.ByteString value) {
@@ -1938,50 +1377,54 @@ public final class ResultProto {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
               final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
               final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
       }
 
 
-      // @@protoc_insertion_point(builder_scope:OutputTipType)
+      // @@protoc_insertion_point(builder_scope:Action)
     }
 
-    // @@protoc_insertion_point(class_scope:OutputTipType)
-    private static final ResultProto.OutputTipType DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:Action)
+    private static final org.fly.core.io.network.result.ResultProto.Action DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new ResultProto.OutputTipType();
+      DEFAULT_INSTANCE = new org.fly.core.io.network.result.ResultProto.Action();
     }
 
-    public static ResultProto.OutputTipType getDefaultInstance() {
+    public static org.fly.core.io.network.result.ResultProto.Action getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<OutputTipType>
-            PARSER = new com.google.protobuf.AbstractParser<OutputTipType>() {
-      public OutputTipType parsePartialFrom(
+    private static final com.google.protobuf.Parser<Action>
+            PARSER = new com.google.protobuf.AbstractParser<Action>() {
+      @java.lang.Override
+      public Action parsePartialFrom(
               com.google.protobuf.CodedInputStream input,
               com.google.protobuf.ExtensionRegistryLite extensionRegistry)
               throws com.google.protobuf.InvalidProtocolBufferException {
-        return new OutputTipType(input, extensionRegistry);
+        return new Action(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<OutputTipType> parser() {
+    public static com.google.protobuf.Parser<Action> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<OutputTipType> getParserForType() {
+    public com.google.protobuf.Parser<Action> getParserForType() {
       return PARSER;
     }
 
-    public ResultProto.OutputTipType getDefaultInstanceForType() {
+    @java.lang.Override
+    public org.fly.core.io.network.result.ResultProto.Action getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -1993,30 +1436,33 @@ public final class ResultProto {
 
     /**
      * <pre>
-     *结果
-     * </pre>
-     *
-     * <code>string result = 1;</code>
-     */
-    java.lang.String getResult();
-    /**
-     * <pre>
-     *结果
-     * </pre>
-     *
-     * <code>string result = 1;</code>
-     */
-    com.google.protobuf.ByteString
-    getResultBytes();
-
-    /**
-     * <pre>
      *状态码
      * </pre>
      *
-     * <code>uint32 status_code = 2;</code>
+     * <code>uint32 code = 1;</code>
+     * @return The code.
      */
-    int getStatusCode();
+    int getCode();
+
+    /**
+     * <pre>
+     *返回消息
+     * </pre>
+     *
+     * <code>string message = 2;</code>
+     * @return The message.
+     */
+    java.lang.String getMessage();
+    /**
+     * <pre>
+     *返回消息
+     * </pre>
+     *
+     * <code>string message = 2;</code>
+     * @return The bytes for message.
+     */
+    com.google.protobuf.ByteString
+    getMessageBytes();
 
     /**
      * <pre>
@@ -2024,74 +1470,44 @@ public final class ResultProto {
      * </pre>
      *
      * <code>uint64 uid = 3;</code>
+     * @return The uid.
      */
     long getUid();
 
     /**
      * <pre>
-     *是否DEBUG
+     *客户端提示类型
      * </pre>
      *
-     * <code>bool debug = 4;</code>
+     * <code>.Action action = 4;</code>
+     * @return Whether the action field is set.
      */
-    boolean getDebug();
-
-    /**
-     * <pre>
-     *返回消息
-     * </pre>
-     *
-     * <code>.OutputMessage message = 5;</code>
-     */
-    boolean hasMessage();
-    /**
-     * <pre>
-     *返回消息
-     * </pre>
-     *
-     * <code>.OutputMessage message = 5;</code>
-     */
-    ResultProto.OutputMessage getMessage();
-    /**
-     * <pre>
-     *返回消息
-     * </pre>
-     *
-     * <code>.OutputMessage message = 5;</code>
-     */
-    ResultProto.OutputMessageOrBuilder getMessageOrBuilder();
-
+    boolean hasAction();
     /**
      * <pre>
      *客户端提示类型
      * </pre>
      *
-     * <code>.OutputTipType tipType = 6;</code>
+     * <code>.Action action = 4;</code>
+     * @return The action.
      */
-    boolean hasTipType();
+    org.fly.core.io.network.result.ResultProto.Action getAction();
     /**
      * <pre>
      *客户端提示类型
      * </pre>
      *
-     * <code>.OutputTipType tipType = 6;</code>
+     * <code>.Action action = 4;</code>
      */
-    ResultProto.OutputTipType getTipType();
-    /**
-     * <pre>
-     *客户端提示类型
-     * </pre>
-     *
-     * <code>.OutputTipType tipType = 6;</code>
-     */
-    ResultProto.OutputTipTypeOrBuilder getTipTypeOrBuilder();
+    org.fly.core.io.network.result.ResultProto.ActionOrBuilder getActionOrBuilder();
 
     /**
      * <pre>
-     * 数据 JSON
+     * 数据 RAW or JSON
      * </pre>
      *
-     * <code>bytes data = 7;</code>
+     * <code>bytes data = 5;</code>
+     * @return The data.
      */
     com.google.protobuf.ByteString getData();
 
@@ -2100,25 +1516,28 @@ public final class ResultProto {
      * 当前时间
      * </pre>
      *
-     * <code>uint64 time = 8;</code>
+     * <code>uint64 at = 6;</code>
+     * @return The at.
      */
-    long getTime();
+    long getAt();
 
     /**
      * <pre>
      * 执行时长
      * </pre>
      *
-     * <code>float duration = 9;</code>
+     * <code>uint32 duration = 7;</code>
+     * @return The duration.
      */
-    float getDuration();
+    int getDuration();
 
     /**
      * <pre>
      * 原BODY
      * </pre>
      *
-     * <code>string body = 10;</code>
+     * <code>string body = 8;</code>
+     * @return The body.
      */
     java.lang.String getBody();
     /**
@@ -2126,7 +1545,8 @@ public final class ResultProto {
      * 原BODY
      * </pre>
      *
-     * <code>string body = 10;</code>
+     * <code>string body = 8;</code>
+     * @return The bytes for body.
      */
     com.google.protobuf.ByteString
     getBodyBytes();
@@ -2136,7 +1556,8 @@ public final class ResultProto {
      * KEY
      * </pre>
      *
-     * <code>bytes encrypted = 11;</code>
+     * <code>bytes encrypted = 9;</code>
+     * @return The encrypted.
      */
     com.google.protobuf.ByteString getEncrypted();
   }
@@ -2153,15 +1574,17 @@ public final class ResultProto {
       super(builder);
     }
     private Output() {
-      result_ = "";
-      statusCode_ = 0;
-      uid_ = 0L;
-      debug_ = false;
+      message_ = "";
       data_ = com.google.protobuf.ByteString.EMPTY;
-      time_ = 0L;
-      duration_ = 0F;
       body_ = "";
       encrypted_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+            UnusedPrivateParameter unused) {
+      return new Output();
     }
 
     @java.lang.Override
@@ -2177,7 +1600,6 @@ public final class ResultProto {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
               com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2188,22 +1610,15 @@ public final class ResultProto {
             case 0:
               done = true;
               break;
-            default: {
-              if (!parseUnknownFieldProto3(
-                      input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
+            case 8: {
+
+              code_ = input.readUInt32();
               break;
             }
-            case 10: {
+            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              result_ = s;
-              break;
-            }
-            case 16: {
-
-              statusCode_ = input.readUInt32();
+              message_ = s;
               break;
             }
             case 24: {
@@ -2211,61 +1626,50 @@ public final class ResultProto {
               uid_ = input.readUInt64();
               break;
             }
-            case 32: {
+            case 34: {
+              org.fly.core.io.network.result.ResultProto.Action.Builder subBuilder = null;
+              if (action_ != null) {
+                subBuilder = action_.toBuilder();
+              }
+              action_ = input.readMessage(org.fly.core.io.network.result.ResultProto.Action.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(action_);
+                action_ = subBuilder.buildPartial();
+              }
 
-              debug_ = input.readBool();
               break;
             }
             case 42: {
-              ResultProto.OutputMessage.Builder subBuilder = null;
-              if (message_ != null) {
-                subBuilder = message_.toBuilder();
-              }
-              message_ = input.readMessage(ResultProto.OutputMessage.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(message_);
-                message_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 50: {
-              ResultProto.OutputTipType.Builder subBuilder = null;
-              if (tipType_ != null) {
-                subBuilder = tipType_.toBuilder();
-              }
-              tipType_ = input.readMessage(ResultProto.OutputTipType.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(tipType_);
-                tipType_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 58: {
 
               data_ = input.readBytes();
               break;
             }
-            case 64: {
+            case 48: {
 
-              time_ = input.readUInt64();
+              at_ = input.readUInt64();
               break;
             }
-            case 77: {
+            case 56: {
 
-              duration_ = input.readFloat();
+              duration_ = input.readUInt32();
               break;
             }
-            case 82: {
+            case 66: {
               java.lang.String s = input.readStringRequireUtf8();
 
               body_ = s;
               break;
             }
-            case 90: {
+            case 74: {
 
               encrypted_ = input.readBytes();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                      input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
               break;
             }
           }
@@ -2282,69 +1686,73 @@ public final class ResultProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
     getDescriptor() {
-      return ResultProto.internal_static_Output_descriptor;
+      return org.fly.core.io.network.result.ResultProto.internal_static_Output_descriptor;
     }
 
+    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
     internalGetFieldAccessorTable() {
-      return ResultProto.internal_static_Output_fieldAccessorTable
+      return org.fly.core.io.network.result.ResultProto.internal_static_Output_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
-                      ResultProto.Output.class, ResultProto.Output.Builder.class);
+                      org.fly.core.io.network.result.ResultProto.Output.class, org.fly.core.io.network.result.ResultProto.Output.Builder.class);
     }
 
-    public static final int RESULT_FIELD_NUMBER = 1;
-    private volatile java.lang.Object result_;
+    public static final int CODE_FIELD_NUMBER = 1;
+    private int code_;
     /**
      * <pre>
-     *结果
+     *状态码
      * </pre>
      *
-     * <code>string result = 1;</code>
+     * <code>uint32 code = 1;</code>
+     * @return The code.
      */
-    public java.lang.String getResult() {
-      java.lang.Object ref = result_;
+    public int getCode() {
+      return code_;
+    }
+
+    public static final int MESSAGE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object message_;
+    /**
+     * <pre>
+     *返回消息
+     * </pre>
+     *
+     * <code>string message = 2;</code>
+     * @return The message.
+     */
+    public java.lang.String getMessage() {
+      java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs =
                 (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        result_ = s;
+        message_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     *结果
+     *返回消息
      * </pre>
      *
-     * <code>string result = 1;</code>
+     * <code>string message = 2;</code>
+     * @return The bytes for message.
      */
     public com.google.protobuf.ByteString
-    getResultBytes() {
-      java.lang.Object ref = result_;
+    getMessageBytes() {
+      java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b =
                 com.google.protobuf.ByteString.copyFromUtf8(
                         (java.lang.String) ref);
-        result_ = b;
+        message_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
-    }
-
-    public static final int STATUS_CODE_FIELD_NUMBER = 2;
-    private int statusCode_;
-    /**
-     * <pre>
-     *状态码
-     * </pre>
-     *
-     * <code>uint32 status_code = 2;</code>
-     */
-    public int getStatusCode() {
-      return statusCode_;
     }
 
     public static final int UID_FIELD_NUMBER = 3;
@@ -2355,137 +1763,98 @@ public final class ResultProto {
      * </pre>
      *
      * <code>uint64 uid = 3;</code>
+     * @return The uid.
      */
     public long getUid() {
       return uid_;
     }
 
-    public static final int DEBUG_FIELD_NUMBER = 4;
-    private boolean debug_;
-    /**
-     * <pre>
-     *是否DEBUG
-     * </pre>
-     *
-     * <code>bool debug = 4;</code>
-     */
-    public boolean getDebug() {
-      return debug_;
-    }
-
-    public static final int MESSAGE_FIELD_NUMBER = 5;
-    private ResultProto.OutputMessage message_;
-    /**
-     * <pre>
-     *返回消息
-     * </pre>
-     *
-     * <code>.OutputMessage message = 5;</code>
-     */
-    public boolean hasMessage() {
-      return message_ != null;
-    }
-    /**
-     * <pre>
-     *返回消息
-     * </pre>
-     *
-     * <code>.OutputMessage message = 5;</code>
-     */
-    public ResultProto.OutputMessage getMessage() {
-      return message_ == null ? ResultProto.OutputMessage.getDefaultInstance() : message_;
-    }
-    /**
-     * <pre>
-     *返回消息
-     * </pre>
-     *
-     * <code>.OutputMessage message = 5;</code>
-     */
-    public ResultProto.OutputMessageOrBuilder getMessageOrBuilder() {
-      return getMessage();
-    }
-
-    public static final int TIPTYPE_FIELD_NUMBER = 6;
-    private ResultProto.OutputTipType tipType_;
+    public static final int ACTION_FIELD_NUMBER = 4;
+    private org.fly.core.io.network.result.ResultProto.Action action_;
     /**
      * <pre>
      *客户端提示类型
      * </pre>
      *
-     * <code>.OutputTipType tipType = 6;</code>
+     * <code>.Action action = 4;</code>
+     * @return Whether the action field is set.
      */
-    public boolean hasTipType() {
-      return tipType_ != null;
+    public boolean hasAction() {
+      return action_ != null;
     }
     /**
      * <pre>
      *客户端提示类型
      * </pre>
      *
-     * <code>.OutputTipType tipType = 6;</code>
+     * <code>.Action action = 4;</code>
+     * @return The action.
      */
-    public ResultProto.OutputTipType getTipType() {
-      return tipType_ == null ? ResultProto.OutputTipType.getDefaultInstance() : tipType_;
+    public org.fly.core.io.network.result.ResultProto.Action getAction() {
+      return action_ == null ? org.fly.core.io.network.result.ResultProto.Action.getDefaultInstance() : action_;
     }
     /**
      * <pre>
      *客户端提示类型
      * </pre>
      *
-     * <code>.OutputTipType tipType = 6;</code>
+     * <code>.Action action = 4;</code>
      */
-    public ResultProto.OutputTipTypeOrBuilder getTipTypeOrBuilder() {
-      return getTipType();
+    public org.fly.core.io.network.result.ResultProto.ActionOrBuilder getActionOrBuilder() {
+      return getAction();
     }
 
-    public static final int DATA_FIELD_NUMBER = 7;
+    public static final int DATA_FIELD_NUMBER = 5;
     private com.google.protobuf.ByteString data_;
     /**
      * <pre>
-     * 数据 JSON
+     * 数据 RAW or JSON
      * </pre>
      *
-     * <code>bytes data = 7;</code>
+     * <code>bytes data = 5;</code>
+     * @return The data.
      */
     public com.google.protobuf.ByteString getData() {
       return data_;
     }
 
-    public static final int TIME_FIELD_NUMBER = 8;
-    private long time_;
+    public static final int AT_FIELD_NUMBER = 6;
+    private long at_;
     /**
      * <pre>
      * 当前时间
      * </pre>
      *
-     * <code>uint64 time = 8;</code>
+     * <code>uint64 at = 6;</code>
+     * @return The at.
      */
-    public long getTime() {
-      return time_;
+    public long getAt() {
+      return at_;
     }
 
-    public static final int DURATION_FIELD_NUMBER = 9;
-    private float duration_;
+    public static final int DURATION_FIELD_NUMBER = 7;
+    private int duration_;
     /**
      * <pre>
      * 执行时长
      * </pre>
      *
-     * <code>float duration = 9;</code>
+     * <code>uint32 duration = 7;</code>
+     * @return The duration.
      */
-    public float getDuration() {
+    public int getDuration() {
       return duration_;
     }
 
-    public static final int BODY_FIELD_NUMBER = 10;
+    public static final int BODY_FIELD_NUMBER = 8;
     private volatile java.lang.Object body_;
     /**
      * <pre>
      * 原BODY
      * </pre>
      *
-     * <code>string body = 10;</code>
+     * <code>string body = 8;</code>
+     * @return The body.
      */
     public java.lang.String getBody() {
       java.lang.Object ref = body_;
@@ -2504,7 +1873,8 @@ public final class ResultProto {
      * 原BODY
      * </pre>
      *
-     * <code>string body = 10;</code>
+     * <code>string body = 8;</code>
+     * @return The bytes for body.
      */
     public com.google.protobuf.ByteString
     getBodyBytes() {
@@ -2520,20 +1890,22 @@ public final class ResultProto {
       }
     }
 
-    public static final int ENCRYPTED_FIELD_NUMBER = 11;
+    public static final int ENCRYPTED_FIELD_NUMBER = 9;
     private com.google.protobuf.ByteString encrypted_;
     /**
      * <pre>
      * KEY
      * </pre>
      *
-     * <code>bytes encrypted = 11;</code>
+     * <code>bytes encrypted = 9;</code>
+     * @return The encrypted.
      */
     public com.google.protobuf.ByteString getEncrypted() {
       return encrypted_;
     }
 
     private byte memoizedIsInitialized = -1;
+    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2543,90 +1915,78 @@ public final class ResultProto {
       return true;
     }
 
+    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
             throws java.io.IOException {
-      if (!getResultBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, result_);
+      if (code_ != 0) {
+        output.writeUInt32(1, code_);
       }
-      if (statusCode_ != 0) {
-        output.writeUInt32(2, statusCode_);
+      if (!getMessageBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, message_);
       }
       if (uid_ != 0L) {
         output.writeUInt64(3, uid_);
       }
-      if (debug_ != false) {
-        output.writeBool(4, debug_);
-      }
-      if (message_ != null) {
-        output.writeMessage(5, getMessage());
-      }
-      if (tipType_ != null) {
-        output.writeMessage(6, getTipType());
+      if (action_ != null) {
+        output.writeMessage(4, getAction());
       }
       if (!data_.isEmpty()) {
-        output.writeBytes(7, data_);
+        output.writeBytes(5, data_);
       }
-      if (time_ != 0L) {
-        output.writeUInt64(8, time_);
+      if (at_ != 0L) {
+        output.writeUInt64(6, at_);
       }
-      if (duration_ != 0F) {
-        output.writeFloat(9, duration_);
+      if (duration_ != 0) {
+        output.writeUInt32(7, duration_);
       }
       if (!getBodyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, body_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, body_);
       }
       if (!encrypted_.isEmpty()) {
-        output.writeBytes(11, encrypted_);
+        output.writeBytes(9, encrypted_);
       }
       unknownFields.writeTo(output);
     }
 
+    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
 
       size = 0;
-      if (!getResultBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, result_);
-      }
-      if (statusCode_ != 0) {
+      if (code_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-                .computeUInt32Size(2, statusCode_);
+                .computeUInt32Size(1, code_);
+      }
+      if (!getMessageBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, message_);
       }
       if (uid_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
                 .computeUInt64Size(3, uid_);
       }
-      if (debug_ != false) {
+      if (action_ != null) {
         size += com.google.protobuf.CodedOutputStream
-                .computeBoolSize(4, debug_);
-      }
-      if (message_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-                .computeMessageSize(5, getMessage());
-      }
-      if (tipType_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-                .computeMessageSize(6, getTipType());
+                .computeMessageSize(4, getAction());
       }
       if (!data_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-                .computeBytesSize(7, data_);
+                .computeBytesSize(5, data_);
       }
-      if (time_ != 0L) {
+      if (at_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-                .computeUInt64Size(8, time_);
+                .computeUInt64Size(6, at_);
       }
-      if (duration_ != 0F) {
+      if (duration_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-                .computeFloatSize(9, duration_);
+                .computeUInt32Size(7, duration_);
       }
       if (!getBodyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, body_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, body_);
       }
       if (!encrypted_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-                .computeBytesSize(11, encrypted_);
+                .computeBytesSize(9, encrypted_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2638,44 +1998,34 @@ public final class ResultProto {
       if (obj == this) {
         return true;
       }
-      if (!(obj instanceof ResultProto.Output)) {
+      if (!(obj instanceof org.fly.core.io.network.result.ResultProto.Output)) {
         return super.equals(obj);
       }
-      ResultProto.Output other = (ResultProto.Output) obj;
+      org.fly.core.io.network.result.ResultProto.Output other = (org.fly.core.io.network.result.ResultProto.Output) obj;
 
-      boolean result = true;
-      result = result && getResult()
-              .equals(other.getResult());
-      result = result && (getStatusCode()
-              == other.getStatusCode());
-      result = result && (getUid()
-              == other.getUid());
-      result = result && (getDebug()
-              == other.getDebug());
-      result = result && (hasMessage() == other.hasMessage());
-      if (hasMessage()) {
-        result = result && getMessage()
-                .equals(other.getMessage());
+      if (getCode()
+              != other.getCode()) return false;
+      if (!getMessage()
+              .equals(other.getMessage())) return false;
+      if (getUid()
+              != other.getUid()) return false;
+      if (hasAction() != other.hasAction()) return false;
+      if (hasAction()) {
+        if (!getAction()
+                .equals(other.getAction())) return false;
       }
-      result = result && (hasTipType() == other.hasTipType());
-      if (hasTipType()) {
-        result = result && getTipType()
-                .equals(other.getTipType());
-      }
-      result = result && getData()
-              .equals(other.getData());
-      result = result && (getTime()
-              == other.getTime());
-      result = result && (
-              java.lang.Float.floatToIntBits(getDuration())
-                      == java.lang.Float.floatToIntBits(
-                      other.getDuration()));
-      result = result && getBody()
-              .equals(other.getBody());
-      result = result && getEncrypted()
-              .equals(other.getEncrypted());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
+      if (!getData()
+              .equals(other.getData())) return false;
+      if (getAt()
+              != other.getAt()) return false;
+      if (getDuration()
+              != other.getDuration()) return false;
+      if (!getBody()
+              .equals(other.getBody())) return false;
+      if (!getEncrypted()
+              .equals(other.getEncrypted())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -2685,32 +2035,24 @@ public final class ResultProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + RESULT_FIELD_NUMBER;
-      hash = (53 * hash) + getResult().hashCode();
-      hash = (37 * hash) + STATUS_CODE_FIELD_NUMBER;
-      hash = (53 * hash) + getStatusCode();
+      hash = (37 * hash) + CODE_FIELD_NUMBER;
+      hash = (53 * hash) + getCode();
+      hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
+      hash = (53 * hash) + getMessage().hashCode();
       hash = (37 * hash) + UID_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
               getUid());
-      hash = (37 * hash) + DEBUG_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-              getDebug());
-      if (hasMessage()) {
-        hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
-        hash = (53 * hash) + getMessage().hashCode();
-      }
-      if (hasTipType()) {
-        hash = (37 * hash) + TIPTYPE_FIELD_NUMBER;
-        hash = (53 * hash) + getTipType().hashCode();
+      if (hasAction()) {
+        hash = (37 * hash) + ACTION_FIELD_NUMBER;
+        hash = (53 * hash) + getAction().hashCode();
       }
       hash = (37 * hash) + DATA_FIELD_NUMBER;
       hash = (53 * hash) + getData().hashCode();
-      hash = (37 * hash) + TIME_FIELD_NUMBER;
+      hash = (37 * hash) + AT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-              getTime());
+              getAt());
       hash = (37 * hash) + DURATION_FIELD_NUMBER;
-      hash = (53 * hash) + java.lang.Float.floatToIntBits(
-              getDuration());
+      hash = (53 * hash) + getDuration();
       hash = (37 * hash) + BODY_FIELD_NUMBER;
       hash = (53 * hash) + getBody().hashCode();
       hash = (37 * hash) + ENCRYPTED_FIELD_NUMBER;
@@ -2720,69 +2062,69 @@ public final class ResultProto {
       return hash;
     }
 
-    public static ResultProto.Output parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Output parseFrom(
             java.nio.ByteBuffer data)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static ResultProto.Output parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Output parseFrom(
             java.nio.ByteBuffer data,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static ResultProto.Output parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Output parseFrom(
             com.google.protobuf.ByteString data)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static ResultProto.Output parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Output parseFrom(
             com.google.protobuf.ByteString data,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static ResultProto.Output parseFrom(byte[] data)
+    public static org.fly.core.io.network.result.ResultProto.Output parseFrom(byte[] data)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static ResultProto.Output parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Output parseFrom(
             byte[] data,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static ResultProto.Output parseFrom(java.io.InputStream input)
+    public static org.fly.core.io.network.result.ResultProto.Output parseFrom(java.io.InputStream input)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseWithIOException(PARSER, input);
     }
-    public static ResultProto.Output parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Output parseFrom(
             java.io.InputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static ResultProto.Output parseDelimitedFrom(java.io.InputStream input)
+    public static org.fly.core.io.network.result.ResultProto.Output parseDelimitedFrom(java.io.InputStream input)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseDelimitedWithIOException(PARSER, input);
     }
-    public static ResultProto.Output parseDelimitedFrom(
+    public static org.fly.core.io.network.result.ResultProto.Output parseDelimitedFrom(
             java.io.InputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static ResultProto.Output parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Output parseFrom(
             com.google.protobuf.CodedInputStream input)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseWithIOException(PARSER, input);
     }
-    public static ResultProto.Output parseFrom(
+    public static org.fly.core.io.network.result.ResultProto.Output parseFrom(
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
@@ -2790,13 +2132,15 @@ public final class ResultProto {
               .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
+    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(ResultProto.Output prototype) {
+    public static Builder newBuilder(org.fly.core.io.network.result.ResultProto.Output prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
               ? new Builder() : new Builder().mergeFrom(this);
@@ -2814,20 +2158,21 @@ public final class ResultProto {
     public static final class Builder extends
             com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
             // @@protoc_insertion_point(builder_implements:Output)
-            ResultProto.OutputOrBuilder {
+            org.fly.core.io.network.result.ResultProto.OutputOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-        return ResultProto.internal_static_Output_descriptor;
+        return org.fly.core.io.network.result.ResultProto.internal_static_Output_descriptor;
       }
 
+      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-        return ResultProto.internal_static_Output_fieldAccessorTable
+        return org.fly.core.io.network.result.ResultProto.internal_static_Output_fieldAccessorTable
                 .ensureFieldAccessorsInitialized(
-                        ResultProto.Output.class, ResultProto.Output.Builder.class);
+                        org.fly.core.io.network.result.ResultProto.Output.class, org.fly.core.io.network.result.ResultProto.Output.Builder.class);
       }
 
-      // Construct using ResultProto.Output.newBuilder()
+      // Construct using org.fly.core.io.network.result.ResultProto.Output.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -2842,33 +2187,26 @@ public final class ResultProto {
                 .alwaysUseFieldBuilders) {
         }
       }
+      @java.lang.Override
       public Builder clear() {
         super.clear();
-        result_ = "";
+        code_ = 0;
 
-        statusCode_ = 0;
+        message_ = "";
 
         uid_ = 0L;
 
-        debug_ = false;
-
-        if (messageBuilder_ == null) {
-          message_ = null;
+        if (actionBuilder_ == null) {
+          action_ = null;
         } else {
-          message_ = null;
-          messageBuilder_ = null;
-        }
-        if (tipTypeBuilder_ == null) {
-          tipType_ = null;
-        } else {
-          tipType_ = null;
-          tipTypeBuilder_ = null;
+          action_ = null;
+          actionBuilder_ = null;
         }
         data_ = com.google.protobuf.ByteString.EMPTY;
 
-        time_ = 0L;
+        at_ = 0L;
 
-        duration_ = 0F;
+        duration_ = 0;
 
         body_ = "";
 
@@ -2877,41 +2215,39 @@ public final class ResultProto {
         return this;
       }
 
+      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
       getDescriptorForType() {
-        return ResultProto.internal_static_Output_descriptor;
+        return org.fly.core.io.network.result.ResultProto.internal_static_Output_descriptor;
       }
 
-      public ResultProto.Output getDefaultInstanceForType() {
-        return ResultProto.Output.getDefaultInstance();
+      @java.lang.Override
+      public org.fly.core.io.network.result.ResultProto.Output getDefaultInstanceForType() {
+        return org.fly.core.io.network.result.ResultProto.Output.getDefaultInstance();
       }
 
-      public ResultProto.Output build() {
-        ResultProto.Output result = buildPartial();
+      @java.lang.Override
+      public org.fly.core.io.network.result.ResultProto.Output build() {
+        org.fly.core.io.network.result.ResultProto.Output result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public ResultProto.Output buildPartial() {
-        ResultProto.Output result = new ResultProto.Output(this);
-        result.result_ = result_;
-        result.statusCode_ = statusCode_;
+      @java.lang.Override
+      public org.fly.core.io.network.result.ResultProto.Output buildPartial() {
+        org.fly.core.io.network.result.ResultProto.Output result = new org.fly.core.io.network.result.ResultProto.Output(this);
+        result.code_ = code_;
+        result.message_ = message_;
         result.uid_ = uid_;
-        result.debug_ = debug_;
-        if (messageBuilder_ == null) {
-          result.message_ = message_;
+        if (actionBuilder_ == null) {
+          result.action_ = action_;
         } else {
-          result.message_ = messageBuilder_.build();
-        }
-        if (tipTypeBuilder_ == null) {
-          result.tipType_ = tipType_;
-        } else {
-          result.tipType_ = tipTypeBuilder_.build();
+          result.action_ = actionBuilder_.build();
         }
         result.data_ = data_;
-        result.time_ = time_;
+        result.at_ = at_;
         result.duration_ = duration_;
         result.body_ = body_;
         result.encrypted_ = encrypted_;
@@ -2919,69 +2255,70 @@ public final class ResultProto {
         return result;
       }
 
+      @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
+      @java.lang.Override
       public Builder setField(
               com.google.protobuf.Descriptors.FieldDescriptor field,
               java.lang.Object value) {
-        return (Builder) super.setField(field, value);
+        return super.setField(field, value);
       }
+      @java.lang.Override
       public Builder clearField(
               com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
+      @java.lang.Override
       public Builder clearOneof(
               com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
+      @java.lang.Override
       public Builder setRepeatedField(
               com.google.protobuf.Descriptors.FieldDescriptor field,
               int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+        return super.setRepeatedField(field, index, value);
       }
+      @java.lang.Override
       public Builder addRepeatedField(
               com.google.protobuf.Descriptors.FieldDescriptor field,
               java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+        return super.addRepeatedField(field, value);
       }
+      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof ResultProto.Output) {
-          return mergeFrom((ResultProto.Output)other);
+        if (other instanceof org.fly.core.io.network.result.ResultProto.Output) {
+          return mergeFrom((org.fly.core.io.network.result.ResultProto.Output)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(ResultProto.Output other) {
-        if (other == ResultProto.Output.getDefaultInstance()) return this;
-        if (!other.getResult().isEmpty()) {
-          result_ = other.result_;
-          onChanged();
+      public Builder mergeFrom(org.fly.core.io.network.result.ResultProto.Output other) {
+        if (other == org.fly.core.io.network.result.ResultProto.Output.getDefaultInstance()) return this;
+        if (other.getCode() != 0) {
+          setCode(other.getCode());
         }
-        if (other.getStatusCode() != 0) {
-          setStatusCode(other.getStatusCode());
+        if (!other.getMessage().isEmpty()) {
+          message_ = other.message_;
+          onChanged();
         }
         if (other.getUid() != 0L) {
           setUid(other.getUid());
         }
-        if (other.getDebug() != false) {
-          setDebug(other.getDebug());
-        }
-        if (other.hasMessage()) {
-          mergeMessage(other.getMessage());
-        }
-        if (other.hasTipType()) {
-          mergeTipType(other.getTipType());
+        if (other.hasAction()) {
+          mergeAction(other.getAction());
         }
         if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
           setData(other.getData());
         }
-        if (other.getTime() != 0L) {
-          setTime(other.getTime());
+        if (other.getAt() != 0L) {
+          setAt(other.getAt());
         }
-        if (other.getDuration() != 0F) {
+        if (other.getDuration() != 0) {
           setDuration(other.getDuration());
         }
         if (!other.getBody().isEmpty()) {
@@ -2996,19 +2333,21 @@ public final class ResultProto {
         return this;
       }
 
+      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
+      @java.lang.Override
       public Builder mergeFrom(
               com.google.protobuf.CodedInputStream input,
               com.google.protobuf.ExtensionRegistryLite extensionRegistry)
               throws java.io.IOException {
-        ResultProto.Output parsedMessage = null;
+        org.fly.core.io.network.result.ResultProto.Output parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (ResultProto.Output) e.getUnfinishedMessage();
+          parsedMessage = (org.fly.core.io.network.result.ResultProto.Output) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -3018,21 +2357,64 @@ public final class ResultProto {
         return this;
       }
 
-      private java.lang.Object result_ = "";
+      private int code_ ;
       /**
        * <pre>
-       *结果
+       *状态码
        * </pre>
        *
-       * <code>string result = 1;</code>
+       * <code>uint32 code = 1;</code>
+       * @return The code.
        */
-      public java.lang.String getResult() {
-        java.lang.Object ref = result_;
+      public int getCode() {
+        return code_;
+      }
+      /**
+       * <pre>
+       *状态码
+       * </pre>
+       *
+       * <code>uint32 code = 1;</code>
+       * @param value The code to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCode(int value) {
+
+        code_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *状态码
+       * </pre>
+       *
+       * <code>uint32 code = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCode() {
+
+        code_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object message_ = "";
+      /**
+       * <pre>
+       *返回消息
+       * </pre>
+       *
+       * <code>string message = 2;</code>
+       * @return The message.
+       */
+      public java.lang.String getMessage() {
+        java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
                   (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          result_ = s;
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3040,19 +2422,20 @@ public final class ResultProto {
       }
       /**
        * <pre>
-       *结果
+       *返回消息
        * </pre>
        *
-       * <code>string result = 1;</code>
+       * <code>string message = 2;</code>
+       * @return The bytes for message.
        */
       public com.google.protobuf.ByteString
-      getResultBytes() {
-        java.lang.Object ref = result_;
+      getMessageBytes() {
+        java.lang.Object ref = message_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b =
                   com.google.protobuf.ByteString.copyFromUtf8(
                           (java.lang.String) ref);
-          result_ = b;
+          message_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -3060,87 +2443,54 @@ public final class ResultProto {
       }
       /**
        * <pre>
-       *结果
+       *返回消息
        * </pre>
        *
-       * <code>string result = 1;</code>
+       * <code>string message = 2;</code>
+       * @param value The message to set.
+       * @return This builder for chaining.
        */
-      public Builder setResult(
+      public Builder setMessage(
               java.lang.String value) {
         if (value == null) {
           throw new NullPointerException();
         }
 
-        result_ = value;
+        message_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *结果
+       *返回消息
        * </pre>
        *
-       * <code>string result = 1;</code>
+       * <code>string message = 2;</code>
+       * @return This builder for chaining.
        */
-      public Builder clearResult() {
+      public Builder clearMessage() {
 
-        result_ = getDefaultInstance().getResult();
+        message_ = getDefaultInstance().getMessage();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *结果
+       *返回消息
        * </pre>
        *
-       * <code>string result = 1;</code>
+       * <code>string message = 2;</code>
+       * @param value The bytes for message to set.
+       * @return This builder for chaining.
        */
-      public Builder setResultBytes(
+      public Builder setMessageBytes(
               com.google.protobuf.ByteString value) {
         if (value == null) {
           throw new NullPointerException();
         }
         checkByteStringIsUtf8(value);
 
-        result_ = value;
-        onChanged();
-        return this;
-      }
-
-      private int statusCode_ ;
-      /**
-       * <pre>
-       *状态码
-       * </pre>
-       *
-       * <code>uint32 status_code = 2;</code>
-       */
-      public int getStatusCode() {
-        return statusCode_;
-      }
-      /**
-       * <pre>
-       *状态码
-       * </pre>
-       *
-       * <code>uint32 status_code = 2;</code>
-       */
-      public Builder setStatusCode(int value) {
-
-        statusCode_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *状态码
-       * </pre>
-       *
-       * <code>uint32 status_code = 2;</code>
-       */
-      public Builder clearStatusCode() {
-
-        statusCode_ = 0;
+        message_ = value;
         onChanged();
         return this;
       }
@@ -3152,6 +2502,7 @@ public final class ResultProto {
        * </pre>
        *
        * <code>uint64 uid = 3;</code>
+       * @return The uid.
        */
       public long getUid() {
         return uid_;
@@ -3162,6 +2513,8 @@ public final class ResultProto {
        * </pre>
        *
        * <code>uint64 uid = 3;</code>
+       * @param value The uid to set.
+       * @return This builder for chaining.
        */
       public Builder setUid(long value) {
 
@@ -3175,6 +2528,7 @@ public final class ResultProto {
        * </pre>
        *
        * <code>uint64 uid = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearUid() {
 
@@ -3183,367 +2537,181 @@ public final class ResultProto {
         return this;
       }
 
-      private boolean debug_ ;
-      /**
-       * <pre>
-       *是否DEBUG
-       * </pre>
-       *
-       * <code>bool debug = 4;</code>
-       */
-      public boolean getDebug() {
-        return debug_;
-      }
-      /**
-       * <pre>
-       *是否DEBUG
-       * </pre>
-       *
-       * <code>bool debug = 4;</code>
-       */
-      public Builder setDebug(boolean value) {
-
-        debug_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *是否DEBUG
-       * </pre>
-       *
-       * <code>bool debug = 4;</code>
-       */
-      public Builder clearDebug() {
-
-        debug_ = false;
-        onChanged();
-        return this;
-      }
-
-      private ResultProto.OutputMessage message_ = null;
+      private org.fly.core.io.network.result.ResultProto.Action action_;
       private com.google.protobuf.SingleFieldBuilderV3<
-              ResultProto.OutputMessage, ResultProto.OutputMessage.Builder, ResultProto.OutputMessageOrBuilder> messageBuilder_;
+              org.fly.core.io.network.result.ResultProto.Action, org.fly.core.io.network.result.ResultProto.Action.Builder, org.fly.core.io.network.result.ResultProto.ActionOrBuilder> actionBuilder_;
       /**
        * <pre>
-       *返回消息
+       *客户端提示类型
        * </pre>
        *
-       * <code>.OutputMessage message = 5;</code>
+       * <code>.Action action = 4;</code>
+       * @return Whether the action field is set.
        */
-      public boolean hasMessage() {
-        return messageBuilder_ != null || message_ != null;
+      public boolean hasAction() {
+        return actionBuilder_ != null || action_ != null;
       }
       /**
        * <pre>
-       *返回消息
+       *客户端提示类型
        * </pre>
        *
-       * <code>.OutputMessage message = 5;</code>
+       * <code>.Action action = 4;</code>
+       * @return The action.
        */
-      public ResultProto.OutputMessage getMessage() {
-        if (messageBuilder_ == null) {
-          return message_ == null ? ResultProto.OutputMessage.getDefaultInstance() : message_;
+      public org.fly.core.io.network.result.ResultProto.Action getAction() {
+        if (actionBuilder_ == null) {
+          return action_ == null ? org.fly.core.io.network.result.ResultProto.Action.getDefaultInstance() : action_;
         } else {
-          return messageBuilder_.getMessage();
+          return actionBuilder_.getMessage();
         }
       }
       /**
        * <pre>
-       *返回消息
+       *客户端提示类型
        * </pre>
        *
-       * <code>.OutputMessage message = 5;</code>
+       * <code>.Action action = 4;</code>
        */
-      public Builder setMessage(ResultProto.OutputMessage value) {
-        if (messageBuilder_ == null) {
+      public Builder setAction(org.fly.core.io.network.result.ResultProto.Action value) {
+        if (actionBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          message_ = value;
+          action_ = value;
           onChanged();
         } else {
-          messageBuilder_.setMessage(value);
+          actionBuilder_.setMessage(value);
         }
 
         return this;
       }
       /**
        * <pre>
-       *返回消息
+       *客户端提示类型
        * </pre>
        *
-       * <code>.OutputMessage message = 5;</code>
+       * <code>.Action action = 4;</code>
        */
-      public Builder setMessage(
-              ResultProto.OutputMessage.Builder builderForValue) {
-        if (messageBuilder_ == null) {
-          message_ = builderForValue.build();
+      public Builder setAction(
+              org.fly.core.io.network.result.ResultProto.Action.Builder builderForValue) {
+        if (actionBuilder_ == null) {
+          action_ = builderForValue.build();
           onChanged();
         } else {
-          messageBuilder_.setMessage(builderForValue.build());
+          actionBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
       }
       /**
        * <pre>
-       *返回消息
+       *客户端提示类型
        * </pre>
        *
-       * <code>.OutputMessage message = 5;</code>
+       * <code>.Action action = 4;</code>
        */
-      public Builder mergeMessage(ResultProto.OutputMessage value) {
-        if (messageBuilder_ == null) {
-          if (message_ != null) {
-            message_ =
-                    ResultProto.OutputMessage.newBuilder(message_).mergeFrom(value).buildPartial();
+      public Builder mergeAction(org.fly.core.io.network.result.ResultProto.Action value) {
+        if (actionBuilder_ == null) {
+          if (action_ != null) {
+            action_ =
+                    org.fly.core.io.network.result.ResultProto.Action.newBuilder(action_).mergeFrom(value).buildPartial();
           } else {
-            message_ = value;
+            action_ = value;
           }
           onChanged();
         } else {
-          messageBuilder_.mergeFrom(value);
+          actionBuilder_.mergeFrom(value);
         }
 
         return this;
       }
       /**
        * <pre>
-       *返回消息
+       *客户端提示类型
        * </pre>
        *
-       * <code>.OutputMessage message = 5;</code>
+       * <code>.Action action = 4;</code>
        */
-      public Builder clearMessage() {
-        if (messageBuilder_ == null) {
-          message_ = null;
+      public Builder clearAction() {
+        if (actionBuilder_ == null) {
+          action_ = null;
           onChanged();
         } else {
-          message_ = null;
-          messageBuilder_ = null;
+          action_ = null;
+          actionBuilder_ = null;
         }
 
         return this;
       }
       /**
        * <pre>
-       *返回消息
+       *客户端提示类型
        * </pre>
        *
-       * <code>.OutputMessage message = 5;</code>
+       * <code>.Action action = 4;</code>
        */
-      public ResultProto.OutputMessage.Builder getMessageBuilder() {
+      public org.fly.core.io.network.result.ResultProto.Action.Builder getActionBuilder() {
 
         onChanged();
-        return getMessageFieldBuilder().getBuilder();
+        return getActionFieldBuilder().getBuilder();
       }
       /**
        * <pre>
-       *返回消息
+       *客户端提示类型
        * </pre>
        *
-       * <code>.OutputMessage message = 5;</code>
+       * <code>.Action action = 4;</code>
        */
-      public ResultProto.OutputMessageOrBuilder getMessageOrBuilder() {
-        if (messageBuilder_ != null) {
-          return messageBuilder_.getMessageOrBuilder();
+      public org.fly.core.io.network.result.ResultProto.ActionOrBuilder getActionOrBuilder() {
+        if (actionBuilder_ != null) {
+          return actionBuilder_.getMessageOrBuilder();
         } else {
-          return message_ == null ?
-                  ResultProto.OutputMessage.getDefaultInstance() : message_;
+          return action_ == null ?
+                  org.fly.core.io.network.result.ResultProto.Action.getDefaultInstance() : action_;
         }
       }
       /**
        * <pre>
-       *返回消息
+       *客户端提示类型
        * </pre>
        *
-       * <code>.OutputMessage message = 5;</code>
+       * <code>.Action action = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-              ResultProto.OutputMessage, ResultProto.OutputMessage.Builder, ResultProto.OutputMessageOrBuilder>
-      getMessageFieldBuilder() {
-        if (messageBuilder_ == null) {
-          messageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-                  ResultProto.OutputMessage, ResultProto.OutputMessage.Builder, ResultProto.OutputMessageOrBuilder>(
-                  getMessage(),
+              org.fly.core.io.network.result.ResultProto.Action, org.fly.core.io.network.result.ResultProto.Action.Builder, org.fly.core.io.network.result.ResultProto.ActionOrBuilder>
+      getActionFieldBuilder() {
+        if (actionBuilder_ == null) {
+          actionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+                  org.fly.core.io.network.result.ResultProto.Action, org.fly.core.io.network.result.ResultProto.Action.Builder, org.fly.core.io.network.result.ResultProto.ActionOrBuilder>(
+                  getAction(),
                   getParentForChildren(),
                   isClean());
-          message_ = null;
+          action_ = null;
         }
-        return messageBuilder_;
-      }
-
-      private ResultProto.OutputTipType tipType_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-              ResultProto.OutputTipType, ResultProto.OutputTipType.Builder, ResultProto.OutputTipTypeOrBuilder> tipTypeBuilder_;
-      /**
-       * <pre>
-       *客户端提示类型
-       * </pre>
-       *
-       * <code>.OutputTipType tipType = 6;</code>
-       */
-      public boolean hasTipType() {
-        return tipTypeBuilder_ != null || tipType_ != null;
-      }
-      /**
-       * <pre>
-       *客户端提示类型
-       * </pre>
-       *
-       * <code>.OutputTipType tipType = 6;</code>
-       */
-      public ResultProto.OutputTipType getTipType() {
-        if (tipTypeBuilder_ == null) {
-          return tipType_ == null ? ResultProto.OutputTipType.getDefaultInstance() : tipType_;
-        } else {
-          return tipTypeBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       *客户端提示类型
-       * </pre>
-       *
-       * <code>.OutputTipType tipType = 6;</code>
-       */
-      public Builder setTipType(ResultProto.OutputTipType value) {
-        if (tipTypeBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          tipType_ = value;
-          onChanged();
-        } else {
-          tipTypeBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *客户端提示类型
-       * </pre>
-       *
-       * <code>.OutputTipType tipType = 6;</code>
-       */
-      public Builder setTipType(
-              ResultProto.OutputTipType.Builder builderForValue) {
-        if (tipTypeBuilder_ == null) {
-          tipType_ = builderForValue.build();
-          onChanged();
-        } else {
-          tipTypeBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *客户端提示类型
-       * </pre>
-       *
-       * <code>.OutputTipType tipType = 6;</code>
-       */
-      public Builder mergeTipType(ResultProto.OutputTipType value) {
-        if (tipTypeBuilder_ == null) {
-          if (tipType_ != null) {
-            tipType_ =
-                    ResultProto.OutputTipType.newBuilder(tipType_).mergeFrom(value).buildPartial();
-          } else {
-            tipType_ = value;
-          }
-          onChanged();
-        } else {
-          tipTypeBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *客户端提示类型
-       * </pre>
-       *
-       * <code>.OutputTipType tipType = 6;</code>
-       */
-      public Builder clearTipType() {
-        if (tipTypeBuilder_ == null) {
-          tipType_ = null;
-          onChanged();
-        } else {
-          tipType_ = null;
-          tipTypeBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *客户端提示类型
-       * </pre>
-       *
-       * <code>.OutputTipType tipType = 6;</code>
-       */
-      public ResultProto.OutputTipType.Builder getTipTypeBuilder() {
-
-        onChanged();
-        return getTipTypeFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       *客户端提示类型
-       * </pre>
-       *
-       * <code>.OutputTipType tipType = 6;</code>
-       */
-      public ResultProto.OutputTipTypeOrBuilder getTipTypeOrBuilder() {
-        if (tipTypeBuilder_ != null) {
-          return tipTypeBuilder_.getMessageOrBuilder();
-        } else {
-          return tipType_ == null ?
-                  ResultProto.OutputTipType.getDefaultInstance() : tipType_;
-        }
-      }
-      /**
-       * <pre>
-       *客户端提示类型
-       * </pre>
-       *
-       * <code>.OutputTipType tipType = 6;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-              ResultProto.OutputTipType, ResultProto.OutputTipType.Builder, ResultProto.OutputTipTypeOrBuilder>
-      getTipTypeFieldBuilder() {
-        if (tipTypeBuilder_ == null) {
-          tipTypeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-                  ResultProto.OutputTipType, ResultProto.OutputTipType.Builder, ResultProto.OutputTipTypeOrBuilder>(
-                  getTipType(),
-                  getParentForChildren(),
-                  isClean());
-          tipType_ = null;
-        }
-        return tipTypeBuilder_;
+        return actionBuilder_;
       }
 
       private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
-       * 数据 JSON
+       * 数据 RAW or JSON
        * </pre>
        *
-       * <code>bytes data = 7;</code>
+       * <code>bytes data = 5;</code>
+       * @return The data.
        */
       public com.google.protobuf.ByteString getData() {
         return data_;
       }
       /**
        * <pre>
-       * 数据 JSON
+       * 数据 RAW or JSON
        * </pre>
        *
-       * <code>bytes data = 7;</code>
+       * <code>bytes data = 5;</code>
+       * @param value The data to set.
+       * @return This builder for chaining.
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3556,10 +2724,11 @@ public final class ResultProto {
       }
       /**
        * <pre>
-       * 数据 JSON
+       * 数据 RAW or JSON
        * </pre>
        *
-       * <code>bytes data = 7;</code>
+       * <code>bytes data = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearData() {
 
@@ -3568,27 +2737,30 @@ public final class ResultProto {
         return this;
       }
 
-      private long time_ ;
+      private long at_ ;
       /**
        * <pre>
        * 当前时间
        * </pre>
        *
-       * <code>uint64 time = 8;</code>
+       * <code>uint64 at = 6;</code>
+       * @return The at.
        */
-      public long getTime() {
-        return time_;
+      public long getAt() {
+        return at_;
       }
       /**
        * <pre>
        * 当前时间
        * </pre>
        *
-       * <code>uint64 time = 8;</code>
+       * <code>uint64 at = 6;</code>
+       * @param value The at to set.
+       * @return This builder for chaining.
        */
-      public Builder setTime(long value) {
+      public Builder setAt(long value) {
 
-        time_ = value;
+        at_ = value;
         onChanged();
         return this;
       }
@@ -3597,24 +2769,26 @@ public final class ResultProto {
        * 当前时间
        * </pre>
        *
-       * <code>uint64 time = 8;</code>
+       * <code>uint64 at = 6;</code>
+       * @return This builder for chaining.
        */
-      public Builder clearTime() {
+      public Builder clearAt() {
 
-        time_ = 0L;
+        at_ = 0L;
         onChanged();
         return this;
       }
 
-      private float duration_ ;
+      private int duration_ ;
       /**
        * <pre>
        * 执行时长
        * </pre>
        *
-       * <code>float duration = 9;</code>
+       * <code>uint32 duration = 7;</code>
+       * @return The duration.
        */
-      public float getDuration() {
+      public int getDuration() {
         return duration_;
       }
       /**
@@ -3622,9 +2796,11 @@ public final class ResultProto {
        * 执行时长
        * </pre>
        *
-       * <code>float duration = 9;</code>
+       * <code>uint32 duration = 7;</code>
+       * @param value The duration to set.
+       * @return This builder for chaining.
        */
-      public Builder setDuration(float value) {
+      public Builder setDuration(int value) {
 
         duration_ = value;
         onChanged();
@@ -3635,11 +2811,12 @@ public final class ResultProto {
        * 执行时长
        * </pre>
        *
-       * <code>float duration = 9;</code>
+       * <code>uint32 duration = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDuration() {
 
-        duration_ = 0F;
+        duration_ = 0;
         onChanged();
         return this;
       }
@@ -3650,7 +2827,8 @@ public final class ResultProto {
        * 原BODY
        * </pre>
        *
-       * <code>string body = 10;</code>
+       * <code>string body = 8;</code>
+       * @return The body.
        */
       public java.lang.String getBody() {
         java.lang.Object ref = body_;
@@ -3669,7 +2847,8 @@ public final class ResultProto {
        * 原BODY
        * </pre>
        *
-       * <code>string body = 10;</code>
+       * <code>string body = 8;</code>
+       * @return The bytes for body.
        */
       public com.google.protobuf.ByteString
       getBodyBytes() {
@@ -3689,7 +2868,9 @@ public final class ResultProto {
        * 原BODY
        * </pre>
        *
-       * <code>string body = 10;</code>
+       * <code>string body = 8;</code>
+       * @param value The body to set.
+       * @return This builder for chaining.
        */
       public Builder setBody(
               java.lang.String value) {
@@ -3706,7 +2887,8 @@ public final class ResultProto {
        * 原BODY
        * </pre>
        *
-       * <code>string body = 10;</code>
+       * <code>string body = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBody() {
 
@@ -3719,7 +2901,9 @@ public final class ResultProto {
        * 原BODY
        * </pre>
        *
-       * <code>string body = 10;</code>
+       * <code>string body = 8;</code>
+       * @param value The bytes for body to set.
+       * @return This builder for chaining.
        */
       public Builder setBodyBytes(
               com.google.protobuf.ByteString value) {
@@ -3739,7 +2923,8 @@ public final class ResultProto {
        * KEY
        * </pre>
        *
-       * <code>bytes encrypted = 11;</code>
+       * <code>bytes encrypted = 9;</code>
+       * @return The encrypted.
        */
       public com.google.protobuf.ByteString getEncrypted() {
         return encrypted_;
@@ -3749,7 +2934,9 @@ public final class ResultProto {
        * KEY
        * </pre>
        *
-       * <code>bytes encrypted = 11;</code>
+       * <code>bytes encrypted = 9;</code>
+       * @param value The encrypted to set.
+       * @return This builder for chaining.
        */
       public Builder setEncrypted(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3765,7 +2952,8 @@ public final class ResultProto {
        * KEY
        * </pre>
        *
-       * <code>bytes encrypted = 11;</code>
+       * <code>bytes encrypted = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEncrypted() {
 
@@ -3773,11 +2961,13 @@ public final class ResultProto {
         onChanged();
         return this;
       }
+      @java.lang.Override
       public final Builder setUnknownFields(
               final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
+        return super.setUnknownFields(unknownFields);
       }
 
+      @java.lang.Override
       public final Builder mergeUnknownFields(
               final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -3788,17 +2978,18 @@ public final class ResultProto {
     }
 
     // @@protoc_insertion_point(class_scope:Output)
-    private static final ResultProto.Output DEFAULT_INSTANCE;
+    private static final org.fly.core.io.network.result.ResultProto.Output DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new ResultProto.Output();
+      DEFAULT_INSTANCE = new org.fly.core.io.network.result.ResultProto.Output();
     }
 
-    public static ResultProto.Output getDefaultInstance() {
+    public static org.fly.core.io.network.result.ResultProto.Output getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
     private static final com.google.protobuf.Parser<Output>
             PARSER = new com.google.protobuf.AbstractParser<Output>() {
+      @java.lang.Override
       public Output parsePartialFrom(
               com.google.protobuf.CodedInputStream input,
               com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3816,7 +3007,8 @@ public final class ResultProto {
       return PARSER;
     }
 
-    public ResultProto.Output getDefaultInstanceForType() {
+    @java.lang.Override
+    public org.fly.core.io.network.result.ResultProto.Output getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -3828,15 +3020,10 @@ public final class ResultProto {
   com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internal_static_EncryptKey_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-          internal_static_OutputMessage_descriptor;
+          internal_static_Action_descriptor;
   private static final
   com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internal_static_OutputMessage_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-          internal_static_OutputTipType_descriptor;
-  private static final
-  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internal_static_OutputTipType_fieldAccessorTable;
+          internal_static_Action_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
           internal_static_Output_descriptor;
   private static final
@@ -3852,53 +3039,36 @@ public final class ResultProto {
   static {
     java.lang.String[] descriptorData = {
             "\n\014Output.proto\"2\n\nEncryptKey\022\013\n\003key\030\001 \001(" +
-                    "\014\022\n\n\002iv\030\002 \001(\014\022\013\n\003mac\030\003 \001(\014\"/\n\rOutputMess" +
-                    "age\022\r\n\005title\030\001 \001(\t\022\017\n\007content\030\002 \001(\t\";\n\rO" +
-                    "utputTipType\022\014\n\004type\030\001 \001(\t\022\017\n\007timeout\030\002 " +
-                    "\001(\r\022\013\n\003url\030\003 \001(\t\"\332\001\n\006Output\022\016\n\006result\030\001 " +
-                    "\001(\t\022\023\n\013status_code\030\002 \001(\r\022\013\n\003uid\030\003 \001(\004\022\r\n" +
-                    "\005debug\030\004 \001(\010\022\037\n\007message\030\005 \001(\0132\016.OutputMe" +
-                    "ssage\022\037\n\007tipType\030\006 \001(\0132\016.OutputTipType\022\014" +
-                    "\n\004data\030\007 \001(\014\022\014\n\004time\030\010 \001(\004\022\020\n\010duration\030\t" +
-                    " \001(\002\022\014\n\004body\030\n \001(\t\022\021\n\tencrypted\030\013 \001(\014B\035\n" +
-                    "\033org.fly.core.text.lp.resultb\006proto3"
+                    "\014\022\n\n\002iv\030\002 \001(\014\022\013\n\003mac\030\003 \001(\014\"4\n\006Action\022\014\n\004" +
+                    "type\030\001 \001(\t\022\017\n\007timeout\030\002 \001(\r\022\013\n\003url\030\003 \001(\t" +
+                    "\"\232\001\n\006Output\022\014\n\004code\030\001 \001(\r\022\017\n\007message\030\002 \001" +
+                    "(\t\022\013\n\003uid\030\003 \001(\004\022\027\n\006action\030\004 \001(\0132\007.Action" +
+                    "\022\014\n\004data\030\005 \001(\014\022\n\n\002at\030\006 \001(\004\022\020\n\010duration\030\007" +
+                    " \001(\r\022\014\n\004body\030\010 \001(\t\022\021\n\tencrypted\030\t \001(\014B \n" +
+                    "\036org.fly.core.io.network.resultb\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-            new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-              public com.google.protobuf.ExtensionRegistry assignDescriptors(
-                      com.google.protobuf.Descriptors.FileDescriptor root) {
-                descriptor = root;
-                return null;
-              }
-            };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
             .internalBuildGeneratedFileFrom(descriptorData,
                     new com.google.protobuf.Descriptors.FileDescriptor[] {
-                    }, assigner);
+                    });
     internal_static_EncryptKey_descriptor =
             getDescriptor().getMessageTypes().get(0);
     internal_static_EncryptKey_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_EncryptKey_descriptor,
             new java.lang.String[] { "Key", "Iv", "Mac", });
-    internal_static_OutputMessage_descriptor =
+    internal_static_Action_descriptor =
             getDescriptor().getMessageTypes().get(1);
-    internal_static_OutputMessage_fieldAccessorTable = new
+    internal_static_Action_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-            internal_static_OutputMessage_descriptor,
-            new java.lang.String[] { "Title", "Content", });
-    internal_static_OutputTipType_descriptor =
-            getDescriptor().getMessageTypes().get(2);
-    internal_static_OutputTipType_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-            internal_static_OutputTipType_descriptor,
+            internal_static_Action_descriptor,
             new java.lang.String[] { "Type", "Timeout", "Url", });
     internal_static_Output_descriptor =
-            getDescriptor().getMessageTypes().get(3);
+            getDescriptor().getMessageTypes().get(2);
     internal_static_Output_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
             internal_static_Output_descriptor,
-            new java.lang.String[] { "Result", "StatusCode", "Uid", "Debug", "Message", "TipType", "Data", "Time", "Duration", "Body", "Encrypted", });
+            new java.lang.String[] { "Code", "Message", "Uid", "Action", "Data", "At", "Duration", "Body", "Encrypted", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
