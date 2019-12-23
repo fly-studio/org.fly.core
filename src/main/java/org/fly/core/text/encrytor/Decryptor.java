@@ -19,6 +19,11 @@ import java.security.spec.InvalidKeySpecException;
 public class Decryptor {
 
     private Encryption.RSA rsa;
+    private KEY_MODE key_mode;
+    private enum KEY_MODE {
+        Own,
+        ThirdParty
+    }
 
     public Decryptor() {
         rsa = new Encryption.RSA();
@@ -30,6 +35,7 @@ public class Decryptor {
         try {
             if (privateKey != null) rsa.loadPrivateKey(privateKey);
             rsa.loadPublicKey(publicKey);
+            key_mode = KEY_MODE.ThirdParty;
 
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
@@ -39,6 +45,7 @@ public class Decryptor {
     public void random() {
         try {
             rsa.generate();
+            key_mode = KEY_MODE.Own;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,17 +77,15 @@ public class Decryptor {
             byte[] key = Encryption.randomBytes(32);
             byte[] iv = Encryption.randomBytes(32);
             byte[] value = new Encryption.AES(key, iv).encrypt(data.getBytes());
-            String mac = Encryption.Mac.hmac("HmacSHA256", ArrayUtils.addAll(Encryption.Base64.encode(iv).getBytes(), value) , key);
+            String mac = Encryption.HMac.sha256(ArrayUtils.addAll(Encryption.Base64.encode(iv).getBytes(), value) , key);
 
             EncryptKey encryptKey = new EncryptKey();
             encryptKey.mac = mac;
             encryptKey.iv = Encryption.Base64.encode(iv);
             encryptKey.key = Encryption.Base64.encode(key);
 
-            String encrypted = encryptKey.toJson();
-
             Result result = new Result();
-            result.encrypted = rsa.publicEncryptToBase64(encrypted.getBytes());
+            result.encrypted = key_mode == KEY_MODE.ThirdParty ? rsa.publicEncryptToBase64(encryptKey.toJson().getBytes()) : rsa.privateEncryptToBase64(encryptKey.toJson().getBytes());
             result.data = Encryption.Base64.encode(value);
 
             return result;
@@ -107,7 +112,7 @@ public class Decryptor {
 
         try {
 
-            byte[] keyBytes = rsa.privateDecrypt(encrypted);
+            byte[] keyBytes = key_mode == KEY_MODE.ThirdParty ? rsa.publicDecrypt(encrypted) : rsa.privateDecrypt(encrypted);
 
             EncryptKey encryptKey = Jsonable.fromJson(EncryptKey.class, keyBytes);
 

@@ -126,7 +126,7 @@ public class Encryption {
         }
     }
 
-    public static class Mac {
+    public static class HMac {
         public static String sha1(byte[] bytes, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException
         {
             return hmac("HmacSHA1", bytes, key);
