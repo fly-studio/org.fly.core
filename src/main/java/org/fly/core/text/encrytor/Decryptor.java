@@ -28,6 +28,7 @@ public class Decryptor {
     public Decryptor() {
         rsa = new Encryption.RSA();
         random();
+        key_mode = KEY_MODE.Own;
     }
 
     public Decryptor(@NotNull String publicKey, @Nullable String privateKey) {
@@ -75,7 +76,7 @@ public class Decryptor {
 
         try {
             byte[] key = Encryption.randomBytes(32);
-            byte[] iv = Encryption.randomBytes(32);
+            byte[] iv = Encryption.randomBytes(16);
             byte[] value = new Encryption.AES(key, iv).encrypt(data.getBytes());
             String mac = Encryption.HMac.sha256(ArrayUtils.addAll(Encryption.Base64.encode(iv).getBytes(), value) , key);
 
@@ -90,8 +91,15 @@ public class Decryptor {
 
             return result;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | BadPaddingException | InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException e) {
-            return null;
+            e.printStackTrace();
         }
+
+        return null;
+    }
+
+    public String decodeData(Result result)
+    {
+        return decodeData(result.encrypted, result.data);
     }
 
     public String decodeData(String encrypted, String data)

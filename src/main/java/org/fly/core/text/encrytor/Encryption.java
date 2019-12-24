@@ -2,9 +2,14 @@ package org.fly.core.text.encrytor;
 
 import com.sun.istack.Nullable;
 import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.codec.digest.HmacAlgorithms;
+import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.fly.core.io.IoUtils;
 
-import javax.crypto.*;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
@@ -43,7 +48,7 @@ public class Encryption {
      * @return
      */
     public static String byte2Hex(byte[] bytes) {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String temp = null;
 
         for (int i = 0; i < bytes.length; i++) {
@@ -51,15 +56,18 @@ public class Encryption {
 
             if (temp.length() == 1) {
                 // 1得到一位的进行补0操作
-                stringBuffer.append("0");
+                sb.append("0");
             }
 
-            stringBuffer.append(temp);
+            sb.append(temp);
         }
 
-        return stringBuffer.toString();
+        return sb.toString();
     }
 
+    /**
+     * Hash类，比如MD5/SHA-1/SHA-256
+     */
     public static class Hash {
         public static String Sha1(String string)  {
             return Sha1(string.getBytes());
@@ -67,7 +75,7 @@ public class Encryption {
 
         public static String Sha1(byte[] bytes) {
             try {
-                return hash("SHA-1", bytes);
+                return hash(MessageDigestAlgorithms.SHA_1, bytes);
             } catch (NoSuchAlgorithmException e) {
                 return "";
             }
@@ -79,7 +87,7 @@ public class Encryption {
 
         public static String Md5(byte[] bytes) {
             try {
-                return hash("MD5", bytes);
+                return hash(MessageDigestAlgorithms.MD5, bytes);
             } catch (NoSuchAlgorithmException e) {
                 return "";
             }
@@ -90,16 +98,7 @@ public class Encryption {
          */
         public static String Md5File(String file) throws IOException {
             try {
-                MessageDigest digest = MessageDigest.getInstance("MD5");
-                InputStream is = new FileInputStream(file);
-                byte[] buffer = new byte[8192];
-                int read;
-                while ((read = is.read(buffer)) > 0) {
-                    digest.update(buffer, 0, read);
-                }
-                is.close();
-
-                return byte2Hex(digest.digest());
+                return hashFile(MessageDigestAlgorithms.MD5, file);
             } catch (NoSuchAlgorithmException e) {
                 return "";
             }
@@ -111,7 +110,7 @@ public class Encryption {
 
         public static String Sha256(byte[] bytes) {
             try {
-                return hash("SHA-256", bytes);
+                return hash(MessageDigestAlgorithms.SHA_256, bytes);
             } catch (NoSuchAlgorithmException e) {
                 return "";
             }
@@ -124,22 +123,43 @@ public class Encryption {
 
             return byte2Hex(digest.digest());
         }
+
+        public static String hash(String algorithm, String bytes) throws NoSuchAlgorithmException
+        {
+            return hash(algorithm, bytes.getBytes());
+        }
+
+        public static String hashFile(String algorithm, String file) throws NoSuchAlgorithmException, IOException
+        {
+            MessageDigest digest = MessageDigest.getInstance(algorithm);
+            InputStream is = new FileInputStream(file);
+
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = is.read(buffer)) > 0) {
+                digest.update(buffer, 0, read);
+            }
+            is.close();
+
+            return byte2Hex(digest.digest());
+        }
+
     }
 
     public static class HMac {
         public static String sha1(byte[] bytes, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException
         {
-            return hmac("HmacSHA1", bytes, key);
+            return hmac(HmacAlgorithms.HMAC_SHA_1.getName(), bytes, key);
         }
 
         public static String sha256(byte[] bytes, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException
         {
-            return hmac("HmacSHA256", bytes, key);
+            return hmac(HmacAlgorithms.HMAC_SHA_256.getName(), bytes, key);
         }
 
         public static String md5(byte[] bytes, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException
         {
-            return hmac("HmacMD5", bytes, key);
+            return hmac(HmacAlgorithms.HMAC_MD5.getName(), bytes, key);
         }
 
         public static String hmac(String algorithm, byte[] bytes, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException
@@ -150,6 +170,22 @@ public class Encryption {
 
             return byte2Hex(mac.doFinal(bytes));
         }
+
+        public static String hmac(String algorithm, String bytes, String key) throws NoSuchAlgorithmException, InvalidKeyException
+        {
+            return hmac(algorithm, bytes.getBytes(), key.getBytes());
+        }
+
+        public static String hmac(HmacAlgorithms algorithm, byte[] bytes, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException
+        {
+            return hmac(algorithm.getName(), bytes, key);
+        }
+
+        public static String hmac(HmacAlgorithms algorithm, String bytes, String key) throws NoSuchAlgorithmException, InvalidKeyException
+        {
+            return hmac(algorithm, bytes.getBytes(), key.getBytes());
+        }
+
     }
 
     public static class Base64 {
@@ -220,7 +256,6 @@ public class Encryption {
 
             return cipher.doFinal(plaintext);
         }
-
 
         public byte[] decrypt(byte[] encryptedText) throws NoSuchAlgorithmException, NoSuchPaddingException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException
         {
