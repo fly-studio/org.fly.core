@@ -27,23 +27,28 @@ public class Decryptor {
 
     public Decryptor() {
         rsa = new Encryption.RSA();
-        random();
-        key_mode = KEY_MODE.Own;
+        randomKey();
     }
 
     public Decryptor(@NotNull String publicKey, @Nullable String privateKey) {
         rsa = new Encryption.RSA();
+        setKey(publicKey, privateKey);
+    }
+
+    public void setKey(@NotNull String publicKey, @Nullable String privateKey)
+    {
         try {
             if (privateKey != null) rsa.loadPrivateKey(privateKey);
             rsa.loadPublicKey(publicKey);
-            key_mode = KEY_MODE.ThirdParty;
 
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
+
+        key_mode = KEY_MODE.ThirdParty;
     }
 
-    public void random() {
+    public void randomKey() {
         try {
             rsa.generate();
             key_mode = KEY_MODE.Own;
