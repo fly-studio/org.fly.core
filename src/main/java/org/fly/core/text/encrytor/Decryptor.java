@@ -1,12 +1,12 @@
 package org.fly.core.text.encrytor;
 
-import com.sun.istack.NotNull;
-import com.sun.istack.Nullable;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.fly.core.io.network.result.EncryptKey;
 import org.fly.core.io.network.result.Result;
 import org.fly.core.text.json.Jsonable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;

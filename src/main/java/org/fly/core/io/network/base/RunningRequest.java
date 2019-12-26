@@ -1,7 +1,8 @@
 package org.fly.core.io.network.base;
 
-import com.sun.istack.NotNull;
 import org.fly.core.function.Consumer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -16,7 +17,7 @@ public class RunningRequest
     private IListener listener;
     private boolean replied = false;
 
-    public RunningRequest(BaseClient client, @NotNull Request request, @NotNull IListener listener) {
+    public RunningRequest(BaseClient client, @NotNull Request request, @Nullable IListener listener) {
         this.client = client;
         this.request = request;
         this.listener = listener;

@@ -1,10 +1,10 @@
 package org.fly.core.text.encrytor;
 
-import com.sun.istack.Nullable;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.fly.core.io.IoUtils;
+import org.jetbrains.annotations.Nullable;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

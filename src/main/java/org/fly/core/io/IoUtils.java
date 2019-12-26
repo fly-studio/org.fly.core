@@ -3,6 +3,7 @@ package org.fly.core.io;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
+import org.apache.commons.codec.Charsets;
 import org.fly.core.text.json.StripJsonComment;
 
 import java.io.Closeable;
@@ -11,12 +12,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 
 public class IoUtils {
 
-    private final static Charset utf8 = StandardCharsets.UTF_8;
 
     public static String getFileSize(long size) {
         if (size <= 0)
@@ -52,7 +51,7 @@ public class IoUtils {
 
     public static String readUtf8(File file) throws IOException
     {
-        return read(file, utf8);
+        return read(file, Charsets.UTF_8);
     }
 
     public static void write(File file, String content, Charset charset) throws IOException
@@ -64,7 +63,7 @@ public class IoUtils {
 
     public static void writeUtf8(File file, String content) throws IOException
     {
-        write(file, content, utf8);
+        write(file, content, Charsets.UTF_8);
     }
 
     public static void write(File file, byte[] bytes) throws IOException
@@ -83,7 +82,7 @@ public class IoUtils {
 
     public static void appendUtf8(File file, String content) throws IOException
     {
-        append(file, content, utf8);
+        append(file, content, Charsets.UTF_8);
     }
 
     public static final void safeClose(Object closeable) throws IOException, IllegalArgumentException {

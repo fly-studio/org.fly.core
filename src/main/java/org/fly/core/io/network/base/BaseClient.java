@@ -1,13 +1,13 @@
 package org.fly.core.io.network.base;
 
 import com.google.protobuf.ByteString;
-import com.sun.istack.NotNull;
 import org.apache.commons.codec.binary.StringUtils;
 import org.fly.core.io.buffer.ByteBufferPool;
 import org.fly.core.io.buffer.IoBuffer;
 import org.fly.core.io.network.client.ClientManager;
 import org.fly.core.io.network.result.ResultProto;
 import org.fly.core.text.encrytor.Decryptor;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -248,7 +248,7 @@ public abstract class BaseClient {
      * @param request
      * @param callback
      */
-    synchronized public void send(Request request, @NotNull final IListener callback)
+    synchronized public void send(Request request, @Nullable final IListener callback)
     {
         int ack = generateAck();
         request.setAck(ack);

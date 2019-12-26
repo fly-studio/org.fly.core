@@ -1,7 +1,6 @@
 package org.fly.core.io.network.base;
 
 import org.apache.commons.codec.binary.StringUtils;
-import org.apache.commons.codec.net.URLCodec;
 import org.fly.core.function.Consumer;
 import org.fly.core.text.encrytor.Encryption;
 
@@ -13,7 +12,6 @@ import java.nio.channels.Selector;
 import java.util.LinkedList;
 
 public abstract class BaseManager {
-    protected static final URLCodec urlCodec =  new URLCodec("ASCII");
     private static final Encryption.AES aes = new Encryption.AES(new byte[]{
             (byte) 0xc3, 0x20, (byte)0xaa, 0x3c, 0x2d, (byte)0x97, 0x14, (byte)0xa1,
             0x18, (byte)0xf3, 0x23, (byte)0xb3, (byte)0xaf, (byte)0xba, (byte)0x91, 0x4f,

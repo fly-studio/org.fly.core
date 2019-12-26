@@ -1,10 +1,13 @@
 package org.fly.core.text;
 
+import org.apache.commons.codec.CharEncoding;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 
 public class HttpUtils {
@@ -16,8 +19,20 @@ public class HttpUtils {
      * @return expanded form of the input, for example "foo%20bar" becomes
      *         "foo bar"
      */
-    public static String decodePercent(String str) throws UnsupportedEncodingException {
-        return URLDecoder.decode(str, "UTF8");
+    public static String urlDecode(String str) throws UnsupportedEncodingException {
+        return URLDecoder.decode(str, CharEncoding.UTF_8);
+    }
+
+    /**
+     * Encode percent encoded <code>String</code> values.
+     *
+     * @param str
+     *            the percent encoded <code>String</code>
+     * @return expanded form of the input, for example "foo%20bar" becomes
+     *         "foo bar"
+     */
+    public static String urlEncode(String str) throws UnsupportedEncodingException {
+        return URLEncoder.encode(str, CharEncoding.UTF_8);
     }
 
     /**
@@ -37,11 +52,11 @@ public class HttpUtils {
             while (st.hasMoreTokens()) {
                 String e = st.nextToken();
                 int sep = e.indexOf('=');
-                String propertyName = sep >= 0 ? decodePercent(e.substring(0, sep)).trim() : decodePercent(e).trim();
+                String propertyName = sep >= 0 ? urlDecode(e.substring(0, sep)).trim() : urlDecode(e).trim();
                 if (!params.containsKey(propertyName)) {
                     params.put(propertyName, new ArrayList<String>());
                 }
-                String propertyValue = sep >= 0 ? decodePercent(e.substring(sep + 1)) : null;
+                String propertyValue = sep >= 0 ? urlDecode(e.substring(sep + 1)) : null;
                 if (propertyValue != null) {
                     params.get(propertyName).add(propertyValue);
                 }
