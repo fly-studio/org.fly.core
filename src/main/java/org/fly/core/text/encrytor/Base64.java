@@ -1,11 +1,12 @@
 package org.fly.core.text.encrytor;
 
+import org.apache.commons.codec.Charsets;
+
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -523,7 +524,7 @@ public class Base64 {
          *          if {@code src} is not in valid Base64 scheme
          */
         public byte[] decode(String src) {
-            return decode(src.getBytes(StandardCharsets.ISO_8859_1));
+            return decode(src.getBytes(Charsets.ISO_8859_1));
         }
 
         /**
