@@ -3,6 +3,7 @@ package org.fly.core.text.encrytor;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.fly.core.io.network.result.EncryptKey;
+import org.fly.core.io.network.result.EncryptedResult;
 import org.fly.core.io.network.result.Result;
 import org.fly.core.text.json.Jsonable;
 import org.jetbrains.annotations.NotNull;
@@ -19,8 +20,8 @@ import java.security.spec.InvalidKeySpecException;
 public class Decryptor {
 
     private Encryption.RSA rsa;
-    private KEY_MODE key_mode;
-    private enum KEY_MODE {
+    private KEY_MODE keyMode;
+    public enum KEY_MODE {
         Own,
         ThirdParty
     }
@@ -45,13 +46,13 @@ public class Decryptor {
             e.printStackTrace();
         }
 
-        key_mode = KEY_MODE.ThirdParty;
+        keyMode = KEY_MODE.ThirdParty;
     }
 
     public void randomKey() {
         try {
             rsa.generate();
-            key_mode = KEY_MODE.Own;
+            keyMode = KEY_MODE.Own;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,6 +60,10 @@ public class Decryptor {
 
     public String getPublicKey() {
         return rsa.getPublicKey();
+    }
+
+    public KEY_MODE getKeyMode() {
+        return keyMode;
     }
 
     public byte[] decodeKey(String key) {
@@ -74,7 +79,7 @@ public class Decryptor {
         }
     }
 
-    public Result encodeData(String data)
+    public EncryptedResult encodeData(String data)
     {
         if (data == null || data.isEmpty())
             return null;
@@ -90,8 +95,8 @@ public class Decryptor {
             encryptKey.iv = Encryption.Base64.encode(iv);
             encryptKey.key = Encryption.Base64.encode(key);
 
-            Result result = new Result();
-            result.encrypted = key_mode == KEY_MODE.ThirdParty ? rsa.publicEncryptToBase64(encryptKey.toJson().getBytes()) : rsa.privateEncryptToBase64(encryptKey.toJson().getBytes());
+            EncryptedResult result = new EncryptedResult();
+            result.encrypted = keyMode == KEY_MODE.ThirdParty ? rsa.publicEncryptToBase64(encryptKey.toJson().getBytes()) : rsa.privateEncryptToBase64(encryptKey.toJson().getBytes());
             result.data = Encryption.Base64.encode(value);
 
             return result;
@@ -125,7 +130,7 @@ public class Decryptor {
 
         try {
 
-            byte[] keyBytes = key_mode == KEY_MODE.ThirdParty ? rsa.publicDecrypt(encrypted) : rsa.privateDecrypt(encrypted);
+            byte[] keyBytes = keyMode == KEY_MODE.ThirdParty ? rsa.publicDecrypt(encrypted) : rsa.privateDecrypt(encrypted);
 
             EncryptKey encryptKey = Jsonable.fromJson(EncryptKey.class, keyBytes);
 
