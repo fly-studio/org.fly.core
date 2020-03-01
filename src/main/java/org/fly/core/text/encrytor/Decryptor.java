@@ -81,7 +81,7 @@ public class Decryptor {
 
     public EncryptedResult encodeData(String data)
     {
-        if (data == null || data.isEmpty())
+        if (org.apache.commons.lang3.StringUtils.isEmpty(data))
             return null;
 
         try {
@@ -114,7 +114,7 @@ public class Decryptor {
 
     public String decodeData(String encrypted, String data)
     {
-        if (encrypted == null || encrypted.isEmpty() || data == null || data.isEmpty())
+        if (org.apache.commons.lang3.StringUtils.isEmpty(encrypted) || org.apache.commons.lang3.StringUtils.isEmpty(data))
             return null;
 
         return decodeData(
@@ -125,7 +125,7 @@ public class Decryptor {
 
     public String decodeData(byte[] encrypted, byte[] data)
     {
-        if (encrypted == null || encrypted.length == 0 || data == null || data.length == 0)
+        if (ArrayUtils.isEmpty(encrypted) || ArrayUtils.isEmpty(data))
             return null;
 
         try {

@@ -15,7 +15,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.github.jengelman.gradle.plugins:shadow:4.0.3"
+        classpath "com.github.jengelman.gradle.plugins:shadow:5.2.0"
     }
 }
 
@@ -32,8 +32,28 @@ dependencies {
     compile group: 'commons-codec', name: 'commons-codec', version: '1.13'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.11.1'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
+    //compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.64'
+
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
+
+/*import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+    prefix = "conflict" // Replace all 3rd package's prefix
+
+}
+tasks.shadowJar.dependsOn tasks.relocateShadowJar
+*/
+
+shadowJar{
+    exclude 'google/protobuf/*.proto'
+    exclude 'google/protobuf/*/*.proto'
+
+}
+

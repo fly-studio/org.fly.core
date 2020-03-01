@@ -1,2 +1,0 @@
-rule com.google.protobuf.** conflict.com.google.protobuf.@1
-rule okio.** conflict.okio.@1

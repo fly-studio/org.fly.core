@@ -12,15 +12,22 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.security.interfaces.RSAKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Random;
+
+/*import org.bouncycastle.asn1.ASN1Object;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.asn1.pkcs.RSAPrivateKey;
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;*/
 
 public class Encryption {
     private static final org.fly.core.text.encrytor.Base64.Decoder base64Decoder = org.fly.core.text.encrytor.Base64.getDecoder();
@@ -280,20 +287,38 @@ public class Encryption {
 
     public static class RSA {
         private static final String RSA  = "RSA";
-        private static final String RSA_PUBLIC_BEGIN = "-----BEGIN PUBLIC KEY-----";
-        private static final String RSA_PUBLIC_END = "-----END PUBLIC KEY-----";
-        private static final String RSA_PRIVATE_BEGIN = "-----BEGIN RSA PRIVATE KEY-----";
-        private static final String RSA_PRIVATE_END = "-----END RSA PRIVATE KEY-----";
+
+        public final static String LINE = "-----";
+
+        public enum FORMAT {
+            PUBLIC("PUBLIC KEY"),
+            PRIVATE("RSA PRIVATE KEY"),
+            PRIVATE8("PRIVATE KEY"),
+            PRIVATE8_ENCRYPTED("ENCRYPTED PRIVATE KEY");
+
+            private String value;
+
+            FORMAT(String value) {
+                this.value = value;
+            }
+
+            @Override
+            public String toString() {
+                return value;
+            }
+        }
 
         private PrivateKey privateKey;
         private PublicKey publicKey;
 
         public RSA() {
+            //Security.addProvider(new BouncyCastleProvider());
         }
 
         public RSA(PrivateKey privateKey, PublicKey publicKey) {
             this.privateKey = privateKey;
             this.publicKey = publicKey;
+            //Security.addProvider(new BouncyCastleProvider());
         }
 
         public void loadKey(File privateFile, File publicFile) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException
@@ -314,23 +339,20 @@ public class Encryption {
             loadPublicKey(publicKey);
         }
 
+        /**
+         * Pkcs1 or Pkcs8 KEY
+         * @param key
+         * @throws NoSuchAlgorithmException
+         * @throws InvalidKeySpecException
+         */
         public void loadPrivateKey(String key) throws NoSuchAlgorithmException, InvalidKeySpecException
         {
-            key = key.replace(RSA_PRIVATE_BEGIN, "")
-                    .replace(RSA_PRIVATE_END, "")
-                    .replace("\r", "")
-                    .replace("\n", "");
-            loadPrivateKey(Base64.decode(key));
+            loadPrivateKey(pemToBytes(key));
         }
 
         public void loadPublicKey(String key) throws NoSuchAlgorithmException, InvalidKeySpecException
         {
-            key = key.replace(RSA_PUBLIC_BEGIN, "")
-                    .replace(RSA_PUBLIC_END, "")
-                    .replace("\r", "")
-                    .replace("\n", "");
-
-            loadPublicKey(Base64.decode(key));
+            loadPublicKey(pemToBytes(key));
         }
 
         public void loadPublicKey(byte[] bytes) throws NoSuchAlgorithmException, InvalidKeySpecException
@@ -341,7 +363,6 @@ public class Encryption {
 
             publicKey = kf.generatePublic(ks);
         }
-
         public void loadPrivateKey(byte[] bytes) throws NoSuchAlgorithmException, InvalidKeySpecException
         {
             PKCS8EncodedKeySpec ks = new PKCS8EncodedKeySpec(bytes);
@@ -353,14 +374,14 @@ public class Encryption {
 
         public void loadPrivateFile(File file) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException
         {
-            byte[] bytes = IoUtils.readBytes(file);
-            loadPrivateKey(bytes);
+            String key = IoUtils.read(file, StandardCharsets.UTF_8);
+            loadPrivateKey(key);
         }
 
         public void loadPublicFile(File file) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException
         {
-            byte[] bytes = IoUtils.readBytes(file);
-            loadPublicKey(bytes);
+            String key = IoUtils.read(file, StandardCharsets.UTF_8);
+            loadPublicKey(key);
         }
 
         public void generate() throws NoSuchAlgorithmException
@@ -379,34 +400,80 @@ public class Encryption {
             publicKey = kp.getPublic();
         }
 
-        public String getPublicKey()
+  /*      public static String pkcs8ToPkcs1(String key) throws IOException {
+
+            byte[] pkcs1 = pkcs8ToPkcs1(pemToBytes(key));
+
+            return bytesToPem(FORMAT.PRIVATE, pkcs1);
+        }
+
+        public static String pkcs1ToPkcs8(String key) throws IOException {
+
+            byte[] pkcs8 = pkcs1ToPkcs8(pemToBytes(key));
+
+            return bytesToPem(FORMAT.PRIVATE8, pkcs8);
+        }
+
+        public static byte[] pkcs8ToPkcs1(byte[] key) throws IOException
         {
+            PrivateKeyInfo pki = PrivateKeyInfo.getInstance(key);
+            RSAPrivateKey pkcs1Key = RSAPrivateKey.getInstance(pki.parsePrivateKey());
+            return pkcs1Key.getEncoded();
+        }
+
+        public static byte[] pkcs1ToPkcs8(byte[] key) throws IOException
+        {
+            AlgorithmIdentifier algorithmIdentifier = new AlgorithmIdentifier(PKCSObjectIdentifiers.pkcs8ShroudedKeyBag);    //PKCSObjectIdentifiers.pkcs8ShroudedKeyBag
+            ASN1Object asn1Object = ASN1Sequence.getInstance(key);
+            PrivateKeyInfo pki = new PrivateKeyInfo(algorithmIdentifier, asn1Object);
+            return pki.getEncoded();
+        }
+*/
+        private static byte[] pemToBytes(String key)
+        {
+            key = key.replace(LINE + "BEGIN " + FORMAT.PUBLIC + LINE, "")
+                    .replace(LINE + "BEGIN " + FORMAT.PRIVATE + LINE, "")
+                    .replace(LINE + "BEGIN " + FORMAT.PRIVATE8 + LINE, "")
+                    .replace(LINE + "BEGIN " + FORMAT.PRIVATE8_ENCRYPTED + LINE, "")
+                    .replace(LINE + "END " + FORMAT.PUBLIC + LINE, "")
+                    .replace(LINE + "END " + FORMAT.PRIVATE + LINE, "")
+                    .replace(LINE + "END " + FORMAT.PRIVATE8 + LINE, "")
+                    .replace(LINE + "END " + FORMAT.PRIVATE8_ENCRYPTED + LINE, "")
+                    .replace("\r", "")
+                    .replace("\n", "");
+            return Base64.decode(key);
+        }
+
+        private static String bytesToPem(FORMAT type, byte[] key) {
             StringBuilder buffer = new StringBuilder();
 
-            buffer.append(RSA_PUBLIC_BEGIN)
+            buffer.append(LINE + "BEGIN ").append(type).append(LINE)
                     .append("\n")
-                    .append(Base64.encode(publicKey.getEncoded())
+                    .append(Base64.encode(key)
                             .replaceAll("(.{64})", "$1\n")
                             .trim())
                     .append("\n")
-                    .append(RSA_PUBLIC_END);
+                    .append(LINE + "END ").append(type).append(LINE);
 
             return buffer.toString();
+
+            /*PemObject pemObject = new PemObject(type, privateKey);
+            StringWriter stringWriter = new StringWriter();
+            PemWriter pemWriter = new PemWriter(stringWriter);
+            pemWriter.writeObject(pemObject);
+            pemWriter.close();
+            return stringWriter.toString();*/
+        }
+
+
+        public String getPublicKey()
+        {
+            return publicKey == null ? null : bytesToPem(FORMAT.PUBLIC, publicKey.getEncoded());
         }
 
         public String getPrivateKey()
         {
-            StringBuilder buffer = new StringBuilder();
-
-            buffer.append(RSA_PRIVATE_BEGIN)
-                    .append("\n")
-                    .append(Base64.encode(privateKey.getEncoded())
-                            .replaceAll("(.{64})", "$1\n")
-                            .trim())
-                    .append("\n")
-                    .append(RSA_PRIVATE_END);
-
-            return buffer.toString();
+            return privateKey == null ? null : bytesToPem(FORMAT.PRIVATE8, privateKey.getEncoded());
         }
 
         public static Cipher cipher() throws NoSuchPaddingException, NoSuchAlgorithmException
@@ -419,7 +486,24 @@ public class Encryption {
             Cipher cipher = cipher();
             cipher.init(Cipher.ENCRYPT_MODE, key);
 
-            return cipher.doFinal(plaintext);
+            int blockSize = ((RSAKey)key).getModulus().bitLength() / 8;
+
+            try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+                int len = plaintext.length;
+                int offset = 0;
+
+                while (offset < len)
+                {
+                    int read = Math.min(len - offset, blockSize - 11); // PADDING 的需要-11
+                    byteArrayOutputStream.write(cipher.doFinal(plaintext, offset, read));
+                    offset += read;
+                }
+
+                return byteArrayOutputStream.toByteArray();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+           return null;
         }
 
         public static byte[] decrypt(byte[] encryptedText, Key key) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
@@ -427,7 +511,26 @@ public class Encryption {
             Cipher cipher = cipher();
             cipher.init(Cipher.DECRYPT_MODE, key);
 
-            return cipher.doFinal(encryptedText);
+            int blockSize = ((RSAKey)key).getModulus().bitLength() / 8;
+
+            try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+                int len = encryptedText.length;
+                int offset = 0;
+
+                while (offset < len)
+                {
+                    int read = Math.min(len - offset, blockSize);
+                    byteArrayOutputStream.write(cipher.doFinal(encryptedText, offset, read));
+                    offset += read;
+                }
+
+                return byteArrayOutputStream.toByteArray();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
 
         public byte[] publicEncrypt(byte[] plaintext) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException
